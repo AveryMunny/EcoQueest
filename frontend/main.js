@@ -50,6 +50,11 @@ async function sendWind() {
   render();
 }
 
+function toggleHelpMenu() {
+  const menu = document.getElementById("helpMenu");
+  menu.classList.toggle("hidden");
+}
+
 
 function render() {
   if (!state) return;
@@ -111,6 +116,8 @@ function setupInput() {
       sendSolar();
     } else if (e.key === "2") {
       sendWind();
+    } else if (e.key === "h") {
+      toggleHelpMenu();
     } else if (e.key === " ") {
       // space to collect resource
       e.preventDefault();
