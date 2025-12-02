@@ -16,6 +16,13 @@ async function sendMove(direction) {
   render();
 }
 
+async function sendExitHouse() {
+  const res = await fetch("/api/exit_house", { method: "POST" });
+  state = await res.json();
+  render();
+}
+
+
 async function sendCollect() {
   const res = await fetch("/api/collect", {
     method: "POST",
@@ -66,6 +73,21 @@ function toggleHelpMenu() {
 function render() {
   if (!state) return;
 
+  // Determine which grid to drawing
+  let gridData = null;
+  let width = 0;
+  let height = 0;
+
+  if (state.in_house) {
+    gridData = state.house_tiles;
+    width = state.house_width;
+    height = state.house_height;
+  } else {
+    gridData = state.tiles;
+    width = state.width;
+    height = state.height;
+  }
+
   // HUD
   document.getElementById("eco").textContent = state.ecosystem_health;
   document.getElementById("energy").textContent = state.energy;
@@ -75,12 +97,12 @@ function render() {
 
   const grid = document.getElementById("grid");
   grid.innerHTML = "";
-  grid.style.gridTemplateColumns = `repeat(${state.width}, 32px)`;
+  grid.style.gridTemplateColumns = `repeat(${width}, 32px)`;
 
-  for (let y = 0; y < state.height; y++) {
-    for (let x = 0; x < state.width; x++) {
+  for (let y = 0; y < height; y++) {
+    for (let x = 0; x < width; x++) {
       const cell = document.createElement("div");
-      const tileType = state.tiles[y][x];
+      const tileType = gridData[y][x];
 
       cell.classList.add("cell");
       cell.classList.add(tileType);
@@ -95,7 +117,6 @@ function render() {
       else if (tileType === "house") cell.textContent = "🏡";
       else cell.textContent = "";
 
-
       // player position
       if (x === state.player_x && y === state.player_y) {
         cell.classList.add("player");
@@ -106,6 +127,7 @@ function render() {
     }
   }
 }
+
 
 function setupInput() {
   document.addEventListener("keydown", (e) => {
@@ -129,6 +151,8 @@ function setupInput() {
       toggleHelpMenu();
     } else if (e.key === "3") {
       sendHouse();
+    } else if (e.key === "e") {
+      sendExitHouse();
     } else if (e.key === " ") {
       // space to collect resource
       e.preventDefault();

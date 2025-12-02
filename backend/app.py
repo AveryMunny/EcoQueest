@@ -8,7 +8,10 @@ from game_logic import (
     plant_tree,
     build_solar_panel,
     build_wind_turbine,
-    build_house
+    build_house,
+    try_enter_house, 
+    exit_house
+
 )
 
 
@@ -33,6 +36,11 @@ def index():
     # serve frontend
     return app.send_static_file("index.html")
 
+
+@app.route("/api/exit_house", methods=["POST"])
+def api_exit_house():
+    exit_house(GAME_STATE)
+    return jsonify(GAME_STATE.to_dict())
 
 @app.route("/api/state", methods=["GET"])
 def api_state():
