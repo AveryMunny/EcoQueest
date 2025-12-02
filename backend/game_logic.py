@@ -37,7 +37,7 @@ class GameState:
         }
 
 
-def create_initial_state(width: int = 10, height: int = 10) -> GameState:
+def create_initial_state(width: int = 30, height: int = 30) -> GameState:
     # random tiles
     tiles = []
     for y in range(height):
