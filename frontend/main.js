@@ -115,6 +115,9 @@ function render() {
       else if (tileType === "solar") cell.textContent = "☀️";
       else if (tileType === "wind") cell.textContent = "🌀";
       else if (tileType === "house") cell.textContent = "🏡";
+      else if (tileType === "rabbit") cell.textContent = "🐇"
+      else if (tileType === "deer") cell.textContent = "🦌";
+      else if (tileType === "bird") cell.textContent = "🐦";
       else cell.textContent = "";
 
       // player position

@@ -10,6 +10,10 @@ TILE_SAPLING = "sapling"
 TILE_SOLAR = "solar"
 TILE_WIND = "wind"
 TILE_HOUSE = "house"
+TILE_RABBIT = "rabbit"
+TILE_DEER = "deer"
+TILE_BIRD = "bird"
+
 
 RESOURCE_TYPES = [TILE_TREE, TILE_COAL, TILE_BERRIES]
 
@@ -136,6 +140,8 @@ def move_player(state: GameState, direction: str):
 
     state.turn += 1
     apply_passive_energy(state)
+    spawn_wildlife(state)
+    despawn_wildlife(state)
     try_enter_house(state)
 
 
@@ -165,6 +171,8 @@ def collect_resource(state: GameState):
     state.ecosystem_health = max(0, min(100, state.ecosystem_health))
     state.turn += 1
     apply_passive_energy(state)
+    spawn_wildlife(state)
+    despawn_wildlife(state)
 
 
 # ----- PLANT TREE -----
@@ -282,6 +290,32 @@ def exit_house(state: GameState):
     # fallback
     state.player_x = state.last_house_x
     state.player_y = state.last_house_y
+    
+
+def spawn_wildlife(state: GameState):
+    # Only spawn animals if ecosystem is healthy
+    if state.ecosystem_health < 70:
+        return
+
+    # Small chance each turn
+    if random.random() < 0.03:  # 3% chance per turn
+        # pick random location
+        x = random.randint(0, state.width - 1)
+        y = random.randint(0, state.height - 1)
+
+        if state.tiles[y][x] == TILE_EMPTY:
+            state.tiles[y][x] = random.choice([TILE_RABBIT, TILE_DEER, TILE_BIRD])
+
+def despawn_wildlife(state: GameState):
+    # If ecosystem is suffering, animals leave
+    if state.ecosystem_health > 40:
+        return
+
+    for y in range(state.height):
+        for x in range(state.width):
+            if state.tiles[y][x] in [TILE_RABBIT, TILE_DEER, TILE_BIRD]:
+                state.tiles[y][x] = TILE_EMPTY
+
 
 
 # ----- RESET -----
