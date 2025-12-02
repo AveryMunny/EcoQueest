@@ -123,6 +123,12 @@ function render() {
         cell.textContent = "🧍";
       }
 
+      // If inside house, override tile style
+      if (state.in_house) { 
+        cell.classList.add("house-floor");
+      }
+
+
       grid.appendChild(cell);
     }
   }

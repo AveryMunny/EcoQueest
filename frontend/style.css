@@ -67,6 +67,11 @@ h1 {
   background: #78350f;
 }
 
+/* Interior (house) floor color */
+.house-floor {
+  background: #a8794d; /* warm brown */
+}
+
 
 #helpMenu {
   position: fixed;
