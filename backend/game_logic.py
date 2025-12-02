@@ -8,6 +8,7 @@ TILE_BERRIES = "berries"
 TILE_SAPLING = "sapling" # for planting trees
 TILE_SOLAR = "solar" # for renewable energy
 TILE_WIND = "wind" # for renewable energy
+TILE_HOUSE = "house" # try to add a house lolllll
 
 RESOURCE_TYPES = [TILE_TREE, TILE_COAL, TILE_BERRIES]
 
@@ -127,7 +128,20 @@ def collect_resource(state: GameState):
     state.turn += 1
     apply_passive_energy(state)
 
+def build_house(state: GameState):
+    x = state.player_x
+    y = state.player_y
 
+    # must be empty tile
+    if state.tiles[y][x] != TILE_EMPTY:
+        return
+
+    # cost: 5 wood
+    if state.wood < 5:
+        return
+
+    state.wood -= 5
+    state.tiles[y][x] = TILE_HOUSE
 
 def reset_state() -> GameState:
     return create_initial_state()

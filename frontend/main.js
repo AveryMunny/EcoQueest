@@ -50,6 +50,13 @@ async function sendWind() {
   render();
 }
 
+async function sendHouse() {
+  const res = await fetch("/api/house", { method: "POST" });
+  state = await res.json();
+  render();
+}
+
+
 function toggleHelpMenu() {
   const menu = document.getElementById("helpMenu");
   menu.classList.toggle("hidden");
@@ -85,6 +92,8 @@ function render() {
       else if (tileType === "sapling") cell.textContent = "🌱";
       else if (tileType === "solar") cell.textContent = "☀️";
       else if (tileType === "wind") cell.textContent = "🌀";
+      else if (tileType === "house") cell.textContent = "🏡";
+      else cell.textContent = "";
 
 
       // player position
@@ -118,6 +127,8 @@ function setupInput() {
       sendWind();
     } else if (e.key === "h") {
       toggleHelpMenu();
+    } else if (e.key === "3") {
+      sendHouse();
     } else if (e.key === " ") {
       // space to collect resource
       e.preventDefault();

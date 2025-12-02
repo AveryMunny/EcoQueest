@@ -63,6 +63,11 @@ h1 {
   box-shadow: 0 0 6px rgba(250, 204, 21, 0.9);
 }
 
+.house {
+  background: #78350f;
+}
+
+
 #helpMenu {
   position: fixed;
   right: 20px;

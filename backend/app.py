@@ -7,7 +7,8 @@ from game_logic import (
     reset_state,
     plant_tree,
     build_solar_panel,
-    build_wind_turbine
+    build_wind_turbine,
+    build_house
 )
 
 
@@ -72,6 +73,12 @@ def api_solar():
 def api_wind():
     build_wind_turbine(GAME_STATE)
     return jsonify(GAME_STATE.to_dict())
+
+@app.route("/api/house", methods=["POST"])
+def api_house():
+    build_house(GAME_STATE)
+    return jsonify(GAME_STATE.to_dict())
+
 
 
 if __name__ == "__main__":
