@@ -32,6 +32,25 @@ async function sendReset() {
   render();
 }
 
+async function sendPlant() {
+  const res = await fetch("/api/plant", { method: "POST" });
+  state = await res.json();
+  render();
+}
+
+async function sendSolar() {
+  const res = await fetch("/api/solar", { method: "POST" });
+  state = await res.json();
+  render();
+}
+
+async function sendWind() {
+  const res = await fetch("/api/wind", { method: "POST" });
+  state = await res.json();
+  render();
+}
+
+
 function render() {
   if (!state) return;
 
@@ -58,6 +77,10 @@ function render() {
       if (tileType === "tree") cell.textContent = "🌳";
       else if (tileType === "coal") cell.textContent = "⛏️";
       else if (tileType === "berries") cell.textContent = "🍓";
+      else if (tileType === "sapling") cell.textContent = "🌱";
+      else if (tileType === "solar") cell.textContent = "☀️";
+      else if (tileType === "wind") cell.textContent = "🌀";
+
 
       // player position
       if (x === state.player_x && y === state.player_y) {
@@ -82,6 +105,12 @@ function setupInput() {
       sendMove("left");
     } else if (e.key === "ArrowRight" || e.key === "d") {
       sendMove("right");
+    } else if (e.key === "p") {
+      sendPlant();
+    } else if (e.key === "1") {
+      sendSolar();
+    } else if (e.key === "2") {
+      sendWind();
     } else if (e.key === " ") {
       // space to collect resource
       e.preventDefault();

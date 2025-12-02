@@ -4,7 +4,10 @@ from dataclasses import dataclass, asdict
 TILE_EMPTY = "empty"
 TILE_TREE = "tree"
 TILE_COAL = "coal"
-TILE_BERRIES = "berries"
+TILE_BERRIES = "berries"    
+TILE_SAPLING = "sapling" # for planting trees
+TILE_SOLAR = "solar" # for renewable energy
+TILE_WIND = "wind" # for renewable energy
 
 RESOURCE_TYPES = [TILE_TREE, TILE_COAL, TILE_BERRIES]
 
@@ -21,6 +24,8 @@ class GameState:
     wood: int
     coal: int
     tiles: list  # 2D list of tile types (strings)
+    turn: int = 0
+
 
     def to_dict(self):
         return {
@@ -43,7 +48,7 @@ def create_initial_state(width: int = 30, height: int = 30) -> GameState:
     for y in range(height):
         row = []
         for x in range(width):
-            if random.random() < 0.2:  # ~20% of tiles have resources
+            if random.random() < 0.25:  # ~25% of tiles have resources
                 row.append(random.choice(RESOURCE_TYPES))
             else:
                 row.append(TILE_EMPTY)
@@ -87,6 +92,10 @@ def move_player(state: GameState, direction: str):
     if 0 <= new_x < state.width and 0 <= new_y < state.height:
         state.player_x = new_x
         state.player_y = new_y
+    
+    state.turn += 1
+    apply_passive_energy(state)
+
 
 
 def collect_resource(state: GameState):
@@ -114,7 +123,68 @@ def collect_resource(state: GameState):
 
     # clamp ecosystem health
     state.ecosystem_health = max(0, min(100, state.ecosystem_health))
+    
+    state.turn += 1
+    apply_passive_energy(state)
+
 
 
 def reset_state() -> GameState:
     return create_initial_state()
+
+def apply_passive_energy(state: GameState):
+    # Solar panels give +1 each turn
+    for row in state.tiles:
+        for tile in row:
+            if tile == TILE_SOLAR:
+                state.energy += 1
+
+    # Wind turbines give +2 energy every 3 turns
+    if state.turn % 3 == 0:
+        for row in state.tiles:
+            for tile in row:
+                if tile == TILE_WIND:
+                    state.energy += 2
+
+def plant_tree(state: GameState):
+    x = state.player_x
+    y = state.player_y
+
+    # tile must be empty
+    if state.tiles[y][x] != TILE_EMPTY:
+        return
+
+    # must have at least 1 wood
+    if state.wood < 1:
+        return
+
+    state.wood -= 1
+    state.tiles[y][x] = TILE_SAPLING
+    state.ecosystem_health = min(100, state.ecosystem_health + 3)
+
+def build_solar_panel(state: GameState):
+    x = state.player_x
+    y = state.player_y
+
+    if state.tiles[y][x] != TILE_EMPTY:
+        return
+
+    if state.wood < 2:
+        return
+
+    state.wood -= 2
+    state.tiles[y][x] = TILE_SOLAR
+
+def build_wind_turbine(state: GameState):
+    x = state.player_x
+    y = state.player_y
+
+    if state.tiles[y][x] != TILE_EMPTY:
+        return
+
+    if state.wood < 3:
+        return
+
+    state.wood -= 3
+    state.tiles[y][x] = TILE_WIND
+

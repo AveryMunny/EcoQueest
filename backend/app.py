@@ -5,7 +5,11 @@ from game_logic import (
     move_player,
     collect_resource,
     reset_state,
+    plant_tree,
+    build_solar_panel,
+    build_wind_turbine
 )
+
 
 import os
 
@@ -53,6 +57,21 @@ def api_reset():
     global GAME_STATE
     GAME_STATE = reset_state()
     return jsonify(get_state_dict())
+
+@app.route("/api/plant", methods=["POST"])
+def api_plant():
+    plant_tree(GAME_STATE)
+    return jsonify(GAME_STATE.to_dict())
+
+@app.route("/api/solar", methods=["POST"])
+def api_solar():
+    build_solar_panel(GAME_STATE)
+    return jsonify(GAME_STATE.to_dict())
+
+@app.route("/api/wind", methods=["POST"])
+def api_wind():
+    build_wind_turbine(GAME_STATE)
+    return jsonify(GAME_STATE.to_dict())
 
 
 if __name__ == "__main__":
