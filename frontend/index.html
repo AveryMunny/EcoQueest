@@ -23,26 +23,43 @@
 
   <div id="grid"></div>
 
-  <div id="helpMenu" class="hidden">
+<div id="helpMenu" class="hidden">
   <h2>EcoQuest Controls 🌱</h2>
-  <p><strong>Movement:</strong> W A S D or Arrow Keys</p>
-  <p><strong>Collect Resource:</strong> Space</p>
-  <p><strong>Plant Tree:</strong> P (Cost: 1 wood)</p>
-  <p><strong>Build Solar Panel:</strong> 1 (Cost: 2 wood)</p>
-  <p><strong>Build Wind Turbine:</strong> 2 (Cost: 3 wood)</p>
 
-  <hr>
+  <h3>Movement</h3>
+  <p>W A S D or Arrow Keys — Move</p>
+  <p>Space — Collect resources</p>
+  <p>E — Exit house</p>
 
-  <p><strong>Tips:</strong></p>
+  <h3>Building</h3>
+  <p>P — Plant Tree (Cost: 1 Wood)</p>
+  <p>1 — Build Solar Panel (Cost: 2 Wood)</p>
+  <p>2 — Build Wind Turbine (Cost: 3 Wood)</p>
+  <p>3 — Build House (Cost: 5 Wood)</p>
+  <p>4 — Build Farm Plot (Cost: 2 Wood)</p>
+
+  <h3>Farming</h3>
+  <p>5 — Plant Wheat Seed (On farm tile)</p>
+  <p>6 — Plant Carrot Seed (On farm tile)</p>
+  <p>X — Harvest Ripe Crops</p>
+
+  <h3>Wildlife</h3>
+  <p>🐇 🦌 🐦 appear when ecosystem health ≥ 70</p>
+
+  <h3>Tips</h3>
   <ul>
-    <li>Trees 🌳 give wood but reduce ecosystem health.</li>
-    <li>Berries 🍓 give food and improve the ecosystem.</li>
-    <li>Coal ⛏️ gives energy but heavily damages the environment.</li>
-    <li>Renewables ☀️🌀 give passive clean energy each turn.</li>
+    <li>Trees 🌳 give wood but lower ecosystem health.</li>
+    <li>Berries 🍓 give food and help ecosystem health.</li>
+    <li>Coal ⛏️ gives energy, but greatly harms the environment.</li>
+    <li>Renewables ☀️ 🌀 generate passive clean energy.</li>
+    <li>Crops grow in stages over time — harvest fully grown ones ✨.</li>
   </ul>
 
-  <p><em>Press H to hide this menu.</em></p>
+  <p style="text-align:center; font-size:13px; color:#ccc;">
+    Press H to hide this menu.
+  </p>
 </div>
+
   <button id="helpBtn">Help</button>
 
   <script src="main.js"></script>

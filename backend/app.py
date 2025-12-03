@@ -10,7 +10,10 @@ from game_logic import (
     build_wind_turbine,
     build_house,
     try_enter_house, 
-    exit_house
+    exit_house,
+    plant_wheat, 
+    plant_carrot, 
+    harvest_crop
 
 )
 
@@ -85,6 +88,21 @@ def api_wind():
 @app.route("/api/house", methods=["POST"])
 def api_house():
     build_house(GAME_STATE)
+    return jsonify(GAME_STATE.to_dict())
+
+@app.route("/api/plant_wheat", methods=["POST"])
+def api_plant_wheat():
+    plant_wheat(GAME_STATE)
+    return jsonify(GAME_STATE.to_dict())
+
+@app.route("/api/plant_carrot", methods=["POST"])
+def api_plant_carrot():
+    plant_carrot(GAME_STATE)
+    return jsonify(GAME_STATE.to_dict())
+
+@app.route("/api/harvest", methods=["POST"])
+def api_harvest():
+    harvest_crop(GAME_STATE)
     return jsonify(GAME_STATE.to_dict())
 
 

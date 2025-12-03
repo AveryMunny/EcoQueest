@@ -13,12 +13,20 @@ TILE_HOUSE = "house"
 TILE_RABBIT = "rabbit"
 TILE_DEER = "deer"
 TILE_BIRD = "bird"
+TILE_FARM = "farm"
+TILE_WHEAT_1 = "wheat1"  # just planted
+TILE_WHEAT_2 = "wheat2"  # growing
+TILE_WHEAT_3 = "wheat3"  # ready to harvest
+
+TILE_CARROT_1 = "carrot1" # just planted
+TILE_CARROT_2 = "carrot2" # growing
+TILE_CARROT_3 = "carrot3"  # ready to harvest
 
 
 RESOURCE_TYPES = [TILE_TREE, TILE_COAL, TILE_BERRIES]
 
 
-# ----- GAME STATE -----
+# Game State Data Class
 @dataclass
 class GameState:
     width: int
@@ -31,6 +39,8 @@ class GameState:
     wood: int
     coal: int
     tiles: list
+    crop_growth: dict = None
+
 
     # Extras
     turn: int = 0
@@ -57,10 +67,12 @@ class GameState:
             "house_tiles": self.house_tiles,
             "house_width": self.house_width,
             "house_height": self.house_height,
+            "crop_growth": self.crop_growth,
+
         }
 
 
-# ----- INITIAL GAME -----
+# initialize game state 
 def create_initial_state(width: int = 30, height: int = 30) -> GameState:
     tiles = []
     for y in range(height):
@@ -83,6 +95,7 @@ def create_initial_state(width: int = 30, height: int = 30) -> GameState:
         wood=0,
         coal=0,
         tiles=tiles,
+        crop_growth={},
     )
 
 
@@ -143,9 +156,9 @@ def move_player(state: GameState, direction: str):
     spawn_wildlife(state)
     despawn_wildlife(state)
     try_enter_house(state)
+    grow_crops(state)
 
 
-# ----- COLLECT RESOURCE -----
 def collect_resource(state: GameState):
     if state.in_house:
         return  # No resource collecting indoors yet
@@ -173,6 +186,69 @@ def collect_resource(state: GameState):
     apply_passive_energy(state)
     spawn_wildlife(state)
     despawn_wildlife(state)
+    grow_crops(state)
+    try_enter_house(state)
+    
+    
+def plant_wheat(state: GameState):
+    x, y = state.player_x, state.player_y
+
+    # must be planted on a farm tile
+    if state.tiles[y][x] != TILE_FARM:
+        return
+    
+    state.tiles[y][x] = TILE_WHEAT_1
+    state.crop_growth[(x, y)] = 0  # start at 0 turns
+
+
+def plant_carrot(state: GameState):
+    x, y = state.player_x, state.player_y
+
+    if state.tiles[y][x] != TILE_FARM:
+        return
+
+    state.tiles[y][x] = TILE_CARROT_1
+    state.crop_growth[(x, y)] = 0
+
+def grow_crops(state: GameState):
+    new_tiles = state.tiles
+
+    for (x, y), age in list(state.crop_growth.items()):
+        age += 1
+        state.crop_growth[(x, y)] = age
+
+        tile = new_tiles[y][x]
+
+        # --- Wheat ---
+        if tile == TILE_WHEAT_1 and age >= 3:
+            new_tiles[y][x] = TILE_WHEAT_2
+        elif tile == TILE_WHEAT_2 and age >= 6:
+            new_tiles[y][x] = TILE_WHEAT_3  # ready!
+
+        # --- Carrots ---
+        elif tile == TILE_CARROT_1 and age >= 3:
+            new_tiles[y][x] = TILE_CARROT_2
+        elif tile == TILE_CARROT_2 and age >= 6:
+            new_tiles[y][x] = TILE_CARROT_3  # ready!
+    state.tiles = new_tiles
+    
+def harvest_crop(state: GameState):
+    x, y = state.player_x, state.player_y
+    tile = state.tiles[y][x]
+
+    # Wheat harvest
+    if tile == TILE_WHEAT_3:
+        state.food += 3
+        state.tiles[y][x] = TILE_FARM
+        del state.crop_growth[(x, y)]
+        return
+
+    # Carrot harvest
+    if tile == TILE_CARROT_3:
+        state.food += 2
+        state.tiles[y][x] = TILE_FARM
+        del state.crop_growth[(x, y)]
+        return
 
 
 # ----- PLANT TREE -----

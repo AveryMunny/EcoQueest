@@ -63,6 +63,22 @@ async function sendHouse() {
   render();
 }
 
+async function sendPlantWheat() {
+  const res = await fetch("/api/plant_wheat", { method: "POST" });
+  state = await res.json(); render();
+}
+
+async function sendPlantCarrot() {
+  const res = await fetch("/api/plant_carrot", { method: "POST" });
+  state = await res.json(); render();
+}
+
+async function sendHarvest() {
+  const res = await fetch("/api/harvest", { method: "POST" });
+  state = await res.json(); render();
+}
+
+
 
 function toggleHelpMenu() {
   const menu = document.getElementById("helpMenu");
@@ -118,6 +134,13 @@ function render() {
       else if (tileType === "rabbit") cell.textContent = "🐇"
       else if (tileType === "deer") cell.textContent = "🦌";
       else if (tileType === "bird") cell.textContent = "🐦";
+      else if (tileType === "wheat1") cell.textContent = "🌱";
+      else if (tileType === "wheat2") cell.textContent = "🌾";
+      else if (tileType === "wheat3") cell.textContent = "🌾✨";  // ripe
+      else if (tileType === "carrot1") cell.textContent = "🌱";
+      else if (tileType === "carrot2") cell.textContent = "🥕";
+      else if (tileType === "carrot3") cell.textContent = "🥕✨";  // ripe
+
       else cell.textContent = "";
 
       // player position
@@ -162,6 +185,12 @@ function setupInput() {
       sendHouse();
     } else if (e.key === "e") {
       sendExitHouse();
+    } else if (e.key === "5") {
+      sendPlantWheat();
+    } else if (e.key === "6") {
+      sendPlantCarrot();
+    } else if (e.key === "x") {
+      sendHarvest();
     } else if (e.key === " ") {
       // space to collect resource
       e.preventDefault();
