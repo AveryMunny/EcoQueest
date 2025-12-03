@@ -1,7 +1,9 @@
-/* Swamp tiles */
+/* Swamp — murky earth greens/browns */
+
 .swamp .cell {
-    background-color: #3a4a2a;  /* murky green-brown */
+    background-color: #2c3b1f; /* dark mossy green */
 }
 
-.swamp .mud { background-color: #5a3e22; }
-.swamp .moss { background-color: #4b5d33; }
+.swamp .mud {
+    background-color: #4b3b28; /* rich muddy brown */
+}

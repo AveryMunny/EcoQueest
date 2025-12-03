@@ -54,3 +54,20 @@ body {
   background-color: #1e1c44;
   filter: brightness(0.7);
 }
+
+#helpMenu {
+  position: absolute;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 260px;
+  background: rgba(0,0,0,0.75);
+  padding: 16px;
+  border-radius: 8px;
+  color: white;
+  font-size: 14px;
+  backdrop-filter: blur(6px);
+}
+
+.hidden { display: none; }
+

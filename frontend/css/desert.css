@@ -1,9 +1,9 @@
-/* Desert biome tiles */
+/* Desert — warm sand tones */
+
 .desert .cell {
-    background-color: #d9c089; /* warm sand */
+    background-color: #d9c08b; /* sand beige */
 }
 
-.desert .sand { background-color: #e5cf96; }
-.desert .rock { background-color: #c7b27a; }
-.desert .cactus { background-color: #4caf50; }
-.desert .scorpion { background-color: #8b5e3c; }
+.desert .sand {
+    background-color: #e6d7a3; /* lighter sand */
+}

@@ -1,7 +1,13 @@
-/* Tundra biome tiles */
+/* Tundra — icy blues */
+
 .tundra .cell {
-    background-color: #e9f4ff; /* soft snowy white */
+    background-color: #cfe8ff; /* icy pale blue */
 }
 
-.tundra .snow { background-color: #ffffff; }
-.tundra .ice { background-color: #bde0ff; }
+.tundra .snow {
+    background-color: #e9f6ff; /* lighter snow tone */
+}
+
+.tundra .ice {
+    background-color: #bde0ff; /* frosty blue */
+}

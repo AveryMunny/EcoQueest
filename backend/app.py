@@ -60,7 +60,6 @@ def get_state_dict():
     grow_crops(GAME_STATE)
     return GAME_STATE.to_dict()
 
-
 @app.route("/")
 def index():
     # serve frontend

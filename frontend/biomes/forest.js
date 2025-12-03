@@ -1,7 +1,31 @@
 export function emojiForForest(tile) {
-    if (tile === "tree") return "🌳";
-    if (tile === "berries") return "🍓";
-    if (tile === "sapling") return "🌱";
-    if (tile === "coal") return "⛏️";
-    return null;
+  const map = {
+    tree: "🌳",
+    coal: "⛏️",
+    berries: "🍓",
+    sapling: "🌱",
+
+    // farm + crops
+    farm: "🚜",
+    wheat1: "🌱",
+    wheat2: "🌾",
+    wheat3: "🌾✨",
+    carrot1: "🌱",
+    carrot2: "🥕",
+    carrot3: "🥕✨",
+
+    // wildlife
+    rabbit: "🐇",
+    deer: "🦌",
+    bird: "🐦",
+
+    // buildings + structures
+    house: "🏡",
+    solar: "☀️",
+    wind: "🌀",
+
+    empty: ""
+  };
+
+  return map[tile] || null;
 }

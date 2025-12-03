@@ -4,20 +4,18 @@
   <meta charset="UTF-8" />
   <title>EcoQuest 🌱</title>
 
-  <!-- GLOBAL STYLES FIRST -->
+  <!-- Global + Biome Styles -->
   <link rel="stylesheet" href="css/global.css" />
-
-  <!-- BIOME STYLES -->
   <link rel="stylesheet" href="css/forest.css" />
   <link rel="stylesheet" href="css/desert.css" />
   <link rel="stylesheet" href="css/tundra.css" />
   <link rel="stylesheet" href="css/swamp.css" />
-
 </head>
+
 <body>
 
   <h1>EcoQuest 🌱</h1>
-  <p>Move with <strong>W A S D</strong> or arrow keys. Press <strong>Space</strong> to collect.</p>
+  <p>Use <strong>W A S D</strong> or Arrow Keys to move • Press <strong>Space</strong> to collect</p>
 
   <div id="world">
 
@@ -33,53 +31,43 @@
 
     <div id="grid"></div>
 
+    <!-- HELP MENU -->
     <div id="helpMenu" class="hidden">
       <h2>EcoQuest Controls 🌱</h2>
 
       <h3>Movement</h3>
-      <p>W A S D or Arrow Keys — Move</p>
+      <p>W / A / S / D or Arrow Keys — Move</p>
       <p>Space — Collect resources</p>
       <p>E — Exit house</p>
 
       <h3>Building</h3>
-      <p>P — Plant Tree (Cost: 1 Wood)</p>
-      <p>1 — Build Solar Panel (Cost: 2 Wood)</p>
-      <p>2 — Build Wind Turbine (Cost: 3 Wood)</p>
-      <p>3 — Build House (Cost: 5 Wood)</p>
-      <p>4 — Build Farm Plot (Cost: 2 Wood)</p>
+      <p>P — Plant Tree (1 wood)</p>
+      <p>1 — Solar Panel (2 wood)</p>
+      <p>2 — Wind Turbine (3 wood)</p>
+      <p>3 — Build House (5 wood)</p>
+      <p>4 — Build Farm Plot (2 wood)</p>
 
       <h3>Farming</h3>
-      <p>5 — Plant Wheat Seed</p>
-      <p>6 — Plant Carrot Seed</p>
-      <p>X — Harvest Crops</p>
+      <p>5 — Plant Wheat</p>
+      <p>6 — Plant Carrot</p>
+      <p>X — Harvest</p>
 
       <h3>Wildlife</h3>
-      <p>🐇 🦌 🐦 appear when ecosystem health ≥ 70</p>
+      <p>🐇 🦌 🐦 spawn when ecosystem health ≥ 70</p>
 
-      <h3>Tips</h3>
-      <ul>
-        <li>Trees 🌳 give wood but lower ecosystem health.</li>
-        <li>Berries 🍓 restore food and improve ecosystem health.</li>
-        <li>Coal ⛏️ gives energy but harms the environment.</li>
-        <li>Renewables ☀️ 🌀 provide clean passive energy.</li>
-        <li>Crops grow over real-time minutes.</li>
-      </ul>
-
-      <p style="text-align:center; font-size:13px; color:#ccc;">
-        Press H to hide this menu.
-      </p>
+      <p style="text-align:center; font-size:13px; color:#ccc;">Press H to toggle this menu</p>
     </div>
 
-    <button id="helpBtn">Help</button>
+    <button id="helpBtn" onclick="toggleHelpMenu()">Help</button>
 
   </div>
 
-  <!-- Biome JS (optional if you use them) -->
   <script src="biomes/forest.js"></script>
   <script src="biomes/desert.js"></script>
   <script src="biomes/tundra.js"></script>
   <script src="biomes/swamp.js"></script>
+  <script type="module" src="main.js"></script>
 
-  <script src="main.js"></script>
+
 </body>
 </html>

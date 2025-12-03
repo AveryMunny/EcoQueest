@@ -55,6 +55,7 @@ class GameState:
     last_house_y: int = 0
     time_of_day: str = "day" # or "Night"
     current_day: int = 0
+    current_biome: str = "forest"
 
     def to_dict(self):
         return {
@@ -74,6 +75,7 @@ class GameState:
             "house_height": self.house_height,
             "time_of_day": self.time_of_day,
             "current_day": self.current_day,
+            "current_biome": self.current_biome,
 
         }
 
