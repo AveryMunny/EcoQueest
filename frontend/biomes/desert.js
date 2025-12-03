@@ -1,6 +1,21 @@
 // biomes/desert.js
 export function emojiForDesert(tile) {
-    if (tile === "sand") return "🏜️";
-    // later: cactus, lizard, skull, etc.
-    return null;
+   const map = {
+    // terrain
+    sand: "🏜️",
+    sandstone: "🪨",
+    cactus: "🌵",
+    oasis: "🏝️",
+    rock: "🪨",
+
+    // animals
+    lizard: "🦎",
+    snake: "🐍",
+    scorpion: "🦂",
+    camel: "🐪",
+    vulture: "🦅",
+    empty: ""
 }
+  return map[tile] || null;
+}
+
