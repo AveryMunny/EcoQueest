@@ -5,47 +5,71 @@ from tile_types import *
 
 START_TIME = time.time()
 
-
-current_biome = "forest"
-
 from biomes.biome_forest import generate_forest
 from biomes.biome_tundra import generate_tundra
 from biomes.biome_desert import generate_desert
 from biomes.biome_swamp import generate_swamp
 
+# If you later create mountain, add it here.
 BIOME_GENERATORS = {
     "forest": generate_forest,
     "tundra": generate_tundra,
     "desert": generate_desert,
     "swamp": generate_swamp,
-}    
+}
 
+# --- WORLD GRID LAYOUT ---
+WORLD_MAP = {
+    (0, 0): "forest",
+    (0, -1): "tundra",
+    (0, -2): "tundra",   # TEMP: mountain mapped to tundra until added
+    (0, 1): "swamp",
+    (1, 0): "desert",
+    (-1, 0): "forest",  # repeat forest on the left
+}
 
+def switch_biome(state, biome_name):
+    """
+    Loads a new biome's tilemap and respawns the player at the center.
+    """
+    # Generate new tiles from biome generator
+    state.tiles = BIOME_GENERATORS[biome_name](state.width, state.height)
 
-BIOME_GATES = {}
+    # Update biome name
+    state.current_biome = biome_name
+
+    # Reset player to center of biome
+    state.player_x = state.width // 2
+    state.player_y = state.height // 2
 
 
 # Resource Types
 RESOURCE_TYPES = [TILE_TREE, TILE_COAL, TILE_BERRIES]
 
 
-# Game State Data Class
+# ----------------------------
+#      GAME STATE OBJECT
+# ----------------------------
 @dataclass
 class GameState:
-    width: int
-    height: int
-    player_x: int
-    player_y: int
-    ecosystem_health: int
-    energy: int
-    food: int
-    wood: int
-    coal: int
-    tiles: list
+
+    # World coordinates
+    world_x: int = 0
+    world_y: int = 0
+
+    width: int = 30
+    height: int = 30
+    player_x: int = 0
+    player_y: int = 0
+    ecosystem_health: int = 100
+    energy: int = 0
+    food: int = 0
+    wood: int = 0
+    coal: int = 0
+    tiles: list = None
     crop_growth: dict = None
 
-
-    # Extras
+    # Extra features
     turn: int = 0
     in_house: bool = False
     house_tiles: list = None
@@ -53,15 +77,14 @@ class GameState:
     house_height: int = 10
     last_house_x: int = 0
     last_house_y: int = 0
-    time_of_day: str = "day" # or "Night"
+    time_of_day: str = "day"
     current_day: int = 0
     current_biome: str = "forest"
-    
-    #swamp
-    mushroom = 0
-    fiber = 0
-    peat = 0
 
+    # Swamp resources
+    mushroom: int = 0
+    fiber: int = 0
+    peat: int = 0
 
     def to_dict(self):
         return {
@@ -85,14 +108,17 @@ class GameState:
             "mushroom": self.mushroom,
             "fiber": self.fiber,
             "peat": self.peat,
-
-
+            "world_x": self.world_x,
+            "world_y": self.world_y,
         }
 
 
-# initialize game state 
+# ----------------------------
+#   INITIAL STATE GENERATION
+# ----------------------------
 def create_initial_state(width: int = 30, height: int = 30) -> GameState:
-    # original tile generation...
+
+    # Generate random starting tiles
     tiles = []
     for y in range(height):
         row = []
@@ -103,7 +129,6 @@ def create_initial_state(width: int = 30, height: int = 30) -> GameState:
                 row.append(TILE_EMPTY)
         tiles.append(row)
 
-    # create state
     state = GameState(
         width=width,
         height=height,
@@ -118,35 +143,18 @@ def create_initial_state(width: int = 30, height: int = 30) -> GameState:
         crop_growth={},
     )
 
-    # ---- DYNAMICALLY DEFINE BIOME GATES ----
-    global BIOME_GATES
-    BIOME_GATES = {}
-
-    # Top edge → tundra
-    for x in range(width):
-        BIOME_GATES[(x, 0)] = "tundra"
-
-    # Right edge → desert
-    for y in range(height):
-        BIOME_GATES[(width - 1, y)] = "desert"
-
-    # Bottom edge → swamp
-    for x in range(width):
-        BIOME_GATES[(x, height - 1)] = "swamp"
-
     return state
 
 
-
-# ----- PASSIVE ENERGY -----
+# ----------------------------
+#     PASSIVE ENERGY
+# ----------------------------
 def apply_passive_energy(state: GameState):
-    # Solar panels give +1 per turn
     for row in state.tiles:
         for tile in row:
             if tile == TILE_SOLAR:
                 state.energy += 1
 
-    # Wind turbines give +2 every 3 turns
     if state.turn % 3 == 0:
         for row in state.tiles:
             for tile in row:
@@ -154,16 +162,22 @@ def apply_passive_energy(state: GameState):
                     state.energy += 2
 
 
-# ----- MOVEMENT -----
+# ----------------------------
+#         MOVEMENT
+# ----------------------------
 def move_player(state: GameState, direction: str):
+
+    # -----------------------------
+    #   MOVEMENT INSIDE A HOUSE
+    # -----------------------------
     if state.in_house:
-        # Move inside house grid
         dx, dy = 0, 0
         if direction == "up": dy = -1
         elif direction == "down": dy = 1
         elif direction == "left": dx = -1
         elif direction == "right": dx = 1
-        else: return
+        else:
+            return
 
         new_x = state.player_x + dx
         new_y = state.player_y + dy
@@ -175,25 +189,39 @@ def move_player(state: GameState, direction: str):
         state.turn += 1
         return
 
-    # Move in overworld
+    # --------------------------------
+    #   OVERWORLD MOVEMENT (WORLD GRID)
+    # --------------------------------
+    # --------------------------------
+    #   OVERWORLD MOVEMENT (WORLD GRID)
+    # --------------------------------
     dx, dy = 0, 0
     if direction == "up": dy = -1
     elif direction == "down": dy = 1
     elif direction == "left": dx = -1
     elif direction == "right": dx = 1
-    else: return
 
     new_x = state.player_x + dx
     new_y = state.player_y + dy
 
+    # 1. First try to walk INSIDE the biome
     if 0 <= new_x < state.width and 0 <= new_y < state.height:
         state.player_x = new_x
         state.player_y = new_y
-        
-    if (state.player_x, state.player_y) in BIOME_GATES:
-        target = BIOME_GATES[(state.player_x, state.player_y)]
-        switch_biome(state, target)
+    else:
+        # 2. If you hit an edge, THEN try biome switching
+        new_world_pos = (state.world_x + dx, state.world_y + dy)
 
+        if new_world_pos in WORLD_MAP:
+            state.world_x, state.world_y = new_world_pos
+            biome_name = WORLD_MAP[new_world_pos]
+            switch_biome(state, biome_name)
+        else:
+            # No biome there, so do nothing (a boundary)
+            return
+
+
+    # After moving:
     state.turn += 1
     apply_passive_energy(state)
     spawn_wildlife(state)
@@ -202,152 +230,126 @@ def move_player(state: GameState, direction: str):
     grow_crops(state)
 
 
+# ----------------------------
+#    RESOURCE COLLECTION
+# ----------------------------
 def collect_resource(state: GameState):
     if state.in_house:
-        return  # No resource collecting indoors yet
+        return
 
     x = state.player_x
     y = state.player_y
-    tile_type = state.tiles[y][x]
+    tile = state.tiles[y][x]
 
-    if tile_type == TILE_TREE:
+    # Forest & tundra & desert & swamp harvesting
+    if tile == TILE_TREE:
         state.wood += 1
         state.ecosystem_health -= 3
-    elif tile_type == TILE_COAL:
+    elif tile == TILE_COAL:
         state.coal += 1
         state.energy += 3
         state.ecosystem_health -= 8
-    elif tile_type == TILE_BERRIES:
+    elif tile == TILE_BERRIES:
         state.food += 1
         state.ecosystem_health += 1
-    elif tile_type == TILE_SNOWY_TREE:
-        state.wood += 1   # tundra wood (pine)
+    elif tile == TILE_SNOWY_TREE:
+        state.wood += 1
         state.ecosystem_health -= 3
-    elif tile_type == TILE_FROSTED_BERRIES:
+    elif tile == TILE_FROSTED_BERRIES:
         state.food += 1
         state.ecosystem_health += 1
-    elif tile_type == TILE_CACTUS:
-        state.food += 1        # desert hydration/food
-        state.ecosystem_health += 1
-
-    elif tile_type == TILE_SANDSTONE:
-        state.wood += 1        # OR create state.sandstone if you prefer but using wood lets you reuse house/solar recipes
-
-    elif tile_type == TILE_QUARTZ:
-        state.energy += 2      # rare energy boost
-    
-    elif tile_type == TILE_REEDS:
-        state.wood += 1               # or create: state.fiber += 1
-        state.ecosystem_health += 1
-
-    elif tile_type == TILE_MUSHROOM:
+    elif tile == TILE_CACTUS:
         state.food += 1
         state.ecosystem_health += 1
-
-    elif tile_type == TILE_PEAT:
-        state.energy += 1             # swamp fuel source
-        state.ecosystem_health -= 1   # peat harvesting slightly harmful
-
-
-
-    elif tile_type == TILE_ICE_CRYSTAL:
-        state.energy += 2   # or whatever you want
-
-    elif tile_type == TILE_ICEBERG:
-        state.energy += 3   # or ice to craft igloo later?
-
+    elif tile == TILE_SANDSTONE:
+        state.wood += 1
+    elif tile == TILE_QUARTZ:
+        state.energy += 2
+    elif tile == TILE_REEDS:
+        state.wood += 1
+        state.ecosystem_health += 1
+    elif tile == TILE_MUSHROOM:
+        state.food += 1
+        state.ecosystem_health += 1
+    elif tile == TILE_PEAT:
+        state.energy += 1
+        state.ecosystem_health -= 1
+    elif tile == TILE_ICE_CRYSTAL:
+        state.energy += 2
+    elif tile == TILE_ICEBERG:
+        state.energy += 3
     else:
         return
 
     state.tiles[y][x] = TILE_EMPTY
     state.ecosystem_health = max(0, min(100, state.ecosystem_health))
+
     state.turn += 1
     apply_passive_energy(state)
     spawn_wildlife(state)
     despawn_wildlife(state)
     grow_crops(state)
     try_enter_house(state)
-    
-    
+
+
+# ----------------------------
+#       FARMING SYSTEM
+# ----------------------------
 def plant_wheat(state: GameState):
     x, y = state.player_x, state.player_y
-
-    # must be planted on a farm tile
     if state.tiles[y][x] != TILE_FARM:
         return
-    
     state.tiles[y][x] = TILE_WHEAT_1
     state.crop_growth[(x, y)] = time.time()
 
 
 def plant_carrot(state: GameState):
     x, y = state.player_x, state.player_y
-
     if state.tiles[y][x] != TILE_FARM:
         return
-
     state.tiles[y][x] = TILE_CARROT_1
     state.crop_growth[(x, y)] = time.time()
 
 
-def switch_biome(state, biome_name):
-    state.tiles = BIOME_GENERATORS[biome_name](state.width, state.height)
-    state.current_biome = biome_name
-
-    # reset or move player to spawn point
-    state.player_x = state.width // 2
-    state.player_y = state.height // 2
-
-
 def grow_crops(state: GameState):
-    # Crops grow based on real time, not turns
     elapsed = time.time() - START_TIME
 
     for (x, y), grow_start in list(state.crop_growth.items()):
-        age_minutes = (elapsed - grow_start) / 60.0  # convert seconds → minutes
-        
+        age_minutes = (elapsed - grow_start) / 60.0
         tile = state.tiles[y][x]
 
-        # --- Wheat ---
         if tile == TILE_WHEAT_1 and age_minutes >= 3:
             state.tiles[y][x] = TILE_WHEAT_2
         elif tile == TILE_WHEAT_2 and age_minutes >= 6:
             state.tiles[y][x] = TILE_WHEAT_3
-
-        # --- Carrots ---
         elif tile == TILE_CARROT_1 and age_minutes >= 2:
             state.tiles[y][x] = TILE_CARROT_2
         elif tile == TILE_CARROT_2 and age_minutes >= 5:
             state.tiles[y][x] = TILE_CARROT_3
 
-    
+
 def harvest_crop(state: GameState):
     x, y = state.player_x, state.player_y
     tile = state.tiles[y][x]
 
-    # Wheat harvest
     if tile == TILE_WHEAT_3:
         state.food += 3
         state.tiles[y][x] = TILE_FARM
         del state.crop_growth[(x, y)]
-        return
-
-    # Carrot harvest
-    if tile == TILE_CARROT_3:
+    elif tile == TILE_CARROT_3:
         state.food += 2
         state.tiles[y][x] = TILE_FARM
         del state.crop_growth[(x, y)]
-        return
 
 
-# ----- PLANT TREE -----
+# ----------------------------
+#     BUILDING SYSTEM
+# ----------------------------
 def plant_tree(state: GameState):
     if state.in_house:
         return
 
-    x = state.player_x
-    y = state.player_y
-
+    x, y = state.player_x, state.player_y
     if state.tiles[y][x] != TILE_EMPTY:
         return
     if state.wood < 1:
@@ -357,16 +359,11 @@ def plant_tree(state: GameState):
     state.tiles[y][x] = TILE_SAPLING
     state.ecosystem_health = min(100, state.ecosystem_health + 3)
 
+
 def build_farm(state: GameState):
-    if state.in_house:
-        return
-
-    x = state.player_x
-    y = state.player_y
-
+    x, y = state.player_x, state.player_y
     if state.tiles[y][x] != TILE_EMPTY:
         return
-
     if state.wood < 2:
         return
 
@@ -374,14 +371,8 @@ def build_farm(state: GameState):
     state.tiles[y][x] = TILE_FARM
 
 
-# ----- BUILD SOLAR PANEL -----
 def build_solar_panel(state: GameState):
-    if state.in_house:
-        return
-
-    x = state.player_x
-    y = state.player_y
-
+    x, y = state.player_x, state.player_y
     if state.tiles[y][x] != TILE_EMPTY:
         return
     if state.wood < 2:
@@ -391,14 +382,8 @@ def build_solar_panel(state: GameState):
     state.tiles[y][x] = TILE_SOLAR
 
 
-# ----- BUILD WIND TURBINE -----
 def build_wind_turbine(state: GameState):
-    if state.in_house:
-        return
-
-    x = state.player_x
-    y = state.player_y
-
+    x, y = state.player_x, state.player_y
     if state.tiles[y][x] != TILE_EMPTY:
         return
     if state.wood < 3:
@@ -408,14 +393,8 @@ def build_wind_turbine(state: GameState):
     state.tiles[y][x] = TILE_WIND
 
 
-# ----- BUILD HOUSE -----
 def build_house(state: GameState):
-    if state.in_house:
-        return
-
-    x = state.player_x
-    y = state.player_y
-
+    x, y = state.player_x, state.player_y
     if state.tiles[y][x] != TILE_EMPTY:
         return
     if state.wood < 5:
@@ -430,55 +409,48 @@ def build_house(state: GameState):
     if state.house_tiles is None:
         state.house_tiles = []
         for j in range(state.house_height):
-            row = []
-            for i in range(state.house_width):
-                row.append(TILE_EMPTY)
+            row = [TILE_EMPTY for _ in range(state.house_width)]
             state.house_tiles.append(row)
 
 
-# ----- ENTER HOUSE -----
 def try_enter_house(state: GameState):
-    x = state.player_x
-    y = state.player_y
-
+    x, y = state.player_x, state.player_y
     if state.tiles[y][x] == TILE_HOUSE:
         state.in_house = True
         state.player_x = state.house_width // 2
         state.player_y = state.house_height // 2
 
 
-# ----- EXIT HOUSE -----
 def exit_house(state: GameState):
     if not state.in_house:
         return
 
     state.in_house = False
 
-    # Try putting player next to house outside
     for dy in [-1, 1, 0]:
         for dx in [-1, 1, 0]:
             nx = state.last_house_x + dx
             ny = state.last_house_y + dy
             if (
-                0 <= nx < state.width and
-                0 <= ny < state.height and
-                state.tiles[ny][nx] == TILE_EMPTY
+                0 <= nx < state.width
+                and 0 <= ny < state.height
+                and state.tiles[ny][nx] == TILE_EMPTY
             ):
                 state.player_x = nx
                 state.player_y = ny
                 return
 
-    # fallback
     state.player_x = state.last_house_x
     state.player_y = state.last_house_y
-    
 
+
+# ----------------------------
+#       WILDLIFE SYSTEM
+# ----------------------------
 def spawn_wildlife(state):
-    # only spawn when eco is healthy
     if state.ecosystem_health < 70:
         return
 
-    # small chance each turn
     if random.random() > 0.03:
         return
 
@@ -490,52 +462,21 @@ def spawn_wildlife(state):
 
     biome = state.current_biome
 
-def spawn_wildlife(state):
-    # only spawn if eco is healthy
-    if state.ecosystem_health < 70:
-        return
-
-    # small chance per move
-    if random.random() > 0.03:
-        return
-
-    x = random.randint(0, state.width - 1)
-    y = random.randint(0, state.height - 1)
-
-    # must be empty tile
-    if state.tiles[y][x] != TILE_EMPTY:
-        return
-
-    biome = state.current_biome
-
-    # ----- FOREST -----
     if biome == "forest":
         animals = [TILE_RABBIT, TILE_DEER, TILE_BIRD]
-        state.tiles[y][x] = random.choice(animals)
-        return
-
-    # ----- DESERT -----
-    if biome == "desert":
+    elif biome == "desert":
         animals = [TILE_LIZARD, TILE_SNAKE, TILE_SCORPION]
-        state.tiles[y][x] = random.choice(animals)
-        return
-
-    # ----- TUNDRA -----
-    if biome == "tundra":
+    elif biome == "tundra":
         animals = [TILE_ARCTIC_FOX, TILE_POLAR_HARE, TILE_SEAL, TILE_WALRUS]
-        state.tiles[y][x] = random.choice(animals)
-        return
-
-    # ----- SWAMP -----
-    if biome == "swamp":
+    elif biome == "swamp":
         animals = [TILE_FROG, TILE_CROCODILE, TILE_SNAKE, TILE_STORK]
-        state.tiles[y][x] = random.choice(animals)
+    else:
         return
 
+    state.tiles[y][x] = random.choice(animals)
 
 
-def despawn_wildlife(state: GameState):
-    # If ecosystem is suffering, animals leave
+def despawn_wildlife(state):
     if state.ecosystem_health > 40:
         return
 
@@ -545,7 +486,8 @@ def despawn_wildlife(state: GameState):
                 state.tiles[y][x] = TILE_EMPTY
 
 
-
-# ----- RESET -----
+# ----------------------------
+#          RESET
+# ----------------------------
 def reset_state() -> GameState:
     return create_initial_state()

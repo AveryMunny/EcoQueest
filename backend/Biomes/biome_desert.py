@@ -19,8 +19,8 @@ def generate_desert(width, height):
             r = random.random()
 
             # BALANCED DESERT DISTRIBUTION
-            if r < 0.60:
-                row.append(TILE_EMPTY)          # 60% empty
+            if r < 0.65:
+                row.append(TILE_EMPTY)          # 65% empty
             elif r < 0.85:
                 row.append(TILE_SAND)           # 25% subtle sand
             elif r < 0.89:
