@@ -12,9 +12,14 @@ async function sendMove(direction) {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ direction }),
   });
+
   state = await res.json();
   render();
+
+  // updating menu ONLY on movement
+  positionHelpMenu();
 }
+
 
 async function sendExitHouse() {
   const res = await fetch("/api/exit_house", { method: "POST" });
@@ -89,6 +94,36 @@ function toggleHelpMenu() {
   const menu = document.getElementById("helpMenu");
   menu.classList.toggle("hidden");
 }
+
+function positionHelpMenu() {
+  if (!state) return;
+
+  const menu = document.getElementById("helpMenu");
+  const grid = document.getElementById("grid");
+  if (!menu || !grid) return;
+
+  const gridRect = grid.getBoundingClientRect();
+
+  const tileSize = 34; // 32px tile + ~2px gap
+  const playerCenterY =
+    gridRect.top + state.player_y * tileSize + tileSize / 2;
+
+  const menuHeight = menu.offsetHeight || 0;
+
+  // Align menu center with player center
+  let newTop = playerCenterY - menuHeight / 2;
+
+  // Keep menu on screen (20px padding top/bottom)
+  const minTop = 20;
+  const maxTop = window.innerHeight - menuHeight - 20;
+  newTop = Math.max(minTop, Math.min(maxTop, newTop));
+
+  menu.style.top = `${newTop}px`;
+}
+
+
+
+
 
 
 function render() {
@@ -175,7 +210,6 @@ function render() {
       if (state.in_house) { 
         cell.classList.add("house-floor");
       }
-
 
       grid.appendChild(cell);
     }
