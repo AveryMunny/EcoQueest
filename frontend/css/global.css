@@ -57,17 +57,16 @@ body {
 
 #helpMenu {
   position: absolute;
-  right: 20px;
-  top: 50%;
-  transform: translateY(-50%);
+  z-index: 9999;
   width: 260px;
-  background: rgba(0,0,0,0.75);
-  padding: 16px;
-  border-radius: 8px;
+  padding: 20px;
+  border-radius: 12px;
+  background: rgba(0, 0, 0, 0.75);
   color: white;
-  font-size: 14px;
-  backdrop-filter: blur(6px);
+  backdrop-filter: blur(4px);
+  transition: top 0.15s ease-out; /* smooth movement */
 }
+
 
 .hidden { display: none; }
 

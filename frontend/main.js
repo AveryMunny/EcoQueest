@@ -32,24 +32,47 @@ async function sendAction(url) {
 
 /* ---------------- HELP MENU ---------------- */
 function toggleHelpMenu() {
-  document.getElementById("helpMenu").classList.toggle("hidden");
+  const menu = document.getElementById("helpMenu");
+  menu.classList.toggle("hidden");
+  
+  // Reposition immediately when shown
+  if (!menu.classList.contains("hidden")) {
+    setTimeout(positionHelpMenu, 50);
+  }
 }
+
 
 function positionHelpMenu() {
   const menu = document.getElementById("helpMenu");
   const grid = document.getElementById("grid");
-  if (!state || !menu || !grid) return;
 
-  const rect = grid.getBoundingClientRect();
+  if (!menu || !grid || menu.classList.contains("hidden")) return;
+
+  const gridRect = grid.getBoundingClientRect();
+
+  // Tile size
   const tileSize = 34;
-  const playerY = rect.top + state.player_y * tileSize + tileSize / 2;
 
-  const height = menu.offsetHeight;
-  let top = playerY - height / 2;
+  // --- Vertical center on player ---
+  const playerCenterY =
+    gridRect.top + state.player_y * tileSize + tileSize / 2;
 
-  top = Math.max(20, Math.min(window.innerHeight - height - 20, top));
-  menu.style.top = `${top}px`;
+  const menuHeight = menu.offsetHeight;
+
+  // Center menu on player
+  let newTop = playerCenterY - menuHeight / 2;
+
+  // Keep on screen
+  newTop = Math.max(20, Math.min(newTop, window.innerHeight - menuHeight - 20));
+
+  // --- Horizontal position (center-right of grid) ---
+  const spacing = 30;
+  const newLeft = gridRect.right + spacing;
+
+  menu.style.top = `${newTop}px`;
+  menu.style.left = `${newLeft}px`;
 }
+
 
 /* ---------------- EMOJI LOOKUP ---------------- */
 function getBiomeEmoji(tile) {
