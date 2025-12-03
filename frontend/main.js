@@ -160,10 +160,24 @@ window.addEventListener("load", () => {
 window.addEventListener("resize", () => {
   positionHelpMenu();
 });
-/* ---------------- INIT ---------------- */
-window.addEventListener("load", () => {
-  console.log("Page loaded, fetching initial state...");
-  setupInput();
-  fetchState();
+window.addEventListener("scroll", () => {
+  positionHelpMenu();
 });
+window.addEventListener("orientationchange", () => {
+  positionHelpMenu();
+});
+window.addEventListener("click", () => {
+  positionHelpMenu();
+});
+window.addEventListener("touchstart", () => {
+  positionHelpMenu();
+});
+window.addEventListener("touchmove", () => {
+  positionHelpMenu();
+});
+window.addEventListener("touchend", () => {
+  positionHelpMenu();
+});
+
+
 
