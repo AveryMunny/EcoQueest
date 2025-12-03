@@ -67,8 +67,6 @@ class GameState:
             "house_tiles": self.house_tiles,
             "house_width": self.house_width,
             "house_height": self.house_height,
-            "crop_growth": self.crop_growth,
-
         }
 
 
@@ -267,6 +265,22 @@ def plant_tree(state: GameState):
     state.wood -= 1
     state.tiles[y][x] = TILE_SAPLING
     state.ecosystem_health = min(100, state.ecosystem_health + 3)
+
+def build_farm(state: GameState):
+    if state.in_house:
+        return
+
+    x = state.player_x
+    y = state.player_y
+
+    if state.tiles[y][x] != TILE_EMPTY:
+        return
+
+    if state.wood < 2:
+        return
+
+    state.wood -= 2
+    state.tiles[y][x] = TILE_FARM
 
 
 # ----- BUILD SOLAR PANEL -----

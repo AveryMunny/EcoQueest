@@ -78,6 +78,11 @@ async function sendHarvest() {
   state = await res.json(); render();
 }
 
+async function sendFarm() {
+  const res = await fetch("/api/farm", { method: "POST" });
+  state = await res.json();
+  render();
+}
 
 
 function toggleHelpMenu() {
@@ -134,6 +139,7 @@ function render() {
       else if (tileType === "rabbit") cell.textContent = "🐇"
       else if (tileType === "deer") cell.textContent = "🦌";
       else if (tileType === "bird") cell.textContent = "🐦";
+      else if (tileType === "farm") cell.textContent = "🚜";
       else if (tileType === "wheat1") cell.textContent = "🌱";
       else if (tileType === "wheat2") cell.textContent = "🌾";
       else if (tileType === "wheat3") cell.textContent = "🌾✨";  // ripe
@@ -191,6 +197,8 @@ function setupInput() {
       sendPlantCarrot();
     } else if (e.key === "x") {
       sendHarvest();
+    } else if (e.key === "4") {
+      sendFarm();
     } else if (e.key === " ") {
       // space to collect resource
       e.preventDefault();
