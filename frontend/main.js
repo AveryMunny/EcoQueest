@@ -143,6 +143,9 @@ function render() {
   document.getElementById("food").textContent = state.food;
   document.getElementById("wood").textContent = state.wood;
   document.getElementById("coal").textContent = state.coal;
+  document.getElementById("mushroom").textContent = state.mushroom;
+  document.getElementById("fiber").textContent = state.fiber;
+  document.getElementById("peat").textContent = state.peat;
 }
 
 /* ---------------- INPUT ---------------- */

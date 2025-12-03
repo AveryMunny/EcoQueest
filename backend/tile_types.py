@@ -74,3 +74,10 @@ TILE_TURTLE = "turtle"
 TILE_STORK = "stork"
 TILE_FROG = "frog"
 
+#swamp resources
+# Swamp resources
+TILE_MUSHROOM = "mushroom"
+TILE_PEAT = "peat"
+TILE_FIBER = "fiber"    # from reeds
+
+

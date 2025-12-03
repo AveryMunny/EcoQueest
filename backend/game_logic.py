@@ -56,6 +56,12 @@ class GameState:
     time_of_day: str = "day" # or "Night"
     current_day: int = 0
     current_biome: str = "forest"
+    
+    #swamp
+    mushroom = 0
+    fiber = 0
+    peat = 0
+
 
     def to_dict(self):
         return {
@@ -76,6 +82,10 @@ class GameState:
             "time_of_day": self.time_of_day,
             "current_day": self.current_day,
             "current_biome": self.current_biome,
+            "mushroom": self.mushroom,
+            "fiber": self.fiber,
+            "peat": self.peat,
+
 
         }
 
@@ -225,6 +235,19 @@ def collect_resource(state: GameState):
 
     elif tile_type == TILE_QUARTZ:
         state.energy += 2      # rare energy boost
+    
+    elif tile_type == TILE_REEDS:
+        state.wood += 1               # or create: state.fiber += 1
+        state.ecosystem_health += 1
+
+    elif tile_type == TILE_MUSHROOM:
+        state.food += 1
+        state.ecosystem_health += 1
+
+    elif tile_type == TILE_PEAT:
+        state.energy += 1             # swamp fuel source
+        state.ecosystem_health -= 1   # peat harvesting slightly harmful
+
 
 
     elif tile_type == TILE_ICE_CRYSTAL:
