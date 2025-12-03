@@ -12,45 +12,15 @@ BIOME_NAME = "tundra"
 
 def generate_tundra(width, height):
     tiles = []
-
     for y in range(height):
         row = []
         for x in range(width):
-
             r = random.random()
-
-            # 75% plain snow (calm, open tundra)
-            if r < 0.75:
-                row.append(TILE_SNOW)
-
-            # 10% ice patches
-            elif r < 0.85:
-                row.append(TILE_ICE)
-
-            # 5% snowflakes (decorative)
-            elif r < 0.90:
-                row.append(TILE_SNOWFLAKE)
-
-            # 3% snowy trees
-            elif r < 0.93:
-                row.append(TILE_SNOWY_TREE)
-
-            # 2% ice crystals
-            elif r < 0.95:
-                row.append(TILE_ICE_CRYSTAL)
-
-            # 2% frosted berries
-            elif r < 0.97:
-                row.append(TILE_FROSTED_BERRIES)
-
-            # 1% rare iceberg
-            elif r < 0.98:
-                row.append(TILE_ICEBERG)
-
-            else:
-                row.append(TILE_EMPTY)
-
+            if r < 0.10: row.append(TILE_SNOWY_TREE)
+            elif r < 0.15: row.append(TILE_FROSTED_BERRIES)
+            elif r < 0.20: row.append(TILE_ICE)
+            elif r < 0.22: row.append(TILE_ICE_CRYSTAL)
+            else: row.append(TILE_SNOW)
         tiles.append(row)
-
     return tiles
 

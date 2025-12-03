@@ -46,3 +46,28 @@ TILE_POLAR_HARE = "polar_hare"
 TILE_WALRUS = "walrus"
 TILE_SEAL = "seal"
 TILE_BELUGA = "beluga"
+
+# desert materials
+TILE_SANDSTONE = "sandstone"
+TILE_CACTUS = "cactus"
+TILE_OASIS = "oasis"
+
+#desert animals
+TILE_LIZARD = "lizard"
+TILE_SNAKE = "snake"
+TILE_SCORPION = "scorpion"  
+
+#swamp materials
+TILE_MOSS = "moss"
+TILE_WATER_LILY = "water_lily"
+TILE_LOG = "log"
+TILE_SWAMP_GRASS = "swamp_grass"
+TILE_REEDS = "reeds"
+TILE_SWAMP_WATER = "swamp_water"
+
+#swamp animals
+TILE_CROCODILE = "crocodile"
+TILE_TURTLE = "turtle"
+TILE_STORK = "stork"
+TILE_FROG = "frog"
+

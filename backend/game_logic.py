@@ -457,33 +457,53 @@ def spawn_wildlife(state):
 
     biome = state.current_biome
 
+def spawn_wildlife(state):
+    # only spawn if ecosystem is healthy enough
+    if state.ecosystem_health < 70:
+        return
+
+    # small chance to spawn each turn
+    if random.random() > 0.03:  # 3% per turn
+        return
+
+    x = random.randint(0, state.width - 1)
+    y = random.randint(0, state.height - 1)
+
+    # only spawn on empty tiles
+    if state.tiles[y][x] != TILE_EMPTY:
+        return
+
+    biome = state.current_biome
+
+    # ----- FOREST -----
     if biome == "forest":
         animals = [TILE_RABBIT, TILE_DEER, TILE_BIRD]
         state.tiles[y][x] = random.choice(animals)
+        return
 
-    elif biome == "tundra":
-        animals = []
+    # ----- DESERT -----
+    if biome == "desert":
+        animals = [TILE_LIZARD, TILE_SNAKE, TILE_SCORPION]
+        state.tiles[y][x] = random.choice(animals)
+        return
 
-        if random.random() < 0.30:
-            animals.append(TILE_PENGUIN)
-        if random.random() < 0.15:
-            animals.append(TILE_ARCTIC_FOX)
-        if random.random() < 0.15:
-            animals.append(TILE_POLAR_HARE)
-        if random.random() < 0.10:
-            animals.append(TILE_WALRUS)
-        if random.random() < 0.10:
-            animals.append(TILE_SEAL)
+    # ----- TUNDRA -----
+    if biome == "tundra":
+        animals = [
+            TILE_ARCTIC_FOX,
+            TILE_POLAR_HARE,
+            TILE_SEAL,
+            TILE_WALRUS
+        ]
+        state.tiles[y][x] = random.choice(animals)
+        return
 
-        lakes = ["ice", "iceberg"]
-        is_near_lake = any(
-            0 <= y + dy < state.height and
-            0 <= x + dx < state.width and
-            state.tiles[y + dy][x + dx] in lakes
-            for dx, dy in [(1,0),(-1,0),(0,1),(0,-1)]
-        )
-        if is_near_lake and random.random() < 0.05:
-            animals.append(TILE_BELUGA)
+    # ----- SWAMP -----
+    if biome == "swamp":
+        animals = [TILE_FROG, TILE_CROCODILE, TILE_SNAKE, TILE_STORK]
+        state.tiles[y][x] = random.choice(animals)
+        return
+
 
         if not animals:
             return
