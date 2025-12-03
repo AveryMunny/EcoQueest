@@ -19,47 +19,33 @@ def generate_tundra(width, height):
 
             r = random.random()
 
-            # --- Terrain ---
-            if r < 0.45:                     # 45% snow
+            # 75% plain snow (calm, open tundra)
+            if r < 0.75:
                 row.append(TILE_SNOW)
 
-            elif r < 0.60:                   # 15% ice sheets
+            # 10% ice patches
+            elif r < 0.85:
                 row.append(TILE_ICE)
 
-            elif r < 0.70:                   # 10% snowflakes (decorative)
+            # 5% snowflakes (decorative)
+            elif r < 0.90:
                 row.append(TILE_SNOWFLAKE)
 
-            elif r < 0.77:                   # 7% snowy trees
+            # 3% snowy trees
+            elif r < 0.93:
                 row.append(TILE_SNOWY_TREE)
 
-            elif r < 0.83:                   # 6% ice crystals (collectable)
+            # 2% ice crystals
+            elif r < 0.95:
                 row.append(TILE_ICE_CRYSTAL)
 
-            elif r < 0.87:                   # 4% frosted berries (food)
+            # 2% frosted berries
+            elif r < 0.97:
                 row.append(TILE_FROSTED_BERRIES)
 
-            elif r < 0.89:                   # rare icebergs
+            # 1% rare iceberg
+            elif r < 0.98:
                 row.append(TILE_ICEBERG)
-
-            # --- Wildlife ---
-            elif r < 0.915:
-                row.append(TILE_PENGUIN)
-            elif r < 0.93:
-                row.append(TILE_ARCTIC_FOX)
-            elif r < 0.945:
-                row.append(TILE_POLAR_HARE)
-            elif r < 0.955:
-                row.append(TILE_WALRUS)
-            elif r < 0.965:
-                row.append(TILE_SEAL)
-            elif r < 0.975:
-                row.append(TILE_BELUGA)
-
-            # --- Rare structures ---
-            elif r < 0.982:
-                row.append(TILE_SNOWMAN)
-            elif r < 0.99:
-                row.append(TILE_IGLOO)
 
             else:
                 row.append(TILE_EMPTY)
@@ -67,3 +53,4 @@ def generate_tundra(width, height):
         tiles.append(row)
 
     return tiles
+

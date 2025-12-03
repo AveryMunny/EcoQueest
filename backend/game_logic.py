@@ -457,35 +457,41 @@ def spawn_wildlife(state):
 
     biome = state.current_biome
 
-    # --- Forest Wildlife ---
     if biome == "forest":
         animals = [TILE_RABBIT, TILE_DEER, TILE_BIRD]
+        state.tiles[y][x] = random.choice(animals)
 
-    # --- Tundra Wildlife ---
     elif biome == "tundra":
-        animals = [
-            TILE_PENGUIN,
-            TILE_ARCTIC_FOX,
-            TILE_POLAR_HARE,
-            TILE_WALRUS,
-            TILE_SEAL
-        ]
+        animals = []
 
-        # belugas need lakes (we’ll identify them)
-        lakes = ["ice", "iceberg"]  # tundra lake equivalents
-        # spawn beluga ONLY if adjacent to water tile
-        if any(
+        if random.random() < 0.30:
+            animals.append(TILE_PENGUIN)
+        if random.random() < 0.15:
+            animals.append(TILE_ARCTIC_FOX)
+        if random.random() < 0.15:
+            animals.append(TILE_POLAR_HARE)
+        if random.random() < 0.10:
+            animals.append(TILE_WALRUS)
+        if random.random() < 0.10:
+            animals.append(TILE_SEAL)
+
+        lakes = ["ice", "iceberg"]
+        is_near_lake = any(
             0 <= y + dy < state.height and
             0 <= x + dx < state.width and
-            state.tiles[y+dy][x+dx] in lakes
+            state.tiles[y + dy][x + dx] in lakes
             for dx, dy in [(1,0),(-1,0),(0,1),(0,-1)]
-        ):
+        )
+        if is_near_lake and random.random() < 0.05:
             animals.append(TILE_BELUGA)
 
-    else:
-        return  # no wildlife in other biomes yet
+        if not animals:
+            return
 
-    state.tiles[y][x] = random.choice(animals)
+        state.tiles[y][x] = random.choice(animals)
+
+    else:
+        return
 
 
 def despawn_wildlife(state: GameState):
