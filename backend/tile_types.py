@@ -26,5 +26,23 @@ TILE_CARROT_3 = "carrot3"
 
 # biome materials
 TILE_SAND = "sand"
-TILE_SNOW = "snow"
 TILE_MUD = "mud"
+
+#tundra materials
+TILE_SNOW = "snow"
+TILE_ICE = "ice"
+TILE_SNOWFLAKE = "snowflake"
+TILE_SNOWY_TREE = "snowy_tree"
+TILE_ICE_CRYSTAL = "ice_crystal"
+TILE_FROSTED_BERRIES = "frosted_berries"
+TILE_ICEBERG = "iceberg"
+TILE_IGLOO = "igloo"
+TILE_SNOWMAN = "snowman"
+
+#animals 
+TILE_PENGUIN = "penguin"
+TILE_ARCTIC_FOX = "arctic_fox"
+TILE_POLAR_HARE = "polar_hare"
+TILE_WALRUS = "walrus"
+TILE_SEAL = "seal"
+TILE_BELUGA = "beluga"

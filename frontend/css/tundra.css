@@ -1,13 +1,13 @@
-/* Tundra — icy blues */
-
-.tundra .cell {
-    background-color: #cfe8ff; /* icy pale blue */
+body.tundra .cell {
+  background-color: rgba(180, 220, 255, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.35);
 }
 
-.tundra .snow {
-    background-color: #e9f6ff; /* lighter snow tone */
+body.tundra .cell.ice {
+  background-color: rgba(140, 200, 255, 0.30);
 }
 
-.tundra .ice {
-    background-color: #bde0ff; /* frosty blue */
+body.tundra .cell.snow {
+  background-color: rgba(235, 245, 255, 0.50);
 }
+/* Tundra — cold icy blues and whites */

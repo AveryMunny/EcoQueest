@@ -1,6 +1,28 @@
-// biomes/tundra.js
 export function emojiForTundra(tile) {
-    if (tile === "snow") return "❄️";
-    if (tile === "ice") return "🧊";
-    return null;
+  const map = {
+    // terrain
+    snow: "❄️",
+    snowflake: "✨",
+    ice: "🧊",
+    snowy_tree: "🌲❄️",
+    ice_crystal: "🔷",
+    frosted_berries: "🫐❄️",
+    iceberg: "🧊🗻",
+
+    // animals
+    penguin: "🐧",
+    arctic_fox: "🦊❄️",
+    polar_hare: "🐇❄️",
+    walrus: "🦭",
+    seal: "🐬❄️",
+    beluga: "🐋❄️",
+
+    // structures
+    snowman: "⛄",
+    igloo: "🏠❄️",
+
+    empty: ""
+  };
+
+  return map[tile] || null;
 }
