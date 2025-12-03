@@ -1,0 +1,7 @@
+/* Swamp tiles */
+.swamp .cell {
+    background-color: #3a4a2a;  /* murky green-brown */
+}
+
+.swamp .mud { background-color: #5a3e22; }
+.swamp .moss { background-color: #4b5d33; }

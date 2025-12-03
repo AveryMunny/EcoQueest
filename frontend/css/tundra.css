@@ -1,0 +1,7 @@
+/* Tundra biome tiles */
+.tundra .cell {
+    background-color: #e9f4ff; /* soft snowy white */
+}
+
+.tundra .snow { background-color: #ffffff; }
+.tundra .ice { background-color: #bde0ff; }

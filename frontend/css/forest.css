@@ -1,0 +1,9 @@
+/* Forest biome tiles */
+.forest .cell {
+    background-color: #1e3b1a;   /* deep forest green */
+}
+
+.forest .tree { background-color: #275c1a; }
+.forest .berries { background-color: #3d2c1c; }
+.forest .sapling { background-color: #356125; }
+.forest .coal { background-color: #111; }

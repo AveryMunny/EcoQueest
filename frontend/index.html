@@ -3,71 +3,83 @@
 <head>
   <meta charset="UTF-8" />
   <title>EcoQuest 🌱</title>
-  <link rel="stylesheet" href="style.css" />
+
+  <!-- GLOBAL STYLES FIRST -->
+  <link rel="stylesheet" href="css/global.css" />
+
+  <!-- BIOME STYLES -->
+  <link rel="stylesheet" href="css/forest.css" />
+  <link rel="stylesheet" href="css/desert.css" />
+  <link rel="stylesheet" href="css/tundra.css" />
+  <link rel="stylesheet" href="css/swamp.css" />
+
 </head>
 <body>
+
   <h1>EcoQuest 🌱</h1>
-  <p>
-    Move with <strong>W A S D</strong> or arrow keys. Press <strong>Space</strong> to collect.
-  </p>
+  <p>Move with <strong>W A S D</strong> or arrow keys. Press <strong>Space</strong> to collect.</p>
 
-  <body>
-  <div id = "world">
+  <div id="world">
 
-  <div id="hud">
-    <div>🌍 Ecosystem Health: <span id="eco"></span></div>
-    <div>🔋 Energy: <span id="energy"></span></div>
-    <div>🥕 Food: <span id="food"></span></div>
-    <div>🪵 Wood: <span id="wood"></span></div>
-    <div>🪨 Coal: <span id="coal"></span></div>
+    <div id="hud">
+      <div>🌍 Ecosystem Health: <span id="eco"></span></div>
+      <div>🔋 Energy: <span id="energy"></span></div>
+      <div>🥕 Food: <span id="food"></span></div>
+      <div>🪵 Wood: <span id="wood"></span></div>
+      <div>🪨 Coal: <span id="coal"></span></div>
+    </div>
+
+    <button id="resetBtn">Reset World</button>
+
+    <div id="grid"></div>
+
+    <div id="helpMenu" class="hidden">
+      <h2>EcoQuest Controls 🌱</h2>
+
+      <h3>Movement</h3>
+      <p>W A S D or Arrow Keys — Move</p>
+      <p>Space — Collect resources</p>
+      <p>E — Exit house</p>
+
+      <h3>Building</h3>
+      <p>P — Plant Tree (Cost: 1 Wood)</p>
+      <p>1 — Build Solar Panel (Cost: 2 Wood)</p>
+      <p>2 — Build Wind Turbine (Cost: 3 Wood)</p>
+      <p>3 — Build House (Cost: 5 Wood)</p>
+      <p>4 — Build Farm Plot (Cost: 2 Wood)</p>
+
+      <h3>Farming</h3>
+      <p>5 — Plant Wheat Seed</p>
+      <p>6 — Plant Carrot Seed</p>
+      <p>X — Harvest Crops</p>
+
+      <h3>Wildlife</h3>
+      <p>🐇 🦌 🐦 appear when ecosystem health ≥ 70</p>
+
+      <h3>Tips</h3>
+      <ul>
+        <li>Trees 🌳 give wood but lower ecosystem health.</li>
+        <li>Berries 🍓 restore food and improve ecosystem health.</li>
+        <li>Coal ⛏️ gives energy but harms the environment.</li>
+        <li>Renewables ☀️ 🌀 provide clean passive energy.</li>
+        <li>Crops grow over real-time minutes.</li>
+      </ul>
+
+      <p style="text-align:center; font-size:13px; color:#ccc;">
+        Press H to hide this menu.
+      </p>
+    </div>
+
+    <button id="helpBtn">Help</button>
+
   </div>
 
-  <button id="resetBtn">Reset World</button>
-
-  <div id="grid"></div>
-
-<div id="helpMenu" class="hidden">
-  <h2>EcoQuest Controls 🌱</h2>
-
-  <h3>Movement</h3>
-  <p>W A S D or Arrow Keys — Move</p>
-  <p>Space — Collect resources</p>
-  <p>E — Exit house</p>
-
-  <h3>Building</h3>
-  <p>P — Plant Tree (Cost: 1 Wood)</p>
-  <p>1 — Build Solar Panel (Cost: 2 Wood)</p>
-  <p>2 — Build Wind Turbine (Cost: 3 Wood)</p>
-  <p>3 — Build House (Cost: 5 Wood)</p>
-  <p>4 — Build Farm Plot (Cost: 2 Wood)</p>
-
-  <h3>Farming</h3>
-  <p>5 — Plant Wheat Seed (On farm tile)</p>
-  <p>6 — Plant Carrot Seed (On farm tile)</p>
-  <p>X — Harvest Ripe Crops</p>
-
-  <h3>Wildlife</h3>
-  <p>🐇 🦌 🐦 appear when ecosystem health ≥ 70</p>
-
-  <h3>Tips</h3>
-  <ul>
-    <li>Trees 🌳 give wood but lower ecosystem health.</li>
-    <li>Berries 🍓 give food and help ecosystem health.</li>
-    <li>Coal ⛏️ gives energy, but greatly harms the environment.</li>
-    <li>Renewables ☀️ 🌀 generate passive clean energy.</li>
-    <li>Crops grow in stages over time — harvest fully grown ones ✨.</li>
-  </ul>
-
-  <p style="text-align:center; font-size:13px; color:#ccc;">
-    Press H to hide this menu.
-  </p>
-</div>
-
-  <button id="helpBtn">Help</button>
+  <!-- Biome JS (optional if you use them) -->
+  <script src="biomes/forest.js"></script>
+  <script src="biomes/desert.js"></script>
+  <script src="biomes/tundra.js"></script>
+  <script src="biomes/swamp.js"></script>
 
   <script src="main.js"></script>
 </body>
 </html>
-
-</div>
-</body> 
