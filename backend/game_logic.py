@@ -1,5 +1,7 @@
 import random
 from dataclasses import dataclass
+import time
+START_TIME = time.time()    
 
 # ----- TILE TYPES -----
 TILE_EMPTY = "empty"
@@ -50,6 +52,8 @@ class GameState:
     house_height: int = 10
     last_house_x: int = 0
     last_house_y: int = 0
+    time_of_day: str = "day" # or "Night"
+    current_day: int = 0
 
     def to_dict(self):
         return {
@@ -67,6 +71,9 @@ class GameState:
             "house_tiles": self.house_tiles,
             "house_width": self.house_width,
             "house_height": self.house_height,
+            "time_of_day": self.time_of_day,
+            "current_day": self.current_day,
+
         }
 
 
@@ -94,6 +101,7 @@ def create_initial_state(width: int = 30, height: int = 30) -> GameState:
         coal=0,
         tiles=tiles,
         crop_growth={},
+
     )
 
 
@@ -196,7 +204,7 @@ def plant_wheat(state: GameState):
         return
     
     state.tiles[y][x] = TILE_WHEAT_1
-    state.crop_growth[(x, y)] = 0  # start at 0 turns
+    state.crop_growth[(x, y)] = time.time()
 
 
 def plant_carrot(state: GameState):
@@ -206,29 +214,30 @@ def plant_carrot(state: GameState):
         return
 
     state.tiles[y][x] = TILE_CARROT_1
-    state.crop_growth[(x, y)] = 0
+    state.crop_growth[(x, y)] = time.time()
+
 
 def grow_crops(state: GameState):
-    new_tiles = state.tiles
+    # Crops grow based on real time, not turns
+    elapsed = time.time() - START_TIME
 
-    for (x, y), age in list(state.crop_growth.items()):
-        age += 1
-        state.crop_growth[(x, y)] = age
-
-        tile = new_tiles[y][x]
+    for (x, y), grow_start in list(state.crop_growth.items()):
+        age_minutes = (elapsed - grow_start) / 60.0  # convert seconds → minutes
+        
+        tile = state.tiles[y][x]
 
         # --- Wheat ---
-        if tile == TILE_WHEAT_1 and age >= 3:
-            new_tiles[y][x] = TILE_WHEAT_2
-        elif tile == TILE_WHEAT_2 and age >= 6:
-            new_tiles[y][x] = TILE_WHEAT_3  # ready!
+        if tile == TILE_WHEAT_1 and age_minutes >= 3:
+            state.tiles[y][x] = TILE_WHEAT_2
+        elif tile == TILE_WHEAT_2 and age_minutes >= 6:
+            state.tiles[y][x] = TILE_WHEAT_3
 
         # --- Carrots ---
-        elif tile == TILE_CARROT_1 and age >= 3:
-            new_tiles[y][x] = TILE_CARROT_2
-        elif tile == TILE_CARROT_2 and age >= 6:
-            new_tiles[y][x] = TILE_CARROT_3  # ready!
-    state.tiles = new_tiles
+        elif tile == TILE_CARROT_1 and age_minutes >= 2:
+            state.tiles[y][x] = TILE_CARROT_2
+        elif tile == TILE_CARROT_2 and age_minutes >= 5:
+            state.tiles[y][x] = TILE_CARROT_3
+
     
 def harvest_crop(state: GameState):
     x, y = state.player_x, state.player_y

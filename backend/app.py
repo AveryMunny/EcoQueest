@@ -1,4 +1,9 @@
 from flask import Flask, jsonify, request, send_from_directory
+import time
+START_TIME = time.time()
+DAY_LENGTH = 5 * 60   # 5 minutes
+NIGHT_LENGTH = 5 * 60  # 5 minutes
+
 from game_logic import (
     GameState,
     create_initial_state,
@@ -14,8 +19,8 @@ from game_logic import (
     exit_house,
     plant_wheat, 
     plant_carrot, 
-    harvest_crop
-
+    harvest_crop,
+    grow_crops,
 )
 
 
@@ -30,8 +35,29 @@ app = Flask(
 # single global game state (fine for local single-player)
 GAME_STATE: GameState = create_initial_state()
 
+def update_day_night_cycle(state):
+    elapsed = time.time() - START_TIME
+    cycle_length = DAY_LENGTH + NIGHT_LENGTH
+
+    # Determine which cycle we are in
+    cycle_pos = elapsed % cycle_length
+
+    # Day
+    if cycle_pos < DAY_LENGTH:
+        state.time_of_day = "day"
+    else:
+        state.time_of_day = "night"
+
+    # Count how many full day/night cycles have passed
+    state.current_day = int(elapsed // cycle_length)
+    
+@app.before_request
+def before_request():
+    update_day_night_cycle(GAME_STATE)  
 
 def get_state_dict():
+    update_day_night_cycle(GAME_STATE)
+    grow_crops(GAME_STATE)
     return GAME_STATE.to_dict()
 
 
@@ -44,11 +70,12 @@ def index():
 @app.route("/api/exit_house", methods=["POST"])
 def api_exit_house():
     exit_house(GAME_STATE)
-    return jsonify(GAME_STATE.to_dict())
+    return jsonify(get_state_dict())
 
 @app.route("/api/state", methods=["GET"])
 def api_state():
     return jsonify(get_state_dict())
+
 
 
 @app.route("/api/move", methods=["POST"])
@@ -110,7 +137,6 @@ def api_harvest():
 def api_farm():
     build_farm(GAME_STATE)
     return jsonify(GAME_STATE.to_dict())
-
 
 
 if __name__ == "__main__":

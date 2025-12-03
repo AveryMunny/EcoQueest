@@ -99,6 +99,22 @@ function render() {
   let width = 0;
   let height = 0;
 
+  if (state.time_of_day === "day") {
+    document.body.classList.add("daytime");
+    document.body.classList.remove("nighttime");
+    } else {
+    document.body.classList.add("nighttime");
+    document.body.classList.remove("daytime");
+    }
+
+    if (state.time_of_day === "day") {
+    document.documentElement.style.setProperty("--tile-border", "1px solid rgba(0, 0, 0, 0.25)");
+    } else {
+    document.documentElement.style.setProperty("--tile-border", "1px solid rgba(255, 255, 255, 0.12)");
+    } 
+
+
+
   if (state.in_house) {
     gridData = state.house_tiles;
     width = state.house_width;
