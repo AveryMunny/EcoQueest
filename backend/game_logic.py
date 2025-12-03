@@ -458,18 +458,18 @@ def spawn_wildlife(state):
     biome = state.current_biome
 
 def spawn_wildlife(state):
-    # only spawn if ecosystem is healthy enough
+    # only spawn if eco is healthy
     if state.ecosystem_health < 70:
         return
 
-    # small chance to spawn each turn
-    if random.random() > 0.03:  # 3% per turn
+    # small chance per move
+    if random.random() > 0.03:
         return
 
     x = random.randint(0, state.width - 1)
     y = random.randint(0, state.height - 1)
 
-    # only spawn on empty tiles
+    # must be empty tile
     if state.tiles[y][x] != TILE_EMPTY:
         return
 
@@ -489,12 +489,7 @@ def spawn_wildlife(state):
 
     # ----- TUNDRA -----
     if biome == "tundra":
-        animals = [
-            TILE_ARCTIC_FOX,
-            TILE_POLAR_HARE,
-            TILE_SEAL,
-            TILE_WALRUS
-        ]
+        animals = [TILE_ARCTIC_FOX, TILE_POLAR_HARE, TILE_SEAL, TILE_WALRUS]
         state.tiles[y][x] = random.choice(animals)
         return
 
@@ -504,14 +499,6 @@ def spawn_wildlife(state):
         state.tiles[y][x] = random.choice(animals)
         return
 
-
-        if not animals:
-            return
-
-        state.tiles[y][x] = random.choice(animals)
-
-    else:
-        return
 
 
 def despawn_wildlife(state: GameState):
