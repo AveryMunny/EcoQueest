@@ -210,6 +210,19 @@ def collect_resource(state: GameState):
     elif tile_type == TILE_BERRIES:
         state.food += 1
         state.ecosystem_health += 1
+    elif tile_type == TILE_SNOWY_TREE:
+        state.wood += 1   # tundra wood (pine)
+        state.ecosystem_health -= 3
+    elif tile_type == TILE_FROSTED_BERRIES:
+        state.food += 1
+        state.ecosystem_health += 1
+
+    elif tile_type == TILE_ICE_CRYSTAL:
+        state.energy += 2   # or whatever you want
+
+    elif tile_type == TILE_ICEBERG:
+        state.energy += 3   # or ice to craft igloo later?
+
     else:
         return
 
@@ -427,19 +440,53 @@ def exit_house(state: GameState):
     state.player_y = state.last_house_y
     
 
-def spawn_wildlife(state: GameState):
-    # Only spawn animals if ecosystem is healthy
+def spawn_wildlife(state):
+    # only spawn when eco is healthy
     if state.ecosystem_health < 70:
         return
 
-    # Small chance each turn
-    if random.random() < 0.03:  # 3% chance per turn
-        # pick random location
-        x = random.randint(0, state.width - 1)
-        y = random.randint(0, state.height - 1)
+    # small chance each turn
+    if random.random() > 0.03:
+        return
 
-        if state.tiles[y][x] == TILE_EMPTY:
-            state.tiles[y][x] = random.choice([TILE_RABBIT, TILE_DEER, TILE_BIRD])
+    x = random.randint(0, state.width - 1)
+    y = random.randint(0, state.height - 1)
+
+    if state.tiles[y][x] != TILE_EMPTY:
+        return
+
+    biome = state.current_biome
+
+    # --- Forest Wildlife ---
+    if biome == "forest":
+        animals = [TILE_RABBIT, TILE_DEER, TILE_BIRD]
+
+    # --- Tundra Wildlife ---
+    elif biome == "tundra":
+        animals = [
+            TILE_PENGUIN,
+            TILE_ARCTIC_FOX,
+            TILE_POLAR_HARE,
+            TILE_WALRUS,
+            TILE_SEAL
+        ]
+
+        # belugas need lakes (we’ll identify them)
+        lakes = ["ice", "iceberg"]  # tundra lake equivalents
+        # spawn beluga ONLY if adjacent to water tile
+        if any(
+            0 <= y + dy < state.height and
+            0 <= x + dx < state.width and
+            state.tiles[y+dy][x+dx] in lakes
+            for dx, dy in [(1,0),(-1,0),(0,1),(0,-1)]
+        ):
+            animals.append(TILE_BELUGA)
+
+    else:
+        return  # no wildlife in other biomes yet
+
+    state.tiles[y][x] = random.choice(animals)
+
 
 def despawn_wildlife(state: GameState):
     # If ecosystem is suffering, animals leave
