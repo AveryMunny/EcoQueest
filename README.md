@@ -1,2 +1,2 @@
-# EcoQueest
+# EcoQuest
 My lil game 
