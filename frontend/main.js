@@ -148,8 +148,6 @@ function render() {
     document.documentElement.style.setProperty("--tile-border", "1px solid rgba(255, 255, 255, 0.12)");
     } 
 
-
-
   if (state.in_house) {
     gridData = state.house_tiles;
     width = state.house_width;
@@ -159,6 +157,10 @@ function render() {
     width = state.width;
     height = state.height;
   }
+
+  document.body.classList.remove("biome-forest", "biome-tundra", "biome-desert", "biome-swamp");
+  document.body.classList.add(`biome-${state.current_biome}`);
+
 
   // HUD
   document.getElementById("eco").textContent = state.ecosystem_health;
@@ -197,6 +199,9 @@ function render() {
       else if (tileType === "carrot1") cell.textContent = "🌱";
       else if (tileType === "carrot2") cell.textContent = "🥕";
       else if (tileType === "carrot3") cell.textContent = "🥕✨";  // ripe
+      else if (tileType === "sand") cell.textContent = "🏜️";
+      else if (tileType === "snow") cell.textContent = "❄️";
+      else if (tileType === "mud") cell.textContent = "🪵";
 
       else cell.textContent = "";
 

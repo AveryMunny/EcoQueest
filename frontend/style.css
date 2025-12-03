@@ -233,3 +233,19 @@ h1 {
         bottom: 10px;
     }
 }
+
+.biome-forest { background-color: #0b3d12; }
+.biome-tundra { background-color: #d9e6f5; }
+.biome-desert { background-color: #f7e9a2; }
+.biome-swamp  { background-color: #2e402e; }
+.biome-grassland { background-color: #4caf50; }
+
+.sand {
+    background: #c2b280; /* sandy beige */
+}
+.snow {
+    background: #e0f7fa; /* icy light blue */
+}
+.mud {
+    background: #556b2f; /* murky green */
+}

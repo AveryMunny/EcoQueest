@@ -1,30 +1,31 @@
 import random
 from dataclasses import dataclass
 import time
-START_TIME = time.time()    
+from tile_types import *
 
-# ----- TILE TYPES -----
-TILE_EMPTY = "empty"
-TILE_TREE = "tree"
-TILE_COAL = "coal"
-TILE_BERRIES = "berries"
-TILE_SAPLING = "sapling"
-TILE_SOLAR = "solar"
-TILE_WIND = "wind"
-TILE_HOUSE = "house"
-TILE_RABBIT = "rabbit"
-TILE_DEER = "deer"
-TILE_BIRD = "bird"
-TILE_FARM = "farm"
-TILE_WHEAT_1 = "wheat1"  # just planted
-TILE_WHEAT_2 = "wheat2"  # growing
-TILE_WHEAT_3 = "wheat3"  # ready to harvest
-
-TILE_CARROT_1 = "carrot1" # just planted
-TILE_CARROT_2 = "carrot2" # growing
-TILE_CARROT_3 = "carrot3"  # ready to harvest
+START_TIME = time.time()
 
 
+current_biome = "forest"
+
+from biomes.biome_forest import generate_forest
+from biomes.biome_tundra import generate_tundra
+from biomes.biome_desert import generate_desert
+from biomes.biome_swamp import generate_swamp
+
+BIOME_GENERATORS = {
+    "forest": generate_forest,
+    "tundra": generate_tundra,
+    "desert": generate_desert,
+    "swamp": generate_swamp,
+}    
+
+
+
+BIOME_GATES = {}
+
+
+# Resource Types
 RESOURCE_TYPES = [TILE_TREE, TILE_COAL, TILE_BERRIES]
 
 
@@ -79,6 +80,7 @@ class GameState:
 
 # initialize game state 
 def create_initial_state(width: int = 30, height: int = 30) -> GameState:
+    # original tile generation...
     tiles = []
     for y in range(height):
         row = []
@@ -89,7 +91,8 @@ def create_initial_state(width: int = 30, height: int = 30) -> GameState:
                 row.append(TILE_EMPTY)
         tiles.append(row)
 
-    return GameState(
+    # create state
+    state = GameState(
         width=width,
         height=height,
         player_x=width // 2,
@@ -101,8 +104,26 @@ def create_initial_state(width: int = 30, height: int = 30) -> GameState:
         coal=0,
         tiles=tiles,
         crop_growth={},
-
     )
+
+    # ---- DYNAMICALLY DEFINE BIOME GATES ----
+    global BIOME_GATES
+    BIOME_GATES = {}
+
+    # Top edge → tundra
+    for x in range(width):
+        BIOME_GATES[(x, 0)] = "tundra"
+
+    # Right edge → desert
+    for y in range(height):
+        BIOME_GATES[(width - 1, y)] = "desert"
+
+    # Bottom edge → swamp
+    for x in range(width):
+        BIOME_GATES[(x, height - 1)] = "swamp"
+
+    return state
+
 
 
 # ----- PASSIVE ENERGY -----
@@ -156,6 +177,10 @@ def move_player(state: GameState, direction: str):
     if 0 <= new_x < state.width and 0 <= new_y < state.height:
         state.player_x = new_x
         state.player_y = new_y
+        
+    if (state.player_x, state.player_y) in BIOME_GATES:
+        target = BIOME_GATES[(state.player_x, state.player_y)]
+        switch_biome(state, target)
 
     state.turn += 1
     apply_passive_energy(state)
@@ -215,6 +240,15 @@ def plant_carrot(state: GameState):
 
     state.tiles[y][x] = TILE_CARROT_1
     state.crop_growth[(x, y)] = time.time()
+
+
+def switch_biome(state, biome_name):
+    state.tiles = BIOME_GENERATORS[biome_name](state.width, state.height)
+    state.current_biome = biome_name
+
+    # reset or move player to spawn point
+    state.player_x = state.width // 2
+    state.player_y = state.height // 2
 
 
 def grow_crops(state: GameState):
