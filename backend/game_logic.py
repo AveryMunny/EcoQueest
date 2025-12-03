@@ -216,6 +216,16 @@ def collect_resource(state: GameState):
     elif tile_type == TILE_FROSTED_BERRIES:
         state.food += 1
         state.ecosystem_health += 1
+    elif tile_type == TILE_CACTUS:
+        state.food += 1        # desert hydration/food
+        state.ecosystem_health += 1
+
+    elif tile_type == TILE_SANDSTONE:
+        state.wood += 1        # OR create state.sandstone if you prefer but using wood lets you reuse house/solar recipes
+
+    elif tile_type == TILE_QUARTZ:
+        state.energy += 2      # rare energy boost
+
 
     elif tile_type == TILE_ICE_CRYSTAL:
         state.energy += 2   # or whatever you want

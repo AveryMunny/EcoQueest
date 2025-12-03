@@ -7,6 +7,7 @@ export function emojiForDesert(tile) {
     cactus: "🌵",
     oasis: "🏝️",
     rock: "🪨",
+    quartz: "🔶",
 
     // animals
     lizard: "🦎",

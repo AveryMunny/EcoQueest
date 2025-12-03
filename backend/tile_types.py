@@ -48,14 +48,17 @@ TILE_SEAL = "seal"
 TILE_BELUGA = "beluga"
 
 # desert materials
-TILE_SANDSTONE = "sandstone"
-TILE_CACTUS = "cactus"
 TILE_OASIS = "oasis"
 
 #desert animals
 TILE_LIZARD = "lizard"
 TILE_SNAKE = "snake"
-TILE_SCORPION = "scorpion"  
+TILE_SCORPION = "scorpion"
+
+#desert resources
+TILE_CACTUS = "cactus"
+TILE_QUARTZ = "quartz"
+TILE_SANDSTONE = "sandstone"
 
 #swamp materials
 TILE_MOSS = "moss"
