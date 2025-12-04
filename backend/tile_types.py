@@ -80,4 +80,17 @@ TILE_MUSHROOM = "mushroom"
 TILE_PEAT = "peat"
 TILE_FIBER = "fiber"    # from reeds
 
+#mountains materials
+# Mountain tiles
+TILE_ROCK = "⛰️"
+TILE_STONE = "🪨"
+TILE_GOAT = "🐐"
+TILE_HAWK = "🦅"
+TILE_CAVE = "🕳️"
+TILE_MINERAL = "💎"
+TILE_GOLD = "🥇"
+TILE_SILVER = "🥈"
+TILE_IRON = "⛓️"
+TILE_MOUNTAIN_GRASS = "🌿"
+
 
