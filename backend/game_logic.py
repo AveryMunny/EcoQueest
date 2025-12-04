@@ -9,6 +9,7 @@ from biomes.biome_forest import generate_forest
 from biomes.biome_tundra import generate_tundra
 from biomes.biome_desert import generate_desert
 from biomes.biome_swamp import generate_swamp
+from biomes.biome_mountains import generate_mountain
 
 # If you later create mountain, add it here.
 BIOME_GENERATORS = {
@@ -16,13 +17,14 @@ BIOME_GENERATORS = {
     "tundra": generate_tundra,
     "desert": generate_desert,
     "swamp": generate_swamp,
+    "mountain": generate_mountain,
 }
 
 # --- WORLD GRID LAYOUT ---
 WORLD_MAP = {
     (0, 0): "forest",
     (0, -1): "tundra",
-    (0, -2): "tundra",   # TEMP: mountain mapped to tundra until added
+    (0, -2): "mountain",   
     (0, 1): "swamp",
     (1, 0): "desert",
     (-1, 0): "forest",  # repeat forest on the left
@@ -470,6 +472,8 @@ def spawn_wildlife(state):
         animals = [TILE_ARCTIC_FOX, TILE_POLAR_HARE, TILE_SEAL, TILE_WALRUS]
     elif biome == "swamp":
         animals = [TILE_FROG, TILE_CROCODILE, TILE_SNAKE, TILE_STORK]
+    elif biome == "mountain":
+        animals = [TILE_GOAT, TILE_HAWK]
     else:
         return
 
