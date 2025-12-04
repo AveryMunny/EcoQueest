@@ -1,0 +1,40 @@
+.mountain {
+    background-color: #a9a9a9; /* Dark gray for mountain terrain */
+    background-image: url('../images/mountain_texture.png'); /* Example texture image */
+    background-size: cover;
+    color: #ffffff; /* White text for contrast */
+}
+/* Mountain — rocky grays and whites */
+.mountain .cell {
+    background-color: #7f7f7f; /* medium gray */
+}
+.mountain .rock {
+    background-color: #5a5a5a; /* dark gray rock */
+}
+.mountain .snow {
+    background-color: #dcdcdc; /* light gray snow */
+}
+.mountain .grass {
+    background-color: #6b8e23; /* olive drab grass */
+}
+.mountain .ice {
+    background-color: #b0e0e6; /* pale blue ice */
+}
+.mountain .coal {
+    background-color: #111; /* coal */
+}
+.mountain .mineral {
+    background-color: #ffd700; /* gold mineral */
+}
+.mountain .gold {
+    background-color: #ffdf00; /* gold */
+}
+.mountain .silver {
+    background-color: #c0c0c0; /* silver */
+}
+.mountain .iron {
+    background-color: #b7410e; /* iron brown */
+}
+.mountain .mountain_grass {
+    background-color: #556b2f; /* dark olive green mountain grass */
+}
