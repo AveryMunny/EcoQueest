@@ -31,18 +31,29 @@ WORLD_MAP = {
 }
 
 def switch_biome(state, biome_name):
-    """
-    Loads a new biome's tilemap and respawns the player at the center.
-    """
-    # Generate new tiles from biome generator
-    state.tiles = BIOME_GENERATORS[biome_name](state.width, state.height)
+    # Save current biome state before leaving
+    current = state.current_biome
+    if current in state.biome_states:
+        state.biome_states[current]["tiles"] = state.tiles
+        state.biome_states[current]["crop_growth"] = state.crop_growth
+        state.biome_states[current]["last_house_x"] = state.last_house_x
+        state.biome_states[current]["last_house_y"] = state.last_house_y
+        state.biome_states[current]["house_tiles"] = state.house_tiles
 
-    # Update biome name
+    # Load the new biome state (or create it)
+    biome_state = get_or_create_biome_state(state, biome_name)
+
+    state.tiles = biome_state["tiles"]
+    state.crop_growth = biome_state["crop_growth"]
+    state.last_house_x = biome_state["last_house_x"]
+    state.last_house_y = biome_state["last_house_y"]
+    state.house_tiles = biome_state["house_tiles"]
+
+    # Move player to center of new biome
     state.current_biome = biome_name
-
-    # Reset player to center of biome
     state.player_x = state.width // 2
     state.player_y = state.height // 2
+
 
 
 # Resource Types
@@ -58,6 +69,9 @@ class GameState:
     # World coordinates
     world_x: int = 0
     world_y: int = 0
+    
+    #game state
+    biome_states: dict = None
 
     width: int = 30
     height: int = 30
@@ -143,6 +157,8 @@ def create_initial_state(width: int = 30, height: int = 30) -> GameState:
         coal=0,
         tiles=tiles,
         crop_growth={},
+        current_biome="forest",
+        biome_states={},
     )
 
     return state
@@ -191,12 +207,9 @@ def move_player(state: GameState, direction: str):
         state.turn += 1
         return
 
-    # --------------------------------
-    #   OVERWORLD MOVEMENT (WORLD GRID)
-    # --------------------------------
-    # --------------------------------
-    #   OVERWORLD MOVEMENT (WORLD GRID)
-    # --------------------------------
+    
+    #overworld movement
+
     dx, dy = 0, 0
     if direction == "up": dy = -1
     elif direction == "down": dy = 1
@@ -231,6 +244,26 @@ def move_player(state: GameState, direction: str):
     try_enter_house(state)
     grow_crops(state)
 
+
+    # frist attempt to save biome state
+def get_or_create_biome_state(state: GameState, biome_name: str):
+    # If biome already exists, return its saved state
+    if biome_name in state.biome_states:
+        return state.biome_states[biome_name]
+
+    # Otherwise create new fresh biome
+    tiles = BIOME_GENERATORS[biome_name](state.width, state.height)
+    biome_state = {
+        "tiles": tiles,
+        "crop_growth": {},
+        "last_house_x": None,
+        "last_house_y": None,
+        "house_tiles": None,
+        "wildlife": [],
+    }
+
+    state.biome_states[biome_name] = biome_state
+    return biome_state
 
 # ----------------------------
 #    RESOURCE COLLECTION
