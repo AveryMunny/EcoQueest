@@ -20,18 +20,61 @@
 
   <div id="world">
 
-    <div id="hud">
-      <div>🌍 Ecosystem Health: <span id="eco"></span></div>
-      <div>🔋 Energy: <span id="energy"></span></div>
-      <div>🥕 Food: <span id="food"></span></div>
-      <div>🪵 Wood: <span id="wood"></span></div>
-      <div>🪨 Coal: <span id="coal"></span></div>
-      
-      <div>🍄 Mushrooms: <span id="mushroom"></span></div>
-      <div>🧵 Fiber: <span id="fiber"></span></div>
-      <div>🪨 Peat: <span id="peat"></span></div>
+ <div id="hud">
 
+  <!-- Top info row -->
+  <div id="hud-top">
+    <div class="hud-box">
+      <span class="hud-label">Biome:</span>
+      <span id="hud-biome" class="hud-value"></span>
     </div>
+
+    <div class="hud-box">
+      <span class="hud-label">Time:</span>
+      <span id="hud-time" class="hud-value"></span>
+    </div>
+
+    <div class="hud-box">
+      <span class="hud-label">Day:</span>
+      <span id="hud-day" class="hud-value"></span>
+    </div>
+  </div>
+
+  <!-- Bars row -->
+  <div id="hud-bars">
+    <div class="bar-container">
+      <div class="bar-header">
+        <span class="bar-label">🌍 Ecosystem</span>
+        <span id="eco" class="bar-value"></span> <!-- numeric label -->
+      </div>
+      <div class="bar">
+        <div id="eco-bar" class="bar-fill"></div>
+      </div>
+    </div>
+
+    <div class="bar-container">
+      <div class="bar-header">
+        <span class="bar-label">🔋 Energy</span>
+        <span id="energy" class="bar-value"></span> <!-- numeric label -->
+      </div>
+      <div class="bar">
+        <div id="energy-bar" class="bar-fill energy"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Resources -->
+  <div id="hud-resources">
+    <div class="resource">🥕 Food: <span id="food"></span></div>
+    <div class="resource">🪵 Wood: <span id="wood"></span></div>
+    <div class="resource">🪨 Coal: <span id="coal"></span></div>
+    <div class="resource">🍄 Mushroom: <span id="mushroom"></span></div>
+    <div class="resource">🧵 Fiber: <span id="fiber"></span></div>
+    <div class="resource">🪨 Peat: <span id="peat"></span></div>
+  </div>
+
+</div>
+
 
     <button id="resetBtn">Reset World</button>
 

@@ -139,15 +139,48 @@ function render() {
     }
   }
 
-  // update HUD
-  document.getElementById("eco").textContent = state.ecosystem_health;
-  document.getElementById("energy").textContent = state.energy;
-  document.getElementById("food").textContent = state.food;
-  document.getElementById("wood").textContent = state.wood;
-  document.getElementById("coal").textContent = state.coal;
-  document.getElementById("mushroom").textContent = state.mushroom;
-  document.getElementById("fiber").textContent = state.fiber;
-  document.getElementById("peat").textContent = state.peat;
+    // ---------------- HUD TOP INFO ----------------
+  const biomeEl = document.getElementById("hud-biome");
+  const timeEl = document.getElementById("hud-time");
+  const dayEl = document.getElementById("hud-day");
+
+  if (biomeEl) biomeEl.textContent = state.current_biome;
+  if (timeEl) timeEl.textContent = state.time_of_day;
+  if (dayEl) dayEl.textContent = state.current_day;
+
+  // ---------------- HUD BARS ----------------
+  const ecoBar = document.getElementById("eco-bar");
+  const energyBar = document.getElementById("energy-bar");
+
+  if (ecoBar) {
+    ecoBar.style.width = state.ecosystem_health + "%";
+  }
+  if (energyBar) {
+    energyBar.style.width = Math.min(state.energy, 100) + "%";
+  }
+
+  // Numeric labels on bars
+  const ecoLabel = document.getElementById("eco");
+  const energyLabel = document.getElementById("energy");
+
+  if (ecoLabel) ecoLabel.textContent = state.ecosystem_health;
+  if (energyLabel) energyLabel.textContent = state.energy;
+
+  // ---------------- RESOURCE VALUES ----------------
+  const foodEl = document.getElementById("food");
+  const woodEl = document.getElementById("wood");
+  const coalEl = document.getElementById("coal");
+  const mushEl = document.getElementById("mushroom");
+  const fiberEl = document.getElementById("fiber");
+  const peatEl = document.getElementById("peat");
+
+  if (foodEl) foodEl.textContent = state.food;
+  if (woodEl) woodEl.textContent = state.wood;
+  if (coalEl) coalEl.textContent = state.coal;
+  if (mushEl) mushEl.textContent = state.mushroom;
+  if (fiberEl) fiberEl.textContent = state.fiber;
+  if (peatEl) peatEl.textContent = state.peat;
+
 }
 
 /* ---------------- INPUT ---------------- */

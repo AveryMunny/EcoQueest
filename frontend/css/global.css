@@ -70,3 +70,124 @@ body {
 
 .hidden { display: none; }
 
+/* -------------------------
+   HUD REDESIGN
+-------------------------- */
+
+#hud {
+  background: rgba(0, 0, 0, 0.45);
+  padding: 15px;
+  border-radius: 12px;
+  color: #fff;
+  font-family: system-ui, sans-serif;
+  backdrop-filter: blur(6px);
+  max-width: 420px;
+  margin-bottom: 15px;
+}
+
+#hud-top {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.hud-box {
+  background: rgba(255, 255, 255, 0.10);
+  padding: 6px 10px;
+  border-radius: 8px;
+  font-size: 14px;
+}
+
+.hud-label {
+  font-weight: bold;
+  margin-right: 4px;
+}
+
+#hud-bars {
+  margin-bottom: 12px;
+}
+
+.bar-container {
+  margin-bottom: 8px;
+}
+
+.bar-label {
+  font-size: 12px;
+  margin-bottom: 4px;
+}
+
+.bar {
+  height: 12px;
+  width: 100%;
+  background: rgba(255,255,255,0.25);
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.bar-fill {
+  height: 100%;
+  width: 0%;
+  background: #4caf50;
+  transition: width 0.3s ease;
+}
+
+.bar-fill.energy {
+  background: #00bcd4;
+}
+
+#hud-resources {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+}
+
+.resource {
+  background: rgba(255,255,255,0.10);
+  padding: 6px 8px;
+  border-radius: 6px;
+  font-size: 14px;
+  text-shadow: 0 0 3px rgba(0,0,0,0.5);
+}
+
+/* Glow border based on biome */
+body.forest #hud { border: 2px solid #2da65a; }
+body.desert #hud { border: 2px solid #d4a64a; }
+body.tundra #hud { border: 2px solid #6ecdfb; }
+body.swamp #hud { border: 2px solid #6ea95e; }
+body.mountain #hud { border: 2px solid #8b8fa1; }
+
+/* -------------------------
+   NOTIFICATIONS
+-------------------------- */
+#notification {
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0, 0, 0, 0.75);
+  color: white;
+  padding: 12px 20px;
+  border-radius: 8px;
+  font-size: 16px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.5s ease;
+}
+
+#notification.show {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* HUD tweaks for labels on bars */
+.bar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2px;
+}
+
+.bar-value {
+  font-size: 12px;
+  opacity: 0.9;
+}
