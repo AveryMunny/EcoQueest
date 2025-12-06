@@ -19,7 +19,7 @@ def generate_swamp(width, height):
             r = random.random()
 
             if r < 0.15:
-                row.append(TILE_MUD)
+                row.append(TILE_EMPTY)
             elif r < 0.25:
                 row.append(TILE_SWAMP_GRASS)
             elif r < 0.30:

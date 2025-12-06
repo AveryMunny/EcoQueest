@@ -1,4 +1,7 @@
 import random
+
+BIOME_NAME = "tundra"
+
 from tile_types import (
     TILE_SNOW,
     TILE_ICE,
@@ -6,23 +9,78 @@ from tile_types import (
     TILE_ICE_CRYSTAL,
     TILE_SNOWFLAKE,
     TILE_FROSTED_BERRIES,
-    TILE_ICEBERG,
-    TILE_SNOWMAN,
     TILE_IGLOO,
+    TILE_SNOWMAN,
     TILE_EMPTY
 )
-BIOME_NAME = "tundra"
+
 def generate_tundra(width, height):
     tiles = []
+
     for y in range(height):
         row = []
+        elevation = y / height
+
         for x in range(width):
             r = random.random()
-            if r < 0.15: row.append(TILE_SNOW)          # snowy ground
-            elif r < 0.30: row.append(TILE_SNOWY_TREE)  # snowy tree
-            elif r < 0.35: row.append(TILE_ICE_CRYSTAL) # ice crystal
-            elif r < 0.40: row.append(TILE_SNOWFLAKE)   # collectible snowflake
-            else: row.append(TILE_EMPTY)
-        tiles.append(row)
-    return tiles
 
+            # -----------------------------
+            # LARGE OPEN SPACE (SNOW)
+            # -----------------------------
+            if r < 0.55:
+                row.append(TILE_EMPTY)
+
+            # -----------------------------
+            # ICE PATCHES
+            # -----------------------------
+            elif r < 0.65:
+                if elevation > 0.5:
+                    row.append(TILE_ICE)
+                else:
+                    row.append(TILE_SNOW)
+
+            # -----------------------------
+            # SNOWY TREES (collectible)
+            # -----------------------------
+            elif r < 0.72:
+                row.append(TILE_SNOWY_TREE)
+
+            # -----------------------------
+            # FROSTED BERRIES (collectible)
+            # -----------------------------
+            elif r < 0.78:
+                row.append(TILE_FROSTED_BERRIES)
+
+            # -----------------------------
+            # SNOWFLAKE (collectible)
+            # -----------------------------
+            elif r < 0.83:
+                row.append(TILE_SNOWFLAKE)
+
+            # -----------------------------
+            # RARE ICE CRYSTAL
+            # -----------------------------
+            elif r < 0.86:
+                row.append(TILE_ICE_CRYSTAL)
+
+            # -----------------------------
+            # ULTRA RARE IGLOO
+            # -----------------------------
+            elif r < 0.87:
+                row.append(TILE_IGLOO)
+
+            # -----------------------------
+            # ULTRA RARE SNOWMAN
+            # -----------------------------
+            elif r < 0.88:
+                row.append(TILE_SNOWMAN)
+
+            # -----------------------------
+            # EMPTY TILE
+            # -----------------------------
+            else:
+                row.append(TILE_EMPTY)
+
+        tiles.append(row)
+
+    return tiles
