@@ -1,22 +1,32 @@
 export function emojiForMountain(tile) {
   const map = {
-    // terrain
-    mountain_rock: "🪨🗻",
-    cliff: "🧱🗻",
-    mountain_grass: "🌿🗻",
-    snow_capped_peak: "🏔️", 
+    // === TERRAIN ===
+    rock: "🪨",
+    stone: "⬛",
+    snow_rock: "❄️🪨",
     cave: "🕳️",
-    mineral: "💎",
+
+    // === RESOURCES ===
+    ore: "⛏️",
+    crystal: "💎",
+
+    // optional future crafting resources:
+    mineral: "💠",
     gold: "🥇",
     silver: "🥈",
     iron: "⛓️",
-    // animals
-    mountain_goat: "🐐",
+    mountain_grass: "🌿",
+
+    // === ANIMALS ===
+    goat: "🐐",
     hawk: "🦅",
-    // structures
+
+    // === OPTIONAL STRUCTURES ===
     mountain_hut: "🏕️",
     lookout_tower: "🗼",
-    empty: ""
-    };
-    return map[tile] || null;
+
+    empty: "",
+  };
+
+  return map[tile] || null;
 }

@@ -82,15 +82,24 @@ TILE_FIBER = "fiber"    # from reeds
 
 #mountains materials
 # Mountain tiles
-TILE_ROCK = "⛰️"
-TILE_STONE = "🪨"
-TILE_GOAT = "🐐"
-TILE_HAWK = "🦅"
-TILE_CAVE = "🕳️"
-TILE_MINERAL = "💎"
-TILE_GOLD = "🥇"
-TILE_SILVER = "🥈"
-TILE_IRON = "⛓️"
-TILE_MOUNTAIN_GRASS = "🌿"
+TILE_ROCK = "rock"
+TILE_STONE = "stone"
+TILE_SNOW_ROCK = "snow_rock"     # NEW for elevation terrain
+TILE_CAVE = "cave"
+
+# ORES & MINERALS
+TILE_ORE = "ore"                 # mid-tier resource
+TILE_CRYSTAL = "crystal"         # rare, high value
+
+# MOUNTAIN ANIMALS
+TILE_GOAT = "goat"
+TILE_HAWK = "hawk"
+
+# Optional extras you had (kept for future crafting tiers)
+TILE_MINERAL = "mineral"
+TILE_GOLD = "gold"
+TILE_SILVER = "silver"
+TILE_IRON = "iron"
+TILE_MOUNTAIN_GRASS = "mountain_grass"
 
 
