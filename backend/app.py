@@ -85,6 +85,30 @@ def api_move():
     move_player(GAME_STATE, direction)
     return jsonify(get_state_dict())
 
+@app.route("/api/interact", methods=["POST"])
+def api_interact():
+    from systems.npc import interact_with_npc
+    interact_with_npc(GAME_STATE)
+    return jsonify(GAME_STATE.to_dict())
+
+@app.route("/api/choose_path_eco", methods=["POST"])
+def path_eco():
+    from systems.npc import choose_path
+    choose_path(GAME_STATE, "eco")
+    return jsonify(GAME_STATE.to_dict())
+
+@app.route("/api/choose_path_industry", methods=["POST"])
+def path_industry():
+    from systems.npc import choose_path
+    choose_path(GAME_STATE, "industry")
+    return jsonify(GAME_STATE.to_dict())
+
+@app.route("/api/choose_path_neutral", methods=["POST"])
+def path_neutral():
+    from systems.npc import choose_path
+    choose_path(GAME_STATE, "neutral")
+    return jsonify(GAME_STATE.to_dict())    
+
 
 @app.route("/api/collect", methods=["POST"])
 def api_collect():

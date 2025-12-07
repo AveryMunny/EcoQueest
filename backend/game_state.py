@@ -43,6 +43,10 @@ class GameState:
     current_biome: str = "forest"
     
     inventory: dict = None  # {"item_name": quantity, ...}
+    
+    player_path: str = None  # "eco", "industry", or "neutral"
+    awaiting_path_choice: bool = False
+    dialog_message: str = ""
 
     # persistent data per biome
     biome_states: dict = None   # {"forest": {...}, "tundra": {...}, ...}
@@ -74,4 +78,10 @@ class GameState:
             "world_y": self.world_y,
             "inventory": self.inventory,
             "turn": self.turn,
+            "dialog_message": self.dialog_message,
+            "awaiting_path_choice": self.awaiting_path_choice,
+            "player_path": self.player_path,
+            "biome_health": self.biome_health,
+            "biome_states": self.biome_states,
+
         }

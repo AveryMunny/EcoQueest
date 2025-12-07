@@ -102,4 +102,11 @@ TILE_SILVER = "silver"
 TILE_IRON = "iron"
 TILE_MOUNTAIN_GRASS = "mountain_grass"
 
+#adding npc
+TILE_NPC_FOREST_GUIDE = "npc_forest_guide"
+TILE_NPC_DESERT_GUIDE = "npc_desert_guide"
+TILE_NPC_MOUNTAIN_GUIDE = "npc_mountain_guide"  
+TILE_NPC_SWAMP_GUIDE = "npc_swamp_guide"
+TILE_NPC_TUNDRA_GUIDE = "npc_tundra_guide"
+
 

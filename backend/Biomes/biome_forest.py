@@ -20,5 +20,10 @@ def generate_forest(width, height):
                 row.append(TILE_EMPTY)
 
         tiles.append(row)
+        # Place NPC near spawn (center-ish)
+        spawn_x = width // 2 - 2
+        spawn_y = height // 2
+        tiles[spawn_y][spawn_x] = TILE_NPC_FOREST_GUIDE
+
 
     return tiles

@@ -24,6 +24,10 @@ export function emojiForForest(tile) {
     solar: "☀️",
     wind: "🌀",
 
+    //npcs
+    npc_forest_guide: "🧑‍🌾",
+    npc_desert_guide: "🧑‍🌵",
+
     empty: ""
   };
 

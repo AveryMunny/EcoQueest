@@ -199,6 +199,11 @@ function setupInput() {
     else if (key === "x") sendAction("harvest");
     else if (key === "e") sendAction("exit_house");
     else if (key === "h") toggleHelpMenu();
+    else if (key.toLowerCase() === "f") sendAction("interact");
+    else if (state.awaiting_path_choice && key === "1") sendAction("choose_path_eco");
+    else if (state.awaiting_path_choice && key === "2") sendAction("choose_path_industry");
+    else if (state.awaiting_path_choice && key === "3") sendAction("choose_path_neutral");
+        
     else if (key === " ") {
       e.preventDefault();
       sendAction("collect");
@@ -264,5 +269,4 @@ function renderInventory() {
   }
 }
 
-
-
+export {};
