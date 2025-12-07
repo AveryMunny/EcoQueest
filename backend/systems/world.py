@@ -15,6 +15,8 @@ from biomes.biome_tundra import generate_tundra
 from biomes.biome_desert import generate_desert
 from biomes.biome_swamp import generate_swamp
 from biomes.biome_mountains import generate_mountain
+from systems.animals import move_animals
+
 
 START_TIME = time.time()
 

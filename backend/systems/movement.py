@@ -5,6 +5,7 @@ from systems.energy import apply_passive_energy
 from systems.wildlife import spawn_wildlife, despawn_wildlife
 from systems.buildings import try_enter_house
 from systems.farming import grow_crops
+from systems.animals import move_animals
 
 
 def move_player(state: GameState, direction: str):
@@ -62,3 +63,4 @@ def move_player(state: GameState, direction: str):
     despawn_wildlife(state)
     try_enter_house(state)
     grow_crops(state)
+    move_animals(state)
