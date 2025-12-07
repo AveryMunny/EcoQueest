@@ -23,6 +23,7 @@ from systems.buildings import (
 from systems.farming import (
     plant_wheat, plant_carrot, harvest_crop, grow_crops
 )
+from systems.npc import interact_with_npc, choose_path
 
 # ------------------------------------------------------------
 # CREATE FLASK APP (serving frontend folder)
@@ -72,7 +73,6 @@ def get_state_dict():
 @app.route("/")
 def index():
     return app.send_static_file("index.html")
-
 
 @app.route("/api/state")
 def api_state():
@@ -181,6 +181,14 @@ def api_plant_carrot():
 def api_harvest():
     harvest_crop(GAME_STATE)
     return jsonify(get_state_dict())
+
+@app.route("/api/choose_path", methods=["POST"])
+def api_choose_path():
+    data = request.get_json(force=True)
+    path = data.get("path")
+    choose_path(GAME_STATE, path)
+    return jsonify(GAME_STATE.to_dict())
+
 
 
 # ------------------------------------------------------------

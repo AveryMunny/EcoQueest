@@ -24,6 +24,10 @@ def generate_forest(width, height):
         spawn_x = width // 2 - 2
         spawn_y = height // 2
         tiles[spawn_y][spawn_x] = TILE_NPC_FOREST_GUIDE
+        
+        if x == center_x and y == center_y - 2:
+            row.append("npc_guide")
+
 
 
     return tiles
