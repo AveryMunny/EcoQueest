@@ -77,6 +77,25 @@ def create_initial_state(width: int = 30, height: int = 30) -> GameState:
             "desert": 100,
         },
         biome_states={},
+        
+        inventory={
+            "wood": 0,
+            "stone": 0,
+            "coal": 0,
+            "berries": 0,
+            "fiber": 0,
+            "peat": 0,
+            "mushroom": 0,
+            "ice_shard": 0,
+            "crystal_shard": 0,
+            "ore_chunk": 0,
+
+            # tools
+            "axe": 0,
+            "pickaxe": 0,
+            "shovel": 0,
+        },
+
     )
     state.ecosystem_health = get_current_biome_health(state)
     return state

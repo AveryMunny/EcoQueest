@@ -71,6 +71,11 @@
     <div class="resource">🍄 Mushroom: <span id="mushroom"></span></div>
     <div class="resource">🧵 Fiber: <span id="fiber"></span></div>
     <div class="resource">🪨 Peat: <span id="peat"></span></div>
+    <div>🪨 Stone: <span id="stone"></span></div>
+    <div>💎 Ore: <span id="ore_chunk"></span></div>
+    <div>❄ Ice Shard: <span id="ice_shard"></span></div>
+    <div>🔷 Crystal Shard: <span id="crystal_shard"></span></div>
+
   </div>
 
 </div>
@@ -108,6 +113,15 @@
     </div>
 
     <button id="helpBtn" onclick="toggleHelpMenu()">Help</button>
+
+    <button id="inventoryBtn" onclick="toggleInventory()">Inventory</button>
+
+    <div id="inventoryMenu" class="hidden">
+      <h2>Inventory</h2>
+      <div id="inventoryList"></div>
+      <p style="text-align:center;font-size:13px;color:#ccc;">Press I to close</p>
+    </div>
+
 
   </div>
 

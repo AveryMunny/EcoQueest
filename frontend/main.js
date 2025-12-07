@@ -167,19 +167,16 @@ function render() {
   if (energyLabel) energyLabel.textContent = state.energy;
 
   // ---------------- RESOURCE VALUES ----------------
-  const foodEl = document.getElementById("food");
-  const woodEl = document.getElementById("wood");
-  const coalEl = document.getElementById("coal");
-  const mushEl = document.getElementById("mushroom");
-  const fiberEl = document.getElementById("fiber");
-  const peatEl = document.getElementById("peat");
-
-  if (foodEl) foodEl.textContent = state.food;
-  if (woodEl) woodEl.textContent = state.wood;
-  if (coalEl) coalEl.textContent = state.coal;
-  if (mushEl) mushEl.textContent = state.mushroom;
-  if (fiberEl) fiberEl.textContent = state.fiber;
-  if (peatEl) peatEl.textContent = state.peat;
+  document.getElementById("food").textContent = state.inventory?.food ?? 0;
+  document.getElementById("wood").textContent = state.inventory?.wood ?? 0;
+  document.getElementById("coal").textContent = state.inventory?.coal ?? 0;
+  document.getElementById("mushroom").textContent = state.inventory?.mushroom ?? 0;
+  document.getElementById("fiber").textContent = state.inventory?.fiber ?? 0;
+  document.getElementById("peat").textContent = state.inventory?.peat ?? 0;
+  document.getElementById("stone").textContent = state.inventory?.stone ?? 0;
+  document.getElementById("ore_chunk").textContent = state.inventory?.ore_chunk ?? 0;
+  document.getElementById("ice_shard").textContent = state.inventory?.ice_shard ?? 0;
+  document.getElementById("crystal_shard").textContent = state.inventory?.crystal_shard ?? 0;
 
 }
 
@@ -239,6 +236,33 @@ window.addEventListener("touchmove", () => {
 window.addEventListener("touchend", () => {
   positionHelpMenu();
 });
+
+function toggleInventory() {
+  const menu = document.getElementById("inventoryMenu");
+  menu.classList.toggle("hidden");
+  renderInventory();
+}
+
+// KEYBOARD SHORTCUT
+window.addEventListener("keydown", (e) => {
+  if (e.key.toLowerCase() === "i") {
+    toggleInventory();
+  }
+});
+function renderInventory() {
+  const list = document.getElementById("inventoryList");
+  list.innerHTML = "";
+
+  if (!state || !state.inventory) return;
+
+  for (const [item, amount] of Object.entries(state.inventory)) {
+    if (amount > 0) {
+      const div = document.createElement("div");
+      div.textContent = `${item}: ${amount}`;
+      list.appendChild(div);
+    }
+  }
+}
 
 
 

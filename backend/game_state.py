@@ -41,6 +41,8 @@ class GameState:
     time_of_day: str = "day"
     current_day: int = 0
     current_biome: str = "forest"
+    
+    inventory: dict = None  # {"item_name": quantity, ...}
 
     # persistent data per biome
     biome_states: dict = None   # {"forest": {...}, "tundra": {...}, ...}
@@ -70,4 +72,6 @@ class GameState:
             "current_biome": self.current_biome,
             "world_x": self.world_x,
             "world_y": self.world_y,
+            "inventory": self.inventory,
+            "turn": self.turn,
         }

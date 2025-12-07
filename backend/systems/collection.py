@@ -14,6 +14,7 @@ from systems.energy import apply_passive_energy
 from systems.farming import grow_crops
 from systems.buildings import try_enter_house
 from systems.wildlife import spawn_wildlife, despawn_wildlife
+from systems.inventory import add_item
 
 
 def collect_resource(state: GameState):
@@ -27,70 +28,70 @@ def collect_resource(state: GameState):
     changed = False
 
     if tile == TILE_TREE:
-        state.wood += 1
+        add_item(state, "wood", 1)
         health -= 3
         changed = True
 
     elif tile == TILE_COAL:
-        state.coal += 1
+        add_item(state, "coal", 1)
         state.energy += 3
         health -= 8
         changed = True
 
     elif tile == TILE_BERRIES:
-        state.food += 1
+        add_item(state, "food", 1)
         health += 1
         changed = True
 
     elif tile == TILE_SNOWY_TREE:
-        state.wood += 1
+        add_item(state, "wood", 1)
         health -= 3
         changed = True
 
     elif tile == TILE_FROSTED_BERRIES:
-        state.food += 1
+        add_item(state, "food", 1)
         health += 1
         changed = True
 
     elif tile == TILE_CACTUS:
-        state.food += 1
+        add_item(state, "food", 1)
         health += 1
         changed = True
 
     elif tile == TILE_SANDSTONE:
-        state.wood += 1
+        add_item(state, "wood", 1)
         changed = True
 
     elif tile == TILE_QUARTZ:
-        state.energy += 2
+        add_item(state, "energy", 1)
         changed = True
 
     elif tile == TILE_REEDS:
-        state.wood += 1
+        add_item(state, "wood", 1)
         health += 1
         changed = True
 
     elif tile == TILE_MUSHROOM:
-        state.food += 1
+        add_item(state, "food", 1)
         health += 1
         changed = True
 
     elif tile == TILE_PEAT:
-        state.energy += 1
+        add_item(state, "energy", 1)
         health -= 1
         changed = True
 
     elif tile == TILE_ICE_CRYSTAL:
-        state.energy += 2
+        add_item(state, "energy", 2)
         changed = True
 
     elif tile == TILE_ICEBERG:
-        state.energy += 3
+        add_item(state, "energy", 3)
         changed = True
 
     elif tile in (TILE_ROCK, TILE_STONE):
         # for now, just allow generic collection; later tie to pickaxe
-        state.wood += 0  # placeholder; change to inventory later
+        add_item(state, "wood", 1)
         changed = True
 
     elif tile == TILE_ORE:
