@@ -26,14 +26,36 @@ async function sendMove(direction) {
   positionHelpMenu();
 }
 
-async function choosePath(path) {
-  await fetch("/api/choose_path", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ path })
-  });
+export async function choosePath(path) {
+    const res = await fetch("/api/choose_path", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ path })
+    });
 
-  fetchState(); // refresh UI
+    const newState = await res.json();
+    state = newState;
+    render();
+
+    // Hide dialog after choosing
+    state.dialog_message = "";
+    state.awaiting_path_choice = false;
+
+    removeNPC();
+    render();
+}
+
+window.choosePath = choosePath; 
+function removeNPC() {
+    const tiles = state.tiles;
+    for (let y = 0; y < tiles.length; y++) {
+        for (let x = 0; x < tiles[y].length; x++) {
+            if (tiles[y][x] === "npc_forest_guide") {
+                tiles[y][x] = "empty";
+                return;
+            }
+        }
+    }
 }
 
 
