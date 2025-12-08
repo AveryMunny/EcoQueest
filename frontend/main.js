@@ -116,103 +116,89 @@ function getGlobalEmoji(tile) {
   return map[tile] || null;
 }
 
-/* ---------------- RENDER ---------------- */
 function render() {
-  if (!state) return;
+    if (!state) return;
 
-  const body = document.body;
+    /* ---------- BODY / THEME ---------- */
+    const body = document.body;
+    body.className = "";
+    body.classList.add(state.current_biome);
+    body.classList.add(state.time_of_day === "day" ? "daytime" : "nighttime");
 
-  body.className = "";
-  body.classList.add(state.current_biome);
-  body.classList.add(state.time_of_day === "day" ? "daytime" : "nighttime");
+    /* ---------- GRID ---------- */
+    const grid = document.getElementById("grid");
+    grid.innerHTML = "";
 
-  const grid = document.getElementById("grid");
-  grid.innerHTML = "";
-  const tiles = state.in_house ? state.house_tiles : state.tiles;
+    const tiles = state.in_house ? state.house_tiles : state.tiles;
+    grid.style.gridTemplateColumns = `repeat(${tiles[0].length}, 32px)`;
 
-  grid.style.gridTemplateColumns = `repeat(${tiles[0].length}, 32px)`;
+    for (let y = 0; y < tiles.length; y++) {
+        for (let x = 0; x < tiles[y].length; x++) {
+            const div = document.createElement("div");
+            const tile = tiles[y][x];
 
-  for (let y = 0; y < tiles.length; y++) {
-    for (let x = 0; x < tiles[y].length; x++) {
-      const div = document.createElement("div");
-      const tile = tiles[y][x];
+            div.classList.add("cell", tile);
 
-      div.classList.add("cell", tile);
+            let emoji = getBiomeEmoji(tile) || getGlobalEmoji(tile);
 
-      let emoji = getBiomeEmoji(tile) || getGlobalEmoji(tile);
+            if (state.player_x === x && state.player_y === y) {
+                div.classList.add("player");
+                emoji = "🧍";
+            }
 
-      if (state.player_x === x && state.player_y === y) {
-        div.classList.add("player");
-        emoji = "🧍";
-      }
-
-      div.textContent = emoji || "";
-      grid.appendChild(div);
-
-      updateDialogPosition();
-
-      //dialog box
-      const dialogBox = document.getElementById("dialogBox");
-      const dialogText = document.getElementById("dialogText");
-      const dialogChoices = document.getElementById("dialogChoices");
-
-      if (state.dialog_message) {
-          dialogBox.classList.remove("hidden");
-          dialogText.textContent = state.dialog_message;
-
-          if (state.awaiting_path_choice) {
-              dialogChoices.classList.remove("hidden");
-          } else {
-              dialogChoices.classList.add("hidden");
-          }
-      } else {
-          dialogBox.classList.add("hidden");
-      }
-
-
+            div.textContent = emoji || "";
+            grid.appendChild(div);
+        }
     }
-  }
 
-    // ---------------- HUD TOP INFO ----------------
-  const biomeEl = document.getElementById("hud-biome");
-  const timeEl = document.getElementById("hud-time");
-  const dayEl = document.getElementById("hud-day");
+    /* ---------- DIALOG BOX ---------- */
+    const dialogBox = document.getElementById("dialogBox");
+    const dialogText = document.getElementById("dialogText");
+    const dialogChoices = document.getElementById("dialogChoices");
 
-  if (biomeEl) biomeEl.textContent = state.current_biome;
-  if (timeEl) timeEl.textContent = state.time_of_day;
-  if (dayEl) dayEl.textContent = state.current_day;
+    if (state.dialog_message) {
+        dialogBox.classList.remove("hidden");
+        dialogText.textContent = state.dialog_message;
 
-  // ---------------- HUD BARS ----------------
-  const ecoBar = document.getElementById("eco-bar");
-  const energyBar = document.getElementById("energy-bar");
+        if (state.awaiting_path_choice) {
+            dialogChoices.classList.remove("hidden");
+        } else {
+            dialogChoices.classList.add("hidden");
+        }
 
-  if (ecoBar) {
-    ecoBar.style.width = state.ecosystem_health + "%";
-  }
-  if (energyBar) {
-    energyBar.style.width = Math.min(state.energy, 100) + "%";
-  }
+        updateDialogPosition();
+        window.dialogOpen = true;
+    } else {
+        dialogBox.classList.add("hidden");
+        dialogChoices.classList.add("hidden");
+        window.dialogOpen = false;
+    }
 
-  // Numeric labels on bars
-  const ecoLabel = document.getElementById("eco");
-  const energyLabel = document.getElementById("energy");
+    /* ---------- HUD INFO ---------- */
+    document.getElementById("hud-biome").textContent = state.current_biome;
+    document.getElementById("hud-time").textContent = state.time_of_day;
+    document.getElementById("hud-day").textContent = state.current_day;
 
-  if (ecoLabel) ecoLabel.textContent = state.ecosystem_health;
-  if (energyLabel) energyLabel.textContent = state.energy;
+    document.getElementById("eco-bar").style.width = state.ecosystem_health + "%";
+    document.getElementById("energy-bar").style.width = Math.min(state.energy, 100) + "%";
 
-  // ---------------- RESOURCE VALUES ----------------
-  document.getElementById("food").textContent = state.inventory?.food ?? 0;
-  document.getElementById("wood").textContent = state.inventory?.wood ?? 0;
-  document.getElementById("coal").textContent = state.inventory?.coal ?? 0;
-  document.getElementById("mushroom").textContent = state.inventory?.mushroom ?? 0;
-  document.getElementById("fiber").textContent = state.inventory?.fiber ?? 0;
-  document.getElementById("peat").textContent = state.inventory?.peat ?? 0;
-  document.getElementById("stone").textContent = state.inventory?.stone ?? 0;
-  document.getElementById("ore_chunk").textContent = state.inventory?.ore_chunk ?? 0;
-  document.getElementById("ice_shard").textContent = state.inventory?.ice_shard ?? 0;
-  document.getElementById("crystal_shard").textContent = state.inventory?.crystal_shard ?? 0;
+    document.getElementById("eco").textContent = state.ecosystem_health;
+    document.getElementById("energy").textContent = state.energy;
 
+    /* ---------- INVENTORY ---------- */
+    const inv = state.inventory || {};
+    document.getElementById("food").textContent = inv.food ?? 0;
+    document.getElementById("wood").textContent = inv.wood ?? 0;
+    document.getElementById("coal").textContent = inv.coal ?? 0;
+    document.getElementById("mushroom").textContent = inv.mushroom ?? 0;
+    document.getElementById("fiber").textContent = inv.fiber ?? 0;
+    document.getElementById("peat").textContent = inv.peat ?? 0;
+    document.getElementById("stone").textContent = inv.stone ?? 0;
+    document.getElementById("ore_chunk").textContent = inv.ore_chunk ?? 0;
+    document.getElementById("ice_shard").textContent = inv.ice_shard ?? 0;
+    document.getElementById("crystal_shard").textContent = inv.crystal_shard ?? 0;
 }
+
 
 /* ---------------- INPUT ---------------- */
 function setupInput() {

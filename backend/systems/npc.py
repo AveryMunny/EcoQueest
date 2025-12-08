@@ -1,6 +1,7 @@
 # systems/npc.py
-from tile_types import TILE_NPC_FOREST_GUIDE
+from tile_types import TILE_NPC_FOREST_GUIDE, TILE_EMPTY
 from systems.inventory import add_item
+from game_state import GameState
 
 def interact_with_npc(state):
     x, y = state.player_x, state.player_y
@@ -60,18 +61,21 @@ def interact_with_npc(state):
 
 
 def choose_path(state, path):
-    """Apply player choice and give initial bonuses."""
     state.player_path = path
-    state.awaiting_path_choice = True
+    state.awaiting_path_choice = False
+
+    # remove the NPC from the map
+    for y in range(state.height):
+        for x in range(state.width):
+            if state.tiles[y][x] == TILE_NPC_FOREST_GUIDE:
+                state.tiles[y][x] = TILE_EMPTY
 
     if path == "eco":
         state.dialog_message = "🌱 You chose the Eco-Guardian path!"
         state.inventory["mushroom"] += 3
-
     elif path == "industry":
-        state.dialog_message = "💼 You chose the Industrial path!"
+        state.dialog_message = "💼 You chose the Industrialist path!"
         state.inventory["coal"] += 3
-
     else:
         state.dialog_message = "⚪ You walk your own road."
         state.inventory["fiber"] += 3
