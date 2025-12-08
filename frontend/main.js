@@ -136,6 +136,17 @@ function render() {
 
       div.textContent = emoji || "";
       grid.appendChild(div);
+
+      const dialogBox = document.getElementById("dialogBox");
+      const dialogText = document.getElementById("dialogText");
+
+      if (state.dialog_message && state.dialog_message !== "") {
+        dialogText.textContent = state.dialog_message;
+        dialogBox.classList.remove("hidden");
+      } else {
+        dialogBox.classList.add("hidden");
+      }
+
     }
   }
 

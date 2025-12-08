@@ -54,15 +54,7 @@ def set_current_biome_health(state: GameState, value: int):
 
 def create_initial_state(width: int = 30, height: int = 30) -> GameState:
     # You can swap this to biome-based start (forest generator) later
-    tiles = []
-    for y in range(height):
-        row = []
-        for x in range(width):
-            if random.random() < 0.25:
-                row.append(random.choice([TILE_TREE, TILE_COAL, TILE_BERRIES]))
-            else:
-                row.append(TILE_EMPTY)
-        tiles.append(row)
+    tiles = generate_forest(width, height)
 
     state = GameState(
         width=width,

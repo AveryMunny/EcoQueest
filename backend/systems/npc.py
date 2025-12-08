@@ -62,7 +62,7 @@ def interact_with_npc(state):
 def choose_path(state, path):
     """Apply player choice and give initial bonuses."""
     state.player_path = path
-    state.awaiting_path_choice = False
+    state.awaiting_path_choice = True
 
     if path == "eco":
         state.dialog_message = "🌱 You chose the Eco-Guardian path!"
