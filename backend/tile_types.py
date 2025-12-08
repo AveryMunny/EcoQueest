@@ -109,4 +109,7 @@ TILE_NPC_MOUNTAIN_GUIDE = "npc_mountain_guide"
 TILE_NPC_SWAMP_GUIDE = "npc_swamp_guide"
 TILE_NPC_TUNDRA_GUIDE = "npc_tundra_guide"
 
+#beach area
+TILE_OCEAN = "ocean"
+
 

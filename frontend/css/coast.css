@@ -1,17 +1,30 @@
 /* Coastal — beach and sea tones */
-
 .coastal .cell {
-    background: linear-gradient(180deg, #f7e9c7, #f0dca6); /* sandy base */
+    border: 1px solid #d8cbb0; /* softer border so beach looks blended */
 }
 
+/* BEACH / SAND */
 .coastal .sand {
-    background-color: #f7e9c7;
+    background: #f7e9c7;
 }
 
-.coastal .swamp_water {
-    background-color: #6fc3e8; /* shallow water */
+/* SOFT OCEAN (new water tile) */
+.coastal .ocean {
+    background: linear-gradient(
+        180deg,
+        #aee3ff 0%,
+        #7fc9ff 50%,
+        #5ab5ff 100%
+    );
+    border: none !important;
 }
 
-.coastal .seal, .coastal .beluga {
-    background: transparent;
+/* Marine life blends naturally on top of water */
+.coastal .seal,
+.coastal .beluga {
+    background: transparent !important;
+}
+
+.coastal .empty {
+    background: #f7e9c7;
 }

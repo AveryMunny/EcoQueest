@@ -236,3 +236,8 @@ body.mountain #hud { border: 2px solid #8b8fa1; }
 .hidden {
   display: none;
 }
+
+.cell.empty {
+    background: transparent;
+}
+
