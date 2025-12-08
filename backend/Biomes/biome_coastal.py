@@ -16,34 +16,36 @@ def generate_coastal(width, height):
         row = []
         for x in range(width):
             r = random.random()
-
-            # Create a beach-to-sea gradient: left side sand, right side water
             pct = x / max(1, width - 1)
 
-            # If far right, more water
+            # --- FAR RIGHT (deep water) ---
             if pct > 0.7:
-                # Mostly shallow sea/water with occasional marine life
-                if r < 0.80:
+                if r < 0.50:  # much less water density
                     row.append(TILE_SWAMP_WATER)
-                elif r < 0.90:
+                elif r < 0.55:
                     row.append(TILE_SEAL)
-                else:
+                elif r < 0.60:
                     row.append(TILE_BELUGA)
+                else:
+                    row.append(TILE_EMPTY)  # add empty water gaps
+
+            # --- MID ZONE (shallow water + sand) ---
             elif pct > 0.4:
-                # Transition zone: mix of sand and water
-                if r < 0.6:
+                if r < 0.30:  # sand
                     row.append(TILE_SAND)
-                elif r < 0.9:
+                elif r < 0.45:  # shallow water patches
                     row.append(TILE_SWAMP_WATER)
                 else:
-                    row.append(TILE_SEAL)
+                    row.append(TILE_EMPTY)  # open beach dunes
+
+            # --- SHORELINE / BEACH ---
             else:
-                # Near shore: mostly sand
-                if r < 0.8:
+                if r < 0.55:
                     row.append(TILE_SAND)
                 else:
-                    row.append(TILE_EMPTY)
+                    row.append(TILE_EMPTY)  # lots more walkable land
 
+            # End tile
         tiles.append(row)
 
     return tiles
