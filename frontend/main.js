@@ -79,30 +79,34 @@ function toggleHelpMenu() {
 
 function positionHelpMenu() {
   const menu = document.getElementById("helpMenu");
-  const grid = document.getElementById("grid");
+  if (!menu || menu.classList.contains("hidden")) return;
 
-  if (!menu || !grid || menu.classList.contains("hidden")) return;
+  const grid = document.getElementById("grid");
+  if (!grid) return;
 
   const gridRect = grid.getBoundingClientRect();
 
-  // Tile size
+  // Tile size (cell + gap)
   const tileSize = 34;
+  const spacing = 20;
 
-  // --- Vertical center on player ---
-  const playerCenterY =
-    gridRect.top + state.player_y * tileSize + tileSize / 2;
+  // Vertical center on player (in viewport coordinates)
+  const playerCenterY = gridRect.top + state.player_y * tileSize + tileSize / 2;
 
   const menuHeight = menu.offsetHeight;
+  const menuWidth = menu.offsetWidth;
 
-  // Center menu on player
-  let newTop = playerCenterY - menuHeight / 2;
+  // Center menu vertically on player, but clamp to viewport
+  let newTop = Math.round(playerCenterY - menuHeight / 2);
+  newTop = Math.max(12, Math.min(newTop, window.innerHeight - menuHeight - 12));
 
-  // Keep on screen
-  newTop = Math.max(20, Math.min(newTop, window.innerHeight - menuHeight - 20));
+  // Preferred left is to place the menu just right of the grid
+  let preferredLeft = Math.ceil(gridRect.right + spacing);
+  const maxLeft = window.innerWidth - menuWidth - 12; // keep 12px margin
 
-  // --- Horizontal position (center-right of grid) ---
-  const spacing = 30;
-  const newLeft = gridRect.right + spacing;
+  // If there's not enough space to the right, clamp to viewport right edge
+  let newLeft = Math.min(preferredLeft, maxLeft);
+  if (newLeft < 12) newLeft = Math.max(12, maxLeft);
 
   menu.style.top = `${newTop}px`;
   menu.style.left = `${newLeft}px`;
