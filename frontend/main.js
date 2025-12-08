@@ -3,6 +3,7 @@ import { emojiForDesert } from "./biomes/desert.js";
 import { emojiForTundra } from "./biomes/tundra.js";
 import { emojiForSwamp } from "./biomes/swamp.js";
 import { emojiForMountain } from "./biomes/mountain.js";
+import { emojiForCoast } from "./biomes/coast.js";
 
 let state = null;
 
@@ -120,6 +121,7 @@ function getBiomeEmoji(tile) {
   if (state.current_biome === "tundra") return emojiForTundra(tile);
   if (state.current_biome === "swamp") return emojiForSwamp(tile);
   if (state.current_biome === "mountain") return emojiForMountain(tile);
+  if (state.current_biome === "coastal") return emojiForCoast(tile);
   return null;
 }
 

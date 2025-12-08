@@ -1,0 +1,17 @@
+/* Coastal — beach and sea tones */
+
+.coastal .cell {
+    background: linear-gradient(180deg, #f7e9c7, #f0dca6); /* sandy base */
+}
+
+.coastal .sand {
+    background-color: #f7e9c7;
+}
+
+.coastal .swamp_water {
+    background-color: #6fc3e8; /* shallow water */
+}
+
+.coastal .seal, .coastal .beluga {
+    background: transparent;
+}
