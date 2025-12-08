@@ -29,32 +29,44 @@ def collect_resource(state: GameState):
 
     if tile == TILE_TREE:
         add_item(state, "wood", 1)
-        health -= 3
+        # Eco-Guardians cause less ecosystem decay
+        health_loss = 2 if state.eco_bonuses else 3
+        health -= health_loss
         changed = True
 
     elif tile == TILE_COAL:
         add_item(state, "coal", 1)
         state.energy += 3
-        health -= 8
+        # Eco-Guardians cause less ecosystem decay
+        health_loss = 6 if state.eco_bonuses else 8
+        health -= health_loss
         changed = True
 
     elif tile == TILE_BERRIES:
-        add_item(state, "food", 1)
+        # Eco-Guardians get +1 extra food
+        food_gain = 2 if state.eco_bonuses else 1
+        add_item(state, "food", food_gain)
         health += 1
         changed = True
 
     elif tile == TILE_SNOWY_TREE:
         add_item(state, "wood", 1)
-        health -= 3
+        # Eco-Guardians cause less ecosystem decay
+        health_loss = 2 if state.eco_bonuses else 3
+        health -= health_loss
         changed = True
 
     elif tile == TILE_FROSTED_BERRIES:
-        add_item(state, "food", 1)
+        # Eco-Guardians get +1 extra food
+        food_gain = 2 if state.eco_bonuses else 1
+        add_item(state, "food", food_gain)
         health += 1
         changed = True
 
     elif tile == TILE_CACTUS:
-        add_item(state, "food", 1)
+        # Eco-Guardians get +1 extra food
+        food_gain = 2 if state.eco_bonuses else 1
+        add_item(state, "food", food_gain)
         health += 1
         changed = True
 
@@ -78,7 +90,9 @@ def collect_resource(state: GameState):
 
     elif tile == TILE_PEAT:
         add_item(state, "energy", 1)
-        health -= 1
+        # Eco-Guardians cause less ecosystem decay
+        health_loss = 1 if state.eco_bonuses else 1
+        health -= health_loss
         changed = True
 
     elif tile == TILE_ICE_CRYSTAL:
@@ -90,12 +104,15 @@ def collect_resource(state: GameState):
         changed = True
 
     elif tile in (TILE_ROCK, TILE_STONE):
-        # for now, just allow generic collection; later tie to pickaxe
-        add_item(state, "wood", 1)
+        # Industrialists get double stone/ore
+        stone_gain = 2 if state.industry_bonuses else 1
+        add_item(state, "stone", stone_gain)
         changed = True
 
     elif tile == TILE_ORE:
-        # placeholder for future mining
+        # Industrialists get double ore
+        ore_gain = 2 if state.industry_bonuses else 1
+        add_item(state, "ore_chunk", ore_gain)
         changed = True
 
     else:

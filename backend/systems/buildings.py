@@ -40,7 +40,7 @@ def plant_tree(state: GameState):
 
 
 # -------------------------------
-# Build Farm (cost: 2 wood)
+# Build Farm (cost: 2 wood, 1 wood for Industrialists)
 # -------------------------------
 def build_farm(state: GameState):
     x, y = state.player_x, state.player_y
@@ -48,16 +48,22 @@ def build_farm(state: GameState):
     if state.tiles[y][x] != TILE_EMPTY:
         return
 
-    if not has_items(state, wood=2):
+    wood_cost = 1 if state.industry_bonuses else 2
+    if not has_items(state, wood=wood_cost):
         return
 
-    remove_item(state, "wood", 2)
+    remove_item(state, "wood", wood_cost)
     state.tiles[y][x] = TILE_FARM
+    
+    # Industrialists consume ecosystem health
+    if state.industry_bonuses:
+        health = get_current_biome_health(state) - 2
+        set_current_biome_health(state, health)
 
 
 
 # -------------------------------
-# Build Solar Panel (cost: 2 wood)
+# Build Solar Panel (cost: 2 wood, 1 wood for Industrialists)
 # -------------------------------
 def build_solar_panel(state: GameState):
     x, y = state.player_x, state.player_y
@@ -65,16 +71,22 @@ def build_solar_panel(state: GameState):
     if state.tiles[y][x] != TILE_EMPTY:
         return
 
-    if not has_items(state, wood=2):
+    wood_cost = 1 if state.industry_bonuses else 2
+    if not has_items(state, wood=wood_cost):
         return
 
-    remove_item(state, "wood", 2)
+    remove_item(state, "wood", wood_cost)
     state.tiles[y][x] = TILE_SOLAR
+    
+    # Industrialists consume ecosystem health
+    if state.industry_bonuses:
+        health = get_current_biome_health(state) - 2
+        set_current_biome_health(state, health)
 
 
 
 # -------------------------------
-# Build Wind Turbine (cost: 3 wood)
+# Build Wind Turbine (cost: 3 wood, 2 wood for Industrialists)
 # -------------------------------
 def build_wind_turbine(state: GameState):
     x, y = state.player_x, state.player_y
@@ -82,16 +94,22 @@ def build_wind_turbine(state: GameState):
     if state.tiles[y][x] != TILE_EMPTY:
         return
 
-    if not has_items(state, wood=3):
+    wood_cost = 2 if state.industry_bonuses else 3
+    if not has_items(state, wood=wood_cost):
         return
 
-    remove_item(state, "wood", 3)
+    remove_item(state, "wood", wood_cost)
     state.tiles[y][x] = TILE_WIND
+    
+    # Industrialists consume ecosystem health
+    if state.industry_bonuses:
+        health = get_current_biome_health(state) - 2
+        set_current_biome_health(state, health)
 
 
 
 # -------------------------------
-# Build House (cost: 5 wood)
+# Build House (cost: 5 wood, 3 wood for Industrialists)
 # -------------------------------
 def build_house(state: GameState):
     x, y = state.player_x, state.player_y
@@ -99,10 +117,11 @@ def build_house(state: GameState):
     if state.tiles[y][x] != TILE_EMPTY:
         return
 
-    if not has_items(state, wood=5):
+    wood_cost = 3 if state.industry_bonuses else 5
+    if not has_items(state, wood=wood_cost):
         return
 
-    remove_item(state, "wood", 5)
+    remove_item(state, "wood", wood_cost)
     state.tiles[y][x] = TILE_HOUSE
 
     state.last_house_x = x
@@ -114,6 +133,11 @@ def build_house(state: GameState):
             [TILE_EMPTY for _ in range(state.house_width)]
             for _ in range(state.house_height)
         ]
+    
+    # Industrialists consume ecosystem health
+    if state.industry_bonuses:
+        health = get_current_biome_health(state) - 3
+        set_current_biome_health(state, health)
 
 
 
