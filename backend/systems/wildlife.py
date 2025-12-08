@@ -18,8 +18,15 @@ def spawn_wildlife(state: GameState):
     if get_current_biome_health(state) < 70:
         return
 
-    # Eco-Guardians spawn more wildlife (3% -> 5%)
-    spawn_chance = 0.05 if state.eco_bonuses else 0.03
+    # Eco-Guardians spawn more wildlife (3% -> 6%)
+    # Industrialists spawn less wildlife (3% -> 1.5%)
+    if state.eco_bonuses:
+        spawn_chance = 0.1
+    elif state.industry_bonuses:
+        spawn_chance = 0.025
+    else:
+        spawn_chance = 0.05
+    
     if random.random() > spawn_chance:
         return
 
