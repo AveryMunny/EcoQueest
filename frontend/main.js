@@ -21,9 +21,21 @@ async function sendMove(direction) {
   });
 
   state = await res.json();
+  state.dialog_message = "";
   render();
   positionHelpMenu();
 }
+
+async function choosePath(path) {
+  await fetch("/api/choose_path", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ path })
+  });
+
+  fetchState(); // refresh UI
+}
+
 
 async function sendAction(url) {
   const res = await fetch(`/api/${url}`, { method: "POST" });
@@ -137,15 +149,26 @@ function render() {
       div.textContent = emoji || "";
       grid.appendChild(div);
 
+      updateDialogPosition();
+
+      //dialog box
       const dialogBox = document.getElementById("dialogBox");
       const dialogText = document.getElementById("dialogText");
+      const dialogChoices = document.getElementById("dialogChoices");
 
-      if (state.dialog_message && state.dialog_message !== "") {
-        dialogText.textContent = state.dialog_message;
-        dialogBox.classList.remove("hidden");
+      if (state.dialog_message) {
+          dialogBox.classList.remove("hidden");
+          dialogText.textContent = state.dialog_message;
+
+          if (state.awaiting_path_choice) {
+              dialogChoices.classList.remove("hidden");
+          } else {
+              dialogChoices.classList.add("hidden");
+          }
       } else {
-        dialogBox.classList.add("hidden");
+          dialogBox.classList.add("hidden");
       }
+
 
     }
   }
@@ -279,5 +302,26 @@ function renderInventory() {
     }
   }
 }
+
+function updateDialogPosition() {
+  const box = document.getElementById("dialogBox");
+  if (!state.dialog_message || box.classList.contains("hidden")) return;
+
+  const grid = document.getElementById("grid");
+  const gridRect = grid.getBoundingClientRect();
+
+  const tileSize = 34;
+
+  // NPC or player tile reference (bubble follows NPC)
+  let targetX = state.player_x;
+  let targetY = state.player_y - 1; // bubble appears above player
+
+  const x = gridRect.left + targetX * tileSize + tileSize / 2;
+  const y = gridRect.top + targetY * tileSize;
+
+  box.style.left = `${x}px`;
+  box.style.top = `${y}px`;
+}
+
 
 export {};
