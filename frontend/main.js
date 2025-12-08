@@ -232,9 +232,18 @@ function setupInput() {
     else if (["a", "ArrowLeft"].includes(key)) sendMove("left");
     else if (["d", "ArrowRight"].includes(key)) sendMove("right");
     else if (key === "p") sendAction("plant");
-    else if (key === "1") sendAction("solar");
-    else if (key === "2") sendAction("wind");
-    else if (key === "3") sendAction("house");
+    else if (key === "1") {
+      if (state.awaiting_path_choice) sendAction("choose_path_eco");
+      else sendAction("solar");
+    }
+    else if (key === "2") {
+      if (state.awaiting_path_choice) sendAction("choose_path_industry");
+      else sendAction("wind");
+    }
+    else if (key === "3") {
+      if (state.awaiting_path_choice) sendAction("choose_path_neutral");
+      else sendAction("house");
+    }
     else if (key === "4") sendAction("farm");
     else if (key === "5") sendAction("plant_wheat");
     else if (key === "6") sendAction("plant_carrot");
@@ -242,9 +251,6 @@ function setupInput() {
     else if (key === "e") sendAction("exit_house");
     else if (key === "h") toggleHelpMenu();
     else if (key.toLowerCase() === "f") sendAction("interact");
-    else if (state.awaiting_path_choice && key === "1") sendAction("choose_path_eco");
-    else if (state.awaiting_path_choice && key === "2") sendAction("choose_path_industry");
-    else if (state.awaiting_path_choice && key === "3") sendAction("choose_path_neutral");
         
     else if (key === " ") {
       e.preventDefault();
