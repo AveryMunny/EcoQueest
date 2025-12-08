@@ -32,8 +32,11 @@ def plant_carrot(state: GameState):
 
 def grow_crops(state: GameState):
     elapsed = time.time() - START_TIME
+    # Eco-Guardians grow crops 20% faster (multiply age by 1.2)
+    growth_multiplier = 1.2 if state.eco_bonuses else 1.0
+    
     for (x, y), start in list(state.crop_growth.items()):
-        age = (elapsed - start) / 60.0
+        age = ((elapsed - start) / 60.0) * growth_multiplier
         tile = state.tiles[y][x]
 
         if tile == TILE_WHEAT_1 and age >= 3:

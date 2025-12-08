@@ -47,6 +47,10 @@ class GameState:
     player_path: str = None  # "eco", "industry", or "neutral"
     awaiting_path_choice: bool = False
     dialog_message: str = ""
+    
+    # Path-based modifiers
+    eco_bonuses: bool = False
+    industry_bonuses: bool = False
 
     # persistent data per biome
     biome_states: dict = None   # {"forest": {...}, "tundra": {...}, ...}
@@ -81,6 +85,8 @@ class GameState:
             "dialog_message": self.dialog_message,
             "awaiting_path_choice": self.awaiting_path_choice,
             "player_path": self.player_path,
+            "eco_bonuses": self.eco_bonuses,
+            "industry_bonuses": self.industry_bonuses,
             "biome_health": self.biome_health,
             "biome_states": self.biome_states,
 

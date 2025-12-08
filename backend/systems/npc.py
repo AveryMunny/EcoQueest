@@ -63,19 +63,26 @@ def interact_with_npc(state):
 def choose_path(state, path):
     state.player_path = path
     state.awaiting_path_choice = False
+    
+    # Set bonuses based on path
+    if path == "eco":
+        state.eco_bonuses = True
+        state.industry_bonuses = False
+        state.inventory["mushroom"] += 3
+    elif path == "industry":
+        state.eco_bonuses = False
+        state.industry_bonuses = True
+        state.inventory["coal"] += 3
+    else:
+        state.eco_bonuses = False
+        state.industry_bonuses = False
+        state.inventory["fiber"] += 3
+    
+    # Clear dialog message immediately
+    state.dialog_message = ""
 
     # remove the NPC from the map
     for y in range(state.height):
         for x in range(state.width):
             if state.tiles[y][x] == TILE_NPC_FOREST_GUIDE:
                 state.tiles[y][x] = TILE_EMPTY
-
-    if path == "eco":
-        state.dialog_message = "🌱 You chose the Eco-Guardian path!"
-        state.inventory["mushroom"] += 3
-    elif path == "industry":
-        state.dialog_message = "💼 You chose the Industrialist path!"
-        state.inventory["coal"] += 3
-    else:
-        state.dialog_message = "⚪ You walk your own road."
-        state.inventory["fiber"] += 3
