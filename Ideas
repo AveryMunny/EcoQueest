@@ -1,0 +1,244 @@
+more biomes: volcano biome, coral reef biome (if coastal), highlands, savanna
+
+Biome Seasons / Weather
+
+Forest → rainfall cycles
+
+Tundra → blizzards reduce movement
+
+Desert → heatwaves reduce stamina
+
+Swamp → fog events (reduced visibility)
+
+Mountain → avalanches
+
+3. Resource Regeneration Cycle
+
+Trees regrow slowly
+
+Animals migrate between tiles
+
+Renewable vs nonrenewable resource tracking
+
+🌿 GAMEPLAY SYSTEMS
+4. Player Base / Home Building
+
+Upgradeable eco-home
+
+Solar panels, wind turbines, water purifier, garden
+
+Cosmetic customization (stickers, banners, nature-themed furniture)
+
+5. Crafting System
+
+Combine wood + fiber → rope
+
+Coal + metal → “EcoTech smelter”
+
+Rare biome items → unique tools
+
+6. Environmental Health Meter
+
+Each biome has a health score
+
+Overharvesting lowers it
+
+Sustainable actions restore it
+
+Unlock special events when a biome reaches 100% health
+
+7. Quests
+
+“Restore the polluted pond”
+
+“Plant 20 trees in the forest”
+
+“Repair the desert wind turbine tower”
+
+“Help the tundra fox find shelter”
+
+🤝 NPCs & CHARACTER SYSTEMS
+8. NPC Animals With Behaviors
+
+Deer wander in forest
+
+Foxes in tundra
+
+Crabs in swamp
+
+Mountain goats in highlands
+
+Can become “friendly” if treated well
+
+9. NPC Villagers
+
+Eco-scientist, botanist, explorer, merchant
+
+Give quests
+
+React to player choices
+
+Improve settlement with player cooperation
+
+10. Companion Animal
+
+Follows player
+
+Helps gather resources
+
+Level-up system
+
+⚒️ TOOLS & UPGRADES
+11. Player Tools
+
+Eco-Axe (plants trees instead of cutting)
+
+Sustainable Shovel
+
+“Wind Walker” shoes (move faster in desert storms)
+
+“Frost Cloak” (no stamina drain in tundra)
+
+12. Transportation
+
+Canoe for swamp
+
+Glider for mountains
+
+Bike for desert
+
+Magic vine-swing for forest (Tarzan vibes)
+
+📊 IN-GAME ECONOMY & TRADING
+13. Eco-Market
+
+Sell/buy: berries, coal, fiber, timber, mushrooms
+
+Prices change with biome health
+
+Rare items appear after world events
+
+14. Upgradable Bank / Storage
+
+Store resources
+
+EcoVault unlocks new perks
+
+🧠 AI & ECOLOGICAL SIMULATION
+15. Biome AI Logic
+
+Each biome has:
+
+Stability
+
+Pollution
+
+Biodiversity
+
+Climate resistance
+
+Values change depending on player actions
+
+16. World Events
+
+Desert sandstorm
+
+Swamp fungal bloom
+
+Tundra aurora (boosts regeneration)
+
+Forest wildfire (player puts it out sustainably)
+
+🌈 VISUAL / UI ADDITIONS
+17. Animated Tiles
+
+Trees sway
+
+Water sparkles
+
+Mountains have drifting snow
+
+Swamp fog creeps in
+
+18. Map UI
+
+Click mini-map to teleport
+
+Show biome borders
+
+Show resource nodes
+
+⭐ PROGRESSION & ACHIEVEMENTS
+19. Skill Trees
+
+Sustainability skill
+
+Exploration skill
+
+Crafting skill
+
+Animal handling
+Each gives passive bonuses.
+
+20. Achievements
+
+“Tree Hugger” → plant 100 trees
+
+“Eco Warrior” → restore all biomes
+
+“Nomad” → visit every biome 20 times
+
+“Green Engineer” → build 10 renewable structures
+
+🔮 ADVANCED / FUTURE IDEAS
+21. Pollution System
+
+Factories appear (rare event)
+
+Player must shut them down or convert to renewables
+
+22. Renewable Energy Grid
+
+Solar + wind + hydro → biome energy score
+Unlocks:
+
+Auto-generators
+
+Wildlife repopulation
+
+Weather control towers
+
+23. Storyline / Lore
+
+Hidden temples
+
+An ancient civilization destroyed the world once
+
+Player must prevent history from repeating
+
+24. Multiplayer / Shared World (future)
+
+Co-op resource collection
+
+Shared biome restoration
+
+Trade between players’ worlds
+
+MINIGAMES
+25. Forest – Berry Sorting Game
+26. Desert – Solar Panel Repair
+27. Tundra – Ice Maze
+28. Swamp – Frog Chorus Rhythm Game
+29. Mountain – Wind Tunnel Glide Challenge
+🪄 EASTER EGGS
+30. Rare mythical creatures
+
+Forest spirit
+
+Tundra ice wolf
+
+Desert mirage fox
+
+Mountain sky elk
+
+Each gives unique rewards if encountered.
