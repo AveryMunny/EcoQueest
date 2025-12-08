@@ -13,6 +13,7 @@ from tile_types import (
 from biomes.biome_forest import generate_forest
 from biomes.biome_tundra import generate_tundra
 from biomes.biome_desert import generate_desert
+from biomes.biome_coastal import generate_coastal
 from biomes.biome_swamp import generate_swamp
 from biomes.biome_mountains import generate_mountain
 from systems.animals import move_animals
@@ -24,6 +25,7 @@ BIOME_GENERATORS = {
     "forest": generate_forest,
     "tundra": generate_tundra,
     "desert": generate_desert,
+    "coastal": generate_coastal,
     "swamp": generate_swamp,
     "mountain": generate_mountain,
 }
@@ -34,6 +36,7 @@ WORLD_MAP = {
     (0, -2): "mountain",
     (0, 1): "swamp",
     (1, 0): "desert",
+    (2, 0): "coastal",
     (-1, 0): "forest",
 }
 
@@ -69,6 +72,7 @@ def create_initial_state(width: int = 30, height: int = 30) -> GameState:
             "mountain": 100,
             "swamp": 100,
             "desert": 100,
+            "coastal": 100,
         },
         biome_states={},
         
