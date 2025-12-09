@@ -105,11 +105,17 @@ TILE_MOUNTAIN_GRASS = "mountain_grass"
 #adding npc
 TILE_NPC_FOREST_GUIDE = "npc_forest_guide"
 TILE_NPC_DESERT_GUIDE = "npc_desert_guide"
-TILE_NPC_MOUNTAIN_GUIDE = "npc_mountain_guide"  
+TILE_NPC_MOUNTAIN_GUIDE = "npc_mountain_guide"
 TILE_NPC_SWAMP_GUIDE = "npc_swamp_guide"
 TILE_NPC_TUNDRA_GUIDE = "npc_tundra_guide"
 
-#beach area
+# beach area
 TILE_OCEAN = "ocean"
+TILE_SHELL = "shell"
+TILE_CORAL = "coral"
+TILE_SEAWEED = "seaweed"
+TILE_CRAB = "crab"
+TILE_SEAGULL = "seagull"
+TILE_COASTAL_ROCK = "coastal_rock"
 
 

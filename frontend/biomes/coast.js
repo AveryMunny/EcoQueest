@@ -3,9 +3,13 @@ export function emojiForCoast(tile) {
   const map = {
     // terrain
     sand: "🏖️",
-    ocean: "🟦",   // ← totally blue, clean, simple water tile
+    ocean: "🌊",
+
+    // collectibles
+    shell: "🐚",
 
     // animals / sea life
+    crab: "🦀",
     seal: "🦭",
     beluga: "🐋",
 

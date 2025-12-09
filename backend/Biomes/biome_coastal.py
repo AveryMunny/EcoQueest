@@ -1,12 +1,12 @@
 import random
 from tile_types import (
-    TILE_EMPTY,
     TILE_SAND,
     TILE_OCEAN,
     TILE_SEAL,
-    TILE_BELUGA,
+    TILE_CRAB,
+    TILE_SHELL,
+    TILE_EMPTY,
 )
-
 BIOME_NAME = "coastal"
 
 def generate_coastal(width, height):
@@ -16,34 +16,37 @@ def generate_coastal(width, height):
         row = []
         for x in range(width):
             r = random.random()
+
+            # Beach gradient: left (x=0) is sand/beach, right (x=width-1) is ocean
             pct = x / max(1, width - 1)
 
-            # --- FAR RIGHT: DEEP BLUE OCEAN ---
-            if pct > 0.7:
-                if r < 0.90:
-                    row.append(TILE_OCEAN)  # mostly pure blue
-                elif r < 0.95:
-                    row.append(TILE_SEAL)
-                else:
-                    row.append(TILE_BELUGA)
-
-            # --- MID AREA: SHALLOW SEA / BEACH BLEND ---
-            elif pct > 0.4:
-                if r < 0.50:
+            if pct < 0.3:
+                # Left side: mostly sand with some shells
+                if r < 0.35:
                     row.append(TILE_SAND)
-                elif r < 0.80:
+                elif r < 0.15:
+                    row.append(TILE_SHELL)
+                else:
+                    row.append(TILE_EMPTY)
+            elif pct < 0.6:
+                # Middle transition: mix of sand and ocean
+                if r < 0.1:
+                    row.append(TILE_SAND)
+                elif r < 0.05:
                     row.append(TILE_OCEAN)
+                elif r < 0.05:
+                    row.append(TILE_CRAB)
                 else:
-                    row.append(TILE_EMPTY)  # beach openings
-
-            # --- SHORE: BEACH ---
+                    row.append(TILE_EMPTY)
             else:
-                if r < 0.60:
-                    row.append(TILE_SAND)
+                # Right side: mostly ocean with some crabs
+                if r < 0.35:
+                    row.append(TILE_OCEAN)
+                elif r < 0.25:
+                    row.append(TILE_CRAB)
                 else:
                     row.append(TILE_EMPTY)
 
-            # End tile
         tiles.append(row)
 
     return tiles

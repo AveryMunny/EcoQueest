@@ -1,30 +1,31 @@
-/* Coastal — beach and sea tones */
 .coastal .cell {
-    border: 1px solid #d8cbb0; /* softer border so beach looks blended */
+    background-color: #87ceeb; /* light blue for coastal terrain */
+
 }
 
-/* BEACH / SAND */
 .coastal .sand {
-    background: #f7e9c7;
+    background-color: #f4e1a1; /* sandy color */
 }
 
-/* SOFT OCEAN (new water tile) */
 .coastal .ocean {
-    background: linear-gradient(
-        180deg,
-        #aee3ff 0%,
-        #7fc9ff 50%,
-        #5ab5ff 100%
-    );
-    border: none !important;
+    background-color: #1ca3ec; /* deeper blue for ocean */
 }
 
-/* Marine life blends naturally on top of water */
-.coastal .seal,
+.coastal .shell {
+    background-color: #fff5e1; /* light shell color */
+}
+
+.coastal .crab {
+    background-color: #ff6347; /* reddish color for crab */
+}
+
+.coastal .seal {
+    background-color: #c0c0c0; /* gray for seal */
+}
+
 .coastal .beluga {
-    background: transparent !important;
+    background-color: #e0e0e0; /* light gray for beluga */
 }
 
-.coastal .empty {
-    background: #f7e9c7;
-}
+/* Coast — vibrant blues and sandy tones */
+
