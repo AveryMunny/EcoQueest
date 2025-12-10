@@ -220,6 +220,49 @@ def api_recipes():
     return jsonify({"recipes": available})
 
 
+# -----------------------------
+# Inventory actions (use / drop)
+# -----------------------------
+@app.route("/api/inventory/use", methods=["POST"])
+def api_inventory_use():
+    data = request.get_json(force=True)
+    item = data.get("item")
+    amount = int(data.get("amount", 1))
+    from systems.inventory import remove_item
+
+    if not item:
+        GAME_STATE.dialog_message = "No item specified."
+        return jsonify(GAME_STATE.to_dict())
+
+    ok = remove_item(GAME_STATE, item, amount)
+    if ok:
+        GAME_STATE.dialog_message = f"Used {amount} x {item}."
+    else:
+        GAME_STATE.dialog_message = f"You don't have {amount} x {item} to use."
+
+    return jsonify(GAME_STATE.to_dict())
+
+
+@app.route("/api/inventory/drop", methods=["POST"])
+def api_inventory_drop():
+    data = request.get_json(force=True)
+    item = data.get("item")
+    amount = int(data.get("amount", 1))
+    from systems.inventory import remove_item
+
+    if not item:
+        GAME_STATE.dialog_message = "No item specified to drop."
+        return jsonify(GAME_STATE.to_dict())
+
+    ok = remove_item(GAME_STATE, item, amount)
+    if ok:
+        GAME_STATE.dialog_message = f"Dropped {amount} x {item}."
+    else:
+        GAME_STATE.dialog_message = f"You don't have {amount} x {item} to drop."
+
+    return jsonify(GAME_STATE.to_dict())
+
+
 
 # ------------------------------------------------------------
 # RUN SERVER

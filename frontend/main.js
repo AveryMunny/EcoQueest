@@ -367,12 +367,69 @@ function renderInventory() {
   if (!state || !state.inventory) return;
 
   for (const [item, amount] of Object.entries(state.inventory)) {
-    if (amount > 0) {
-      const div = document.createElement("div");
-      div.textContent = `${item}: ${amount}`;
-      list.appendChild(div);
-    }
+    const amt = amount || 0;
+    const row = document.createElement("div");
+    row.style.display = "flex";
+    row.style.justifyContent = "space-between";
+    row.style.alignItems = "center";
+    row.style.padding = "6px 4px";
+
+    const left = document.createElement("div");
+    left.textContent = `${item}: ${amt}`;
+
+    const actions = document.createElement("div");
+
+    const useBtn = document.createElement("button");
+    useBtn.textContent = "Use";
+    useBtn.style.marginRight = "6px";
+    useBtn.disabled = amt <= 0;
+    useBtn.addEventListener("click", () => performUse(item));
+
+    const dropBtn = document.createElement("button");
+    dropBtn.textContent = "Drop";
+    dropBtn.disabled = amt <= 0;
+    dropBtn.addEventListener("click", () => performDrop(item));
+
+    actions.appendChild(useBtn);
+    actions.appendChild(dropBtn);
+
+    row.appendChild(left);
+    row.appendChild(actions);
+    list.appendChild(row);
   }
+}
+
+function performUse(itemName) {
+  fetch("/api/inventory/use", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ item: itemName, amount: 1 }),
+  })
+    .then((res) => res.json())
+    .then((data) => {
+      state = data;
+      render();
+      // keep inventory open
+      const inv = document.getElementById("inventoryMenu");
+      if (inv && inv.classList.contains("hidden") === false) renderInventory();
+    })
+    .catch((err) => console.error("Use item error:", err));
+}
+
+function performDrop(itemName) {
+  fetch("/api/inventory/drop", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ item: itemName, amount: 1 }),
+  })
+    .then((res) => res.json())
+    .then((data) => {
+      state = data;
+      render();
+      const inv = document.getElementById("inventoryMenu");
+      if (inv && inv.classList.contains("hidden") === false) renderInventory();
+    })
+    .catch((err) => console.error("Drop item error:", err));
 }
 
 function updateDialogPosition() {
