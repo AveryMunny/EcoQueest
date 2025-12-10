@@ -245,6 +245,16 @@ body.mountain #hud { border: 2px solid #8b8fa1; }
   z-index: 9999;
 }
 
+/* Centered dialog for important global messages (craft failures, errors) */
+.centered-dialog {
+  top: 50% !important;
+  left: 50% !important;
+  bottom: auto !important;
+  transform: translate(-50%, -50%) !important;
+  width: 420px;
+  border-color: #ff6b6b;
+}
+
 #dialogChoices button {
   margin: 5px;
   padding: 6px 12px;

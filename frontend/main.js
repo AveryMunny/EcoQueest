@@ -185,21 +185,33 @@ function render() {
     const dialogChoices = document.getElementById("dialogChoices");
 
     if (state.dialog_message) {
-        dialogBox.classList.remove("hidden");
-        dialogText.textContent = state.dialog_message;
+      dialogBox.classList.remove("hidden");
+      dialogText.textContent = state.dialog_message;
 
-        if (state.awaiting_path_choice) {
-            dialogChoices.classList.remove("hidden");
-        } else {
-            dialogChoices.classList.add("hidden");
-        }
+      // Detect craft-failure / global messages that should be centered
+      const msg = state.dialog_message.toString();
+      const isGlobalCentered = msg.includes("Cannot craft") || msg.startsWith("Unknown recipe");
 
-        updateDialogPosition();
-        window.dialogOpen = true;
-    } else {
-        dialogBox.classList.add("hidden");
+      if (isGlobalCentered) {
+        // Hide choice buttons for global notices
         dialogChoices.classList.add("hidden");
-        window.dialogOpen = false;
+        // Use centered fixed dialog (follows viewport / scroll)
+        dialogBox.classList.add("centered-dialog");
+        // Clear any inline positioning that would follow the grid
+        dialogBox.style.left = "";
+        dialogBox.style.top = "";
+      } else {
+        dialogChoices.classList.toggle("hidden", !state.awaiting_path_choice);
+        dialogBox.classList.remove("centered-dialog");
+        updateDialogPosition();
+      }
+
+      window.dialogOpen = true;
+    } else {
+      dialogBox.classList.add("hidden");
+      dialogChoices.classList.add("hidden");
+      dialogBox.classList.remove("centered-dialog");
+      window.dialogOpen = false;
     }
 
     /* ---------- HUD INFO ---------- */
