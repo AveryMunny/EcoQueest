@@ -255,6 +255,22 @@ body.mountain #hud { border: 2px solid #8b8fa1; }
   border-color: #ff6b6b;
 }
 
+/* OK button in dialog */
+#dialogActions {
+  margin-top: 10px;
+}
+
+#dialogOk {
+  background: #2b8a3e;
+  color: white;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+#dialogOk.hidden { display: none; }
+
 #dialogChoices button {
   margin: 5px;
   padding: 6px 12px;

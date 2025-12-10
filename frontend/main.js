@@ -6,6 +6,7 @@ import { emojiForMountain } from "./biomes/mountain.js";
 import { emojiForCoast } from "./biomes/coast.js";
 
 let state = null;
+let _dialogAutoHideTimer = null;
 
 /* ---------------- FETCH HELPERS ---------------- */
 async function fetchState() {
@@ -200,6 +201,21 @@ function render() {
         // Clear any inline positioning that would follow the grid
         dialogBox.style.left = "";
         dialogBox.style.top = "";
+        // Show OK button for manual dismiss
+        const okBtn = document.getElementById("dialogOk");
+        if (okBtn) okBtn.classList.remove("hidden");
+
+        // Clear previous timer
+        if (_dialogAutoHideTimer) {
+          clearTimeout(_dialogAutoHideTimer);
+          _dialogAutoHideTimer = null;
+        }
+
+        // Auto-hide after 4 seconds
+        _dialogAutoHideTimer = setTimeout(() => {
+          state.dialog_message = "";
+          render();
+        }, 4000);
       } else {
         dialogChoices.classList.toggle("hidden", !state.awaiting_path_choice);
         dialogBox.classList.remove("centered-dialog");
@@ -211,6 +227,12 @@ function render() {
       dialogBox.classList.add("hidden");
       dialogChoices.classList.add("hidden");
       dialogBox.classList.remove("centered-dialog");
+      const okBtn = document.getElementById("dialogOk");
+      if (okBtn) okBtn.classList.add("hidden");
+      if (_dialogAutoHideTimer) {
+        clearTimeout(_dialogAutoHideTimer);
+        _dialogAutoHideTimer = null;
+      }
       window.dialogOpen = false;
     }
 
@@ -289,6 +311,20 @@ function setupInput() {
 window.addEventListener("load", () => {
   setupInput();
   fetchState();
+  // Dialog OK button handler (dismiss centered/global messages)
+  setTimeout(() => {
+    const ok = document.getElementById("dialogOk");
+    if (ok) {
+      ok.addEventListener("click", () => {
+        if (_dialogAutoHideTimer) {
+          clearTimeout(_dialogAutoHideTimer);
+          _dialogAutoHideTimer = null;
+        }
+        if (state) state.dialog_message = "";
+        render();
+      });
+    }
+  }, 50);
 });
 window.addEventListener("resize", () => {
   positionHelpMenu();
