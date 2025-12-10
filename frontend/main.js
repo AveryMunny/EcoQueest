@@ -78,6 +78,14 @@ function toggleHelpMenu() {
   }
 }
 
+// Expose toggles for inline buttons
+window.toggleHelpMenu = toggleHelpMenu;
+window.toggleInventory = toggleInventory;
+window.toggleCraftMenu = toggleCraftMenu;
+
+// expose for inline onclick handlers (module scope -> window)
+window.toggleHelpMenu = toggleHelpMenu;
+
 
 function positionHelpMenu() {
   const menu = document.getElementById("helpMenu");
