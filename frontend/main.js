@@ -113,7 +113,7 @@ function positionHelpMenu() {
   // Try to horizontally center on the player, but never overlap the grid
   const playerCenterX = gridRect.left + state.player_x * tileSize + tileSize / 2;
   const desiredLeft = playerCenterX - menuWidth / 2;
-  const minLeft = Math.ceil(gridRect.right + 8); // keep a small gap from the grid
+  const minLeft = Math.ceil(gridRect.right + 2); // keep a tiny gap from the grid
   const maxLeft = window.innerWidth - menuWidth - 12; // keep 12px margin
 
   let newLeft = desiredLeft;
