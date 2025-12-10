@@ -1,4 +1,5 @@
 # systems/collection.py
+import random
 from game_state import GameState
 from tile_types import (
     TILE_EMPTY,
@@ -30,6 +31,9 @@ def collect_resource(state: GameState):
 
     if tile == TILE_TREE:
         add_item(state, "wood", 1)
+        # 25% chance to drop a sapling
+        if random.random() < 0.25:
+            add_item(state, "sapling", 1)
         # Eco-Guardians cause less ecosystem decay
         health_loss = 2 if state.eco_bonuses else 3
         health -= health_loss
@@ -52,6 +56,9 @@ def collect_resource(state: GameState):
 
     elif tile == TILE_SNOWY_TREE:
         add_item(state, "wood", 1)
+        # 25% chance to drop a sapling
+        if random.random() < 0.25:
+            add_item(state, "sapling", 1)
         # Eco-Guardians cause less ecosystem decay
         health_loss = 2 if state.eco_bonuses else 3
         health -= health_loss

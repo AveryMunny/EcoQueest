@@ -281,6 +281,7 @@ function render() {
     document.getElementById("frosted_berries").textContent = inv.frosted_berries ?? 0;
     document.getElementById("fish").textContent = inv.fish ?? 0;
     document.getElementById("wood").textContent = inv.wood ?? 0;
+    document.getElementById("sapling").textContent = inv.sapling ?? 0;
     document.getElementById("coal").textContent = inv.coal ?? 0;
     document.getElementById("mushroom").textContent = inv.mushroom ?? 0;
     document.getElementById("fiber").textContent = inv.fiber ?? 0;
