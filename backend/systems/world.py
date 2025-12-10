@@ -153,6 +153,29 @@ def switch_biome(state: GameState, biome_name: str):
     state.last_house_y = new_biome_state["last_house_y"]
     state.house_tiles = new_biome_state["house_tiles"]
 
+    # Restore crop tiles from crop_growth entries
+    # (in case tiles were regenerated, we need to put the crop tiles back)
+    from tile_types import TILE_WHEAT_1, TILE_WHEAT_2, TILE_WHEAT_3, TILE_CARROT_1, TILE_CARROT_2, TILE_CARROT_3
+    crop_tiles = {TILE_WHEAT_1, TILE_WHEAT_2, TILE_WHEAT_3, TILE_CARROT_1, TILE_CARROT_2, TILE_CARROT_3}
+    
+    for key in (state.crop_growth or {}).keys():
+        try:
+            if isinstance(key, str):
+                x_str, y_str = key.split(",")
+                x, y = int(x_str), int(y_str)
+            else:
+                x, y = key
+            # Check if tile is not already a crop tile; if so, mark as TILE_FARM
+            # (the actual crop tile will be restored by grow_crops when it's updated)
+            if 0 <= x < state.width and 0 <= y < state.height:
+                current_tile = state.tiles[y][x]
+                if current_tile not in crop_tiles:
+                    # For now, just mark as FARM; grow_crops will update it
+                    from tile_types import TILE_FARM
+                    state.tiles[y][x] = TILE_FARM
+        except Exception:
+            pass
+
     state.current_biome = biome_name
     state.player_x = state.width // 2
     state.player_y = state.height // 2
