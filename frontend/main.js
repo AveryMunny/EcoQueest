@@ -147,9 +147,9 @@ function getGlobalEmoji(tile) {
     floor: "▫️",
     door: "🚪",
     bed: "🛏️",
-    table: "🪑",
+    table: "┬─┬", // dining table look
     chest: "📦",
-    rug: "🧶",
+    rug: "⬜", // scarf as rug visual
     farm: "🚜",
     rabbit: "🐇",
     deer: "🦌",

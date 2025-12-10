@@ -30,6 +30,21 @@ body {
   border-radius: 4px;
 }
 
+/* Interior tiles: lighter, clean background (no dot look) */
+.cell.floor,
+.cell.bed,
+.cell.table,
+.cell.chest,
+.cell.rug {
+  background: #f2e3cf;
+  border: 1px solid #e2cdae;
+}
+
+.cell.rug {
+  background: #e8d1b3;
+  border-color: #d7bb95;
+}
+
 /* -------------------------
    PLAYER + HOUSE
 -------------------------- */
@@ -207,7 +222,7 @@ body.mountain #hud { border: 2px solid #8b8fa1; }
 #craftMenu {
   position: absolute;
   top: 80px;
-  right: 300px;
+  right: 180px; /* nudged right to avoid overlap with house */
   width: 280px;
   background: rgba(40,40,40,0.9);
   padding: 15px;
