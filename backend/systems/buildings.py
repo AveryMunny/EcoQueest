@@ -19,6 +19,7 @@ from tile_types import (
 
 from systems.inventory import has_items, remove_item
 from systems.world import get_current_biome_health, set_current_biome_health
+from systems.energy import drain_energy
 
 
 def create_default_house_layout(width: int, height: int):
@@ -71,6 +72,8 @@ def plant_tree(state: GameState):
 
     health = get_current_biome_health(state) + 3
     set_current_biome_health(state, health)
+    
+    drain_energy(state, 1)  # Planting costs 1 energy
 
 
 

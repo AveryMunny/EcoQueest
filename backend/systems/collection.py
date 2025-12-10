@@ -12,7 +12,7 @@ from tile_types import (
     TILE_OCEAN, TILE_SWAMP_WATER,
 )
 from systems.world import get_current_biome_health, set_current_biome_health
-from systems.energy import apply_passive_energy
+from systems.energy import apply_passive_energy, passive_energy_drain, drain_energy
 from systems.farming import grow_crops
 from systems.buildings import try_enter_house
 from systems.wildlife import spawn_wildlife, despawn_wildlife
@@ -134,6 +134,8 @@ def collect_resource(state: GameState):
         state.tiles[y][x] = TILE_EMPTY
         set_current_biome_health(state, health)
         state.turn += 1
+        drain_energy(state, 2)  # Harvesting costs 2 energy
+        passive_energy_drain(state)
         apply_passive_energy(state)
         spawn_wildlife(state)
         despawn_wildlife(state)

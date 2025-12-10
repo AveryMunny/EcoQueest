@@ -1,7 +1,7 @@
 # systems/movement.py
 from game_state import GameState
 from systems.world import WORLD_MAP, switch_biome
-from systems.energy import apply_passive_energy
+from systems.energy import apply_passive_energy, passive_energy_drain, drain_energy
 from systems.wildlife import spawn_wildlife, despawn_wildlife
 from systems.buildings import try_enter_house
 from systems.farming import grow_crops
@@ -58,7 +58,8 @@ def move_player(state: GameState, direction: str):
             return
 
     state.turn += 1
-    apply_passive_energy(state)
+    passive_energy_drain(state)  # Drain energy over time
+    apply_passive_energy(state)  # Gain energy from solar/wind
     spawn_wildlife(state)
     despawn_wildlife(state)
     try_enter_house(state)

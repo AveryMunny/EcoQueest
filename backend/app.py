@@ -263,11 +263,35 @@ def api_inventory_use():
         GAME_STATE.dialog_message = "No item specified."
         return jsonify(GAME_STATE.to_dict())
 
-    ok = remove_item(GAME_STATE, item, amount)
-    if ok:
-        GAME_STATE.dialog_message = f"Used {amount} x {item}."
+    # Food items restore energy and health
+    food_items = {
+        "berries": {"energy": 10, "health": 5},
+        "frosted_berries": {"energy": 12, "health": 6},
+        "wheat": {"energy": 15, "health": 8},
+        "carrot": {"energy": 15, "health": 8},
+        "fish": {"energy": 20, "health": 12},
+        "mushroom": {"energy": 8, "health": 4},
+    }
+
+    if item in food_items:
+        ok = remove_item(GAME_STATE, item, amount)
+        if ok:
+            restore = food_items[item]
+            energy_gain = restore["energy"] * amount
+            health_gain = restore["health"] * amount
+            
+            GAME_STATE.energy = min(100, GAME_STATE.energy + energy_gain)
+            GAME_STATE.player_health = min(100, GAME_STATE.player_health + health_gain)
+            
+            GAME_STATE.dialog_message = f"Ate {amount} x {item}. +{energy_gain} Energy, +{health_gain} Health!"
+        else:
+            GAME_STATE.dialog_message = f"You don't have {amount} x {item}."
     else:
-        GAME_STATE.dialog_message = f"You don't have {amount} x {item} to use."
+        ok = remove_item(GAME_STATE, item, amount)
+        if ok:
+            GAME_STATE.dialog_message = f"Used {amount} x {item}."
+        else:
+            GAME_STATE.dialog_message = f"You don't have {amount} x {item} to use."
 
     return jsonify(GAME_STATE.to_dict())
 
