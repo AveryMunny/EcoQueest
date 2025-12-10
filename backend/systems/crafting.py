@@ -71,10 +71,14 @@ def craft(state: GameState, recipe_name: str) -> bool:
     return True
 
 
-def get_available_recipes(state: GameState) -> list:
-    """Return list of recipe names the player can currently craft."""
-    available = []
-    for recipe_name in RECIPES.keys():
-        if can_craft(state, recipe_name):
-            available.append(recipe_name)
-    return available
+def get_available_recipes(state: GameState):
+    """Return a mapping of all recipes and their requires/produces for the frontend.
+
+    Previously this returned only craftable recipes; frontend expects a recipe
+    dictionary to render the menu. Expose the full registry so the UI can
+    present recipes even when the player lacks resources.
+    """
+    out = {}
+    for name, data in RECIPES.items():
+        out[name] = {"requires": data.get("requires", {}), "produces": data.get("produces", {})}
+    return out
