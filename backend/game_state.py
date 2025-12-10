@@ -18,7 +18,7 @@ class GameState:
     ecosystem_health: int = 100
     biome_health: dict = None   # {"forest": 100, ...}
 
-    energy: int = 0
+    energy: int = 100
     wood: int = 0
     coal: int = 0
 
