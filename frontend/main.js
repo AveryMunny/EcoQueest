@@ -110,13 +110,16 @@ function positionHelpMenu() {
   let newTop = Math.round(playerCenterY - menuHeight / 2);
   newTop = Math.max(12, Math.min(newTop, window.innerHeight - menuHeight - 12));
 
-  // Preferred left is to place the menu just right of the grid
-  let preferredLeft = Math.ceil(gridRect.right + spacing);
+  // Try to horizontally center on the player, but never overlap the grid
+  const playerCenterX = gridRect.left + state.player_x * tileSize + tileSize / 2;
+  const desiredLeft = playerCenterX - menuWidth / 2;
+  const minLeft = Math.ceil(gridRect.right + 8); // keep a small gap from the grid
   const maxLeft = window.innerWidth - menuWidth - 12; // keep 12px margin
 
-  // If there's not enough space to the right, clamp to viewport right edge
-  let newLeft = Math.min(preferredLeft, maxLeft);
-  if (newLeft < 12) newLeft = Math.max(12, maxLeft);
+  let newLeft = desiredLeft;
+  if (newLeft < minLeft) newLeft = minLeft;
+  if (newLeft > maxLeft) newLeft = maxLeft;
+  if (newLeft < 12) newLeft = 12; // final safety clamp
 
   menu.style.top = `${newTop}px`;
   menu.style.left = `${newLeft}px`;
