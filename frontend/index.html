@@ -139,6 +139,18 @@
       <p style="text-align:center;font-size:13px;color:#ccc;">Press C to close</p>
     </div>
 
+    <div id="interiorToolbar" class="hidden">
+      <h3>Decorate</h3>
+      <div class="interior-buttons">
+        <button data-item="bed"   onclick="setPlacementMode('bed')">Bed</button>
+        <button data-item="table" onclick="setPlacementMode('table')">Table</button>
+        <button data-item="chest" onclick="setPlacementMode('chest')">Chest</button>
+        <button data-item="rug"   onclick="setPlacementMode('rug')">Rug</button>
+        <button data-item="clear" onclick="setPlacementMode('clear')">Eraser</button>
+      </div>
+      <p style="text-align:center;font-size:12px;color:#ccc;">Click a tile inside your house to place/clear.</p>
+    </div>
+
      <div id="dialogBox" class="hidden">
     <div id="dialogText"></div>
 

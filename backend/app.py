@@ -25,6 +25,7 @@ from systems.farming import (
 )
 from systems.npc import interact_with_npc, choose_path
 from systems.crafting import craft, get_available_recipes
+from systems.buildings import place_furniture, clear_furniture, try_enter_house
 
 # ------------------------------------------------------------
 # CREATE FLASK APP (serving frontend folder)
@@ -97,6 +98,13 @@ def api_interact():
         interact_with_npc(GAME_STATE)
     # if result is True or False, attempt_tame already set dialog_message
     return jsonify(GAME_STATE.to_dict())
+
+
+@app.route("/api/enter_house", methods=["POST"])
+def api_enter_house():
+    GAME_STATE.dialog_message = ""
+    try_enter_house(GAME_STATE)
+    return jsonify(get_state_dict())
 
 @app.route("/api/choose_path_eco", methods=["POST"])
 def path_eco():
@@ -218,6 +226,27 @@ def api_craft():
 def api_recipes():
     available = get_available_recipes(GAME_STATE)
     return jsonify({"recipes": available})
+
+
+@app.route("/api/house/place", methods=["POST"])
+def api_house_place():
+    GAME_STATE.dialog_message = ""
+    data = request.get_json(force=True)
+    x = int(data.get("x", -1))
+    y = int(data.get("y", -1))
+    item = data.get("item")
+    place_furniture(GAME_STATE, x, y, item)
+    return jsonify(get_state_dict())
+
+
+@app.route("/api/house/clear", methods=["POST"])
+def api_house_clear():
+    GAME_STATE.dialog_message = ""
+    data = request.get_json(force=True)
+    x = int(data.get("x", -1))
+    y = int(data.get("y", -1))
+    clear_furniture(GAME_STATE, x, y)
+    return jsonify(get_state_dict())
 
 
 # -----------------------------

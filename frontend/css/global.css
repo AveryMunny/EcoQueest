@@ -216,6 +216,40 @@ body.mountain #hud { border: 2px solid #8b8fa1; }
   z-index: 20;
 }
 
+#interiorToolbar {
+  position: fixed;
+  top: 120px;
+  left: 20px;
+  width: 220px;
+  background: rgba(25,25,25,0.9);
+  padding: 12px;
+  border-radius: 10px;
+  color: white;
+  z-index: 9000;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.35);
+}
+
+.interior-buttons {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 6px;
+  margin-bottom: 8px;
+}
+
+#interiorToolbar button {
+  background: #2b8a3e;
+  color: #fff;
+  border: none;
+  padding: 6px 8px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+#interiorToolbar button:hover {
+  background: #237132;
+}
+
 .hidden {
   display: none;
 }

@@ -8,10 +8,39 @@ from tile_types import (
     TILE_SOLAR,
     TILE_WIND,
     TILE_HOUSE,
+    TILE_WALL,
+    TILE_FLOOR,
+    TILE_DOOR,
+    TILE_BED,
+    TILE_TABLE,
+    TILE_CHEST,
+    TILE_RUG,
 )
 
 from systems.inventory import has_items, remove_item
 from systems.world import get_current_biome_health, set_current_biome_health
+
+
+def create_default_house_layout(width: int, height: int):
+    layout = [[TILE_FLOOR for _ in range(width)] for _ in range(height)]
+
+    # Surround with walls
+    for x in range(width):
+        layout[0][x] = TILE_WALL
+        layout[height - 1][x] = TILE_WALL
+    for y in range(height):
+        layout[y][0] = TILE_WALL
+        layout[y][width - 1] = TILE_WALL
+
+    # Door at bottom center
+    door_x = width // 2
+    layout[height - 1][door_x] = TILE_DOOR
+    return layout
+
+
+def ensure_house_tiles(state: GameState):
+    if state.house_tiles is None:
+        state.house_tiles = create_default_house_layout(state.house_width, state.house_height)
 
 
 
@@ -127,12 +156,7 @@ def build_house(state: GameState):
     state.last_house_x = x
     state.last_house_y = y
 
-    if state.house_tiles is None:
-        # Build interior layout
-        state.house_tiles = [
-            [TILE_EMPTY for _ in range(state.house_width)]
-            for _ in range(state.house_height)
-        ]
+    ensure_house_tiles(state)
     
     # Industrialists consume ecosystem health
     if state.industry_bonuses:
@@ -147,6 +171,7 @@ def build_house(state: GameState):
 def try_enter_house(state: GameState):
     x, y = state.player_x, state.player_y
     if state.tiles[y][x] == TILE_HOUSE:
+        ensure_house_tiles(state)
         state.in_house = True
         state.player_x = state.house_width // 2
         state.player_y = state.house_height // 2
@@ -174,3 +199,53 @@ def exit_house(state: GameState):
 
     state.player_x = state.last_house_x
     state.player_y = state.last_house_y
+
+
+# ---------------------------------
+# Interior decoration (place/clear)
+# ---------------------------------
+ALLOWED_FURNITURE = {"bed": TILE_BED, "table": TILE_TABLE, "chest": TILE_CHEST, "rug": TILE_RUG}
+
+
+def place_furniture(state: GameState, x: int, y: int, item: str):
+    if not state.in_house:
+        state.dialog_message = "You must be inside the house to place furniture."
+        return False
+
+    ensure_house_tiles(state)
+    if not (0 <= x < state.house_width and 0 <= y < state.house_height):
+        state.dialog_message = "Invalid spot."
+        return False
+
+    target = state.house_tiles[y][x]
+    if target in (TILE_WALL, TILE_DOOR):
+        state.dialog_message = "Can't place on walls or the door."
+        return False
+
+    tile = ALLOWED_FURNITURE.get(item)
+    if not tile:
+        state.dialog_message = f"Unknown furniture: {item}"
+        return False
+
+    state.house_tiles[y][x] = tile
+    state.dialog_message = f"Placed {item}."
+    return True
+
+
+def clear_furniture(state: GameState, x: int, y: int):
+    if not state.in_house:
+        state.dialog_message = "You must be inside the house to edit furniture."
+        return False
+
+    ensure_house_tiles(state)
+    if not (0 <= x < state.house_width and 0 <= y < state.house_height):
+        state.dialog_message = "Invalid spot."
+        return False
+
+    if state.house_tiles[y][x] in (TILE_WALL, TILE_DOOR):
+        state.dialog_message = "Can't remove walls or the door."
+        return False
+
+    state.house_tiles[y][x] = TILE_FLOOR
+    state.dialog_message = "Cleared."
+    return True

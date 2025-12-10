@@ -7,6 +7,7 @@ import { emojiForCoast } from "./biomes/coast.js";
 
 let state = null;
 let _dialogAutoHideTimer = null;
+let placementMode = null; // interior decoration mode
 
 /* ---------------- FETCH HELPERS ---------------- */
 async function fetchState() {
@@ -142,6 +143,13 @@ function getGlobalEmoji(tile) {
     solar: "☀️",
     wind: "🌀",
     house: "🏡",
+    wall: "🧱",
+    floor: "▫️",
+    door: "🚪",
+    bed: "🛏️",
+    table: "🪑",
+    chest: "📦",
+    rug: "🧶",
     farm: "🚜",
     rabbit: "🐇",
     deer: "🦌",
@@ -178,6 +186,8 @@ function render() {
             const tile = tiles[y][x];
 
             div.classList.add("cell", tile);
+        div.dataset.x = x;
+        div.dataset.y = y;
 
             let emoji = getBiomeEmoji(tile) || getGlobalEmoji(tile);
 
@@ -274,6 +284,13 @@ function render() {
     document.getElementById("ore_chunk").textContent = inv.ore_chunk ?? 0;
     document.getElementById("ice_shard").textContent = inv.ice_shard ?? 0;
     document.getElementById("crystal_shard").textContent = inv.crystal_shard ?? 0;
+
+    // Interior toolbar visibility
+    const toolbar = document.getElementById("interiorToolbar");
+    if (toolbar) {
+      if (state.in_house) toolbar.classList.remove("hidden");
+      else toolbar.classList.add("hidden");
+    }
 }
 
 
@@ -316,6 +333,11 @@ function setupInput() {
   document.getElementById("resetBtn").addEventListener("click", () => {
     sendAction("reset");
   });
+
+  const grid = document.getElementById("grid");
+  if (grid) {
+    grid.addEventListener("click", handleGridClick);
+  }
 }
 
 /* ---------------- INIT ---------------- */
@@ -479,6 +501,11 @@ window.addEventListener("keydown", (e) => {
   }
 });
 
+function setPlacementMode(mode) {
+  placementMode = mode;
+}
+window.setPlacementMode = setPlacementMode;
+
 function renderCraftMenu() {
   const list = document.getElementById("craftList");
   list.innerHTML = "";
@@ -563,6 +590,50 @@ function performCraft(recipeName) {
       }
     })
     .catch((err) => console.error("Craft error:", err));
+}
+
+function handleGridClick(e) {
+  if (!state || !state.in_house) return;
+  const cell = e.target.closest(".cell");
+  if (!cell) return;
+  const x = Number(cell.dataset.x);
+  const y = Number(cell.dataset.y);
+  if (Number.isNaN(x) || Number.isNaN(y)) return;
+
+  if (!placementMode) return;
+  if (placementMode === "clear") {
+    performClearFurniture(x, y);
+  } else {
+    performPlaceFurniture(x, y, placementMode);
+  }
+}
+
+function performPlaceFurniture(x, y, item) {
+  fetch("/api/house/place", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ x, y, item }),
+  })
+    .then((res) => res.json())
+    .then((data) => {
+      state = data;
+      render();
+    })
+    .catch((err) => console.error("Place furniture error:", err));
+}
+
+function performClearFurniture(x, y) {
+  fetch("/api/house/clear", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ x, y }),
+  })
+    .then((res) => res.json())
+    .then((data) => {
+      state = data;
+      render();
+    })
+    .catch((err) => console.error("Clear furniture error:", err));
 }
 
 
