@@ -267,9 +267,11 @@ function render() {
     document.getElementById("hud-time").textContent = state.time_of_day;
     document.getElementById("hud-day").textContent = state.current_day;
 
+    document.getElementById("health-bar").style.width = state.player_health + "%";
     document.getElementById("eco-bar").style.width = state.ecosystem_health + "%";
     document.getElementById("energy-bar").style.width = Math.min(state.energy, 100) + "%";
 
+    document.getElementById("health").textContent = state.player_health;
     document.getElementById("eco").textContent = state.ecosystem_health;
     document.getElementById("energy").textContent = state.energy;
 

@@ -12,7 +12,9 @@ class GameState:
     player_x: int = 0
     player_y: int = 0
 
-    # mirrors *current biome’s* health
+    player_health: int = 100
+
+    # mirrors *current biome's* health
     ecosystem_health: int = 100
     biome_health: dict = None   # {"forest": 100, ...}
 
@@ -65,6 +67,7 @@ class GameState:
             "height": self.height,
             "player_x": self.player_x,
             "player_y": self.player_y,
+            "player_health": self.player_health,
             "ecosystem_health": self.ecosystem_health,
             "energy": self.energy,
             
