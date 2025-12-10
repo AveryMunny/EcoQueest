@@ -230,6 +230,45 @@ body.mountain #hud { border: 2px solid #8b8fa1; }
   overflow-y: auto;
 }
 
+/* Craft menu recipe states */
+.recipe-entry {
+  margin-bottom: 10px;
+  padding: 8px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+.recipe-entry .reqs {
+  font-size: 13px;
+  color: #333;
+}
+
+.recipe-available {
+  background: linear-gradient(180deg, #f0fff4, #e6ffed);
+  border-color: #4caf50;
+  color: #08321a;
+  cursor: pointer;
+}
+
+.recipe-unavailable {
+  background: #f7f7f7;
+  border-color: #ddd;
+  color: #888;
+  opacity: 0.9;
+  cursor: not-allowed;
+}
+
+.recipe-badge {
+  font-size: 12px;
+  padding: 4px 8px;
+  border-radius: 6px;
+  background: rgba(0,0,0,0.06);
+}
+
 #dialogBox {
   position: fixed;
   bottom: 20px;

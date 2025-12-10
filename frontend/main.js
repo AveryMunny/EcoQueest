@@ -429,15 +429,8 @@ function renderCraftMenu() {
       for (const name of names) {
         const info = recipes[name] || {};
         const req = info.requires || {};
-
         const div = document.createElement("div");
-        div.style.marginBottom = "10px";
-        div.style.padding = "8px";
-        div.style.border = "1px solid #ccc";
-        div.style.borderRadius = "4px";
-        div.style.cursor = "pointer";
-        div.style.backgroundColor = "#f0f0f0";
-        div.style.transition = "background-color 0.2s";
+        div.classList.add("recipe-entry");
 
         // build a readable requirement string
         const reqParts = [];
@@ -445,19 +438,39 @@ function renderCraftMenu() {
           reqParts.push(`${qty} × ${item}`);
         }
 
-        div.textContent = `📦 ${name} — requires: ${reqParts.join(", ")}`;
+        const left = document.createElement("div");
+        left.classList.add("reqs");
+        left.textContent = `📦 ${name} — requires: ${reqParts.join(", ")}`;
 
-        div.addEventListener("mouseover", () => {
-          div.style.backgroundColor = "#e0e0e0";
-        });
-        div.addEventListener("mouseout", () => {
-          div.style.backgroundColor = "#f0f0f0";
-        });
+        const badge = document.createElement("div");
+        badge.classList.add("recipe-badge");
 
-        div.addEventListener("click", () => {
-          performCraft(name);
-        });
+        // Determine availability by comparing to current inventory
+        const inv = state && state.inventory ? state.inventory : {};
+        let canCraft = true;
+        const missingParts = [];
+        for (const [item, qty] of Object.entries(req)) {
+          const have = inv[item] ?? 0;
+          if (have < qty) {
+            canCraft = false;
+            missingParts.push(`${qty - have} ${item}`);
+          }
+        }
 
+        if (canCraft) {
+          div.classList.add("recipe-available");
+          badge.textContent = "Can craft";
+          // clickable
+          div.addEventListener("click", () => performCraft(name));
+        } else {
+          div.classList.add("recipe-unavailable");
+          badge.textContent = `Need: ${missingParts.join(", ")}`;
+          // do not attach click; instead show small tooltip on hover
+          div.title = `Missing: ${missingParts.join(", ")}`;
+        }
+
+        div.appendChild(left);
+        div.appendChild(badge);
         list.appendChild(div);
       }
     })
