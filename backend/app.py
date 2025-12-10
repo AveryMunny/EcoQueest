@@ -87,8 +87,14 @@ def api_move():
 
 @app.route("/api/interact", methods=["POST"])
 def api_interact():
-    from systems.npc import interact_with_npc
-    interact_with_npc(GAME_STATE)
+    # First try to interact with/tame nearby animals. If no animal nearby, fall back to NPC dialog.
+    from systems.animals import attempt_tame
+    result = attempt_tame(GAME_STATE)
+    if result is None:
+        # no animal nearby — try NPCs
+        from systems.npc import interact_with_npc
+        interact_with_npc(GAME_STATE)
+    # if result is True or False, attempt_tame already set dialog_message
     return jsonify(GAME_STATE.to_dict())
 
 @app.route("/api/choose_path_eco", methods=["POST"])

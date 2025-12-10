@@ -17,7 +17,6 @@ class GameState:
     biome_health: dict = None   # {"forest": 100, ...}
 
     energy: int = 0
-    food: int = 0
     wood: int = 0
     coal: int = 0
 
@@ -54,6 +53,7 @@ class GameState:
 
     # persistent data per biome
     biome_states: dict = None   # {"forest": {...}, "tundra": {...}, ...}
+    pets: list = None
 
     def to_dict(self):
         """State -> JSON-safe dict for frontend."""
@@ -64,7 +64,7 @@ class GameState:
             "player_y": self.player_y,
             "ecosystem_health": self.ecosystem_health,
             "energy": self.energy,
-            "food": self.food,
+            
             "wood": self.wood,
             "coal": self.coal,
             "mushroom": self.mushroom,
@@ -89,5 +89,6 @@ class GameState:
             "industry_bonuses": self.industry_bonuses,
             "biome_health": self.biome_health,
             "biome_states": self.biome_states,
+            "pets": self.pets,
 
         }

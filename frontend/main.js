@@ -215,7 +215,11 @@ function render() {
 
     /* ---------- INVENTORY ---------- */
     const inv = state.inventory || {};
-    document.getElementById("food").textContent = inv.food ?? 0;
+    document.getElementById("carrot").textContent = inv.carrot ?? 0;
+    document.getElementById("wheat").textContent = inv.wheat ?? 0;
+    document.getElementById("berries").textContent = inv.berries ?? 0;
+    document.getElementById("frosted_berries").textContent = inv.frosted_berries ?? 0;
+    document.getElementById("fish").textContent = inv.fish ?? 0;
     document.getElementById("wood").textContent = inv.wood ?? 0;
     document.getElementById("coal").textContent = inv.coal ?? 0;
     document.getElementById("mushroom").textContent = inv.mushroom ?? 0;

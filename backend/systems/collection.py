@@ -8,6 +8,7 @@ from tile_types import (
     TILE_REEDS, TILE_MUSHROOM, TILE_PEAT,
     TILE_ICE_CRYSTAL, TILE_ICEBERG,
     TILE_ROCK, TILE_STONE, TILE_ORE,
+    TILE_OCEAN, TILE_SWAMP_WATER,
 )
 from systems.world import get_current_biome_health, set_current_biome_health
 from systems.energy import apply_passive_energy
@@ -43,9 +44,9 @@ def collect_resource(state: GameState):
         changed = True
 
     elif tile == TILE_BERRIES:
-        # Eco-Guardians get +1 extra food
-        food_gain = 2 if state.eco_bonuses else 1
-        add_item(state, "food", food_gain)
+        # Eco-Guardians get +1 extra berries
+        berry_gain = 2 if state.eco_bonuses else 1
+        add_item(state, "berries", berry_gain)
         health += 1
         changed = True
 
@@ -57,16 +58,15 @@ def collect_resource(state: GameState):
         changed = True
 
     elif tile == TILE_FROSTED_BERRIES:
-        # Eco-Guardians get +1 extra food
-        food_gain = 2 if state.eco_bonuses else 1
-        add_item(state, "food", food_gain)
+        # Eco-Guardians get +1 extra frosted berries
+        berry_gain = 2 if state.eco_bonuses else 1
+        add_item(state, "frosted_berries", berry_gain)
         health += 1
         changed = True
 
     elif tile == TILE_CACTUS:
-        # Eco-Guardians get +1 extra food
-        food_gain = 2 if state.eco_bonuses else 1
-        add_item(state, "food", food_gain)
+        # Cactus yields fiber and occasionally edible bits
+        add_item(state, "fiber", 1)
         health += 1
         changed = True
 
@@ -84,7 +84,7 @@ def collect_resource(state: GameState):
         changed = True
 
     elif tile == TILE_MUSHROOM:
-        add_item(state, "food", 1)
+        add_item(state, "mushroom", 1)
         health += 1
         changed = True
 
@@ -113,6 +113,11 @@ def collect_resource(state: GameState):
         # Industrialists get double ore
         ore_gain = 2 if state.industry_bonuses else 1
         add_item(state, "ore_chunk", ore_gain)
+        changed = True
+
+    elif tile == TILE_OCEAN or tile == TILE_SWAMP_WATER:
+        # Collect fish from water tiles without removing the tile
+        add_item(state, "fish", 1)
         changed = True
 
     else:
