@@ -113,6 +113,9 @@
 
       <p>F — Interact with NPCs </p>
 
+      <h3>Crafting</h3>
+      <p>C — Open Crafting Menu</p>
+
       <h3>Wildlife</h3>
       <p>🐇 🦌 🐦 spawn when ecosystem health ≥ 70</p>
 
@@ -122,11 +125,18 @@
     <button id="helpBtn" onclick="toggleHelpMenu()">Help</button>
 
     <button id="inventoryBtn" onclick="toggleInventory()">Inventory</button>
+    <button id="craftBtn" onclick="toggleCraftMenu()">Craft</button>
 
     <div id="inventoryMenu" class="hidden">
       <h2>Inventory</h2>
       <div id="inventoryList"></div>
       <p style="text-align:center;font-size:13px;color:#ccc;">Press I to close</p>
+    </div>
+
+    <div id="craftMenu" class="hidden">
+      <h2>Crafting</h2>
+      <div id="craftList"></div>
+      <p style="text-align:center;font-size:13px;color:#ccc;">Press C to close</p>
     </div>
 
      <div id="dialogBox" class="hidden">

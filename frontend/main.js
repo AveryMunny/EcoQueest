@@ -347,5 +347,94 @@ function updateDialogPosition() {
   box.style.top = `${y}px`;
 }
 
+// CRAFTING SYSTEM
+function toggleCraftMenu() {
+  const menu = document.getElementById("craftMenu");
+  menu.classList.toggle("hidden");
+  if (!menu.classList.contains("hidden")) {
+    renderCraftMenu();
+  }
+}
+
+// KEYBOARD SHORTCUT FOR CRAFTING
+window.addEventListener("keydown", (e) => {
+  if (e.key.toLowerCase() === "c") {
+    toggleCraftMenu();
+  }
+});
+
+function renderCraftMenu() {
+  const list = document.getElementById("craftList");
+  list.innerHTML = "";
+
+  fetch("/api/recipes")
+    .then((res) => res.json())
+    .then((data) => {
+      const recipes = data.recipes || {};
+
+      const names = Object.keys(recipes);
+      if (names.length === 0) {
+        list.innerHTML = "<p>No recipes available.</p>";
+        return;
+      }
+
+      for (const name of names) {
+        const info = recipes[name] || {};
+        const req = info.requires || {};
+
+        const div = document.createElement("div");
+        div.style.marginBottom = "10px";
+        div.style.padding = "8px";
+        div.style.border = "1px solid #ccc";
+        div.style.borderRadius = "4px";
+        div.style.cursor = "pointer";
+        div.style.backgroundColor = "#f0f0f0";
+        div.style.transition = "background-color 0.2s";
+
+        // build a readable requirement string
+        const reqParts = [];
+        for (const [item, qty] of Object.entries(req)) {
+          reqParts.push(`${qty} × ${item}`);
+        }
+
+        div.textContent = `📦 ${name} — requires: ${reqParts.join(", ")}`;
+
+        div.addEventListener("mouseover", () => {
+          div.style.backgroundColor = "#e0e0e0";
+        });
+        div.addEventListener("mouseout", () => {
+          div.style.backgroundColor = "#f0f0f0";
+        });
+
+        div.addEventListener("click", () => {
+          performCraft(name);
+        });
+
+        list.appendChild(div);
+      }
+    })
+    .catch((err) => console.error("Failed to fetch recipes:", err));
+}
+
+function performCraft(recipeName) {
+  fetch("/api/craft", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ recipe_name: recipeName }),
+  })
+    .then((res) => res.json())
+    .then((data) => {
+      state = data;
+      render();
+
+      // Close craft menu after successful craft
+      const menu = document.getElementById("craftMenu");
+      if (state.dialog_message && state.dialog_message.includes("Crafted")) {
+        menu.classList.add("hidden");
+      }
+    })
+    .catch((err) => console.error("Craft error:", err));
+}
+
 
 export {};

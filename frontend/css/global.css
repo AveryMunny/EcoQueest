@@ -204,12 +204,29 @@ body.mountain #hud { border: 2px solid #8b8fa1; }
   z-index: 20;
 }
 
+#craftMenu {
+  position: absolute;
+  top: 80px;
+  right: 300px;
+  width: 280px;
+  background: rgba(40,40,40,0.9);
+  padding: 15px;
+  border-radius: 8px;
+  color: white;
+  z-index: 20;
+}
+
 .hidden {
   display: none;
 }
 /* Inventory Styles */
 #inventoryList {
   max-height: 300px;
+  overflow-y: auto;
+}
+
+#craftList {
+  max-height: 400px;
   overflow-y: auto;
 }
 

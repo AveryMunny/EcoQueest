@@ -24,6 +24,7 @@ from systems.farming import (
     plant_wheat, plant_carrot, harvest_crop, grow_crops
 )
 from systems.npc import interact_with_npc, choose_path
+from systems.crafting import craft, get_available_recipes
 
 # ------------------------------------------------------------
 # CREATE FLASK APP (serving frontend folder)
@@ -204,6 +205,19 @@ def api_choose_path():
     path = data.get("path")
     choose_path(GAME_STATE, path)
     return jsonify(GAME_STATE.to_dict())
+
+@app.route("/api/craft", methods=["POST"])
+def api_craft():
+    GAME_STATE.dialog_message = ""
+    data = request.get_json(force=True)
+    recipe_name = data.get("recipe_name")
+    craft(GAME_STATE, recipe_name)
+    return jsonify(GAME_STATE.to_dict())
+
+@app.route("/api/recipes", methods=["GET"])
+def api_recipes():
+    available = get_available_recipes(GAME_STATE)
+    return jsonify({"recipes": available})
 
 
 
