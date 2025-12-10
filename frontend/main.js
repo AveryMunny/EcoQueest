@@ -144,7 +144,7 @@ function getGlobalEmoji(tile) {
     wind: "🌀",
     house: "🏡",
     wall: "🧱",
-    floor: "▫️",
+    floor: "", // no dot; rely on background color
     door: "🚪",
     bed: "🛏️",
     table: "┬─┬", // dining table look
