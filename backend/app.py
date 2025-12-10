@@ -118,6 +118,7 @@ def path_neutral():
 
 @app.route("/api/collect", methods=["POST"])
 def api_collect():
+    GAME_STATE.dialog_message = ""
     collect_resource(GAME_STATE)
     return jsonify(get_state_dict())
 
@@ -134,36 +135,42 @@ def api_reset():
 
 @app.route("/api/plant", methods=["POST"])
 def api_plant():
+    GAME_STATE.dialog_message = ""
     plant_tree(GAME_STATE)
     return jsonify(get_state_dict())
 
 
 @app.route("/api/solar", methods=["POST"])
 def api_solar():
+    GAME_STATE.dialog_message = ""
     build_solar_panel(GAME_STATE)
     return jsonify(get_state_dict())
 
 
 @app.route("/api/wind", methods=["POST"])
 def api_wind():
+    GAME_STATE.dialog_message = ""
     build_wind_turbine(GAME_STATE)
     return jsonify(get_state_dict())
 
 
 @app.route("/api/house", methods=["POST"])
 def api_house():
+    GAME_STATE.dialog_message = ""
     build_house(GAME_STATE)
     return jsonify(get_state_dict())
 
 
 @app.route("/api/farm", methods=["POST"])
 def api_farm():
+    GAME_STATE.dialog_message = ""
     build_farm(GAME_STATE)
     return jsonify(get_state_dict())
 
 
 @app.route("/api/exit_house", methods=["POST"])
 def api_exit_house():
+    GAME_STATE.dialog_message = ""
     exit_house(GAME_STATE)
     return jsonify(get_state_dict())
 
@@ -173,18 +180,21 @@ def api_exit_house():
 
 @app.route("/api/plant_wheat", methods=["POST"])
 def api_plant_wheat():
+    GAME_STATE.dialog_message = ""
     plant_wheat(GAME_STATE)
     return jsonify(get_state_dict())
 
 
 @app.route("/api/plant_carrot", methods=["POST"])
 def api_plant_carrot():
+    GAME_STATE.dialog_message = ""
     plant_carrot(GAME_STATE)
     return jsonify(get_state_dict())
 
 
 @app.route("/api/harvest", methods=["POST"])
 def api_harvest():
+    GAME_STATE.dialog_message = ""
     harvest_crop(GAME_STATE)
     return jsonify(get_state_dict())
 
