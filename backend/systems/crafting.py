@@ -21,6 +21,15 @@ RECIPES = {
         "requires": {"rope": 2},
         "produces": {"net": 1},
     },
+    # New utility crafts that consume planks/rope
+    "bedroll": {
+        "requires": {"fabric": 2, "rope": 1, "plank": 1},
+        "produces": {"bedroll": 1},
+    },
+    "meal_pack": {
+        "requires": {"plank": 1, "fish": 1, "carrot": 1},
+        "produces": {"meal_pack": 1},
+    },
 }
 
 

@@ -271,6 +271,9 @@ def api_inventory_use():
         "carrot": {"energy": 15, "health": 8},
         "fish": {"energy": 20, "health": 12},
         "mushroom": {"energy": 8, "health": 4},
+        # crafted utility items
+        "meal_pack": {"energy": 40, "health": 20},
+        "bedroll": {"energy": 0, "health": 30},
     }
 
     if item in food_items:
