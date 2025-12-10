@@ -36,13 +36,19 @@ body {
 .cell.table,
 .cell.chest,
 .cell.rug {
-  background: #e9d3b0;
-  border: 1px solid #d8c3a4;
+  background: #f0dfc7; /* warm light brown floor tile */
+  border: 1px solid #dec9a7;
 }
 
 .cell.rug {
-  background: #e1c89b;
-  border-color: #cfae7c;
+  background: #e8cda4;
+  border-color: #d5b687;
+}
+
+/* Fallback: if any interior tiles are still tagged as empty, render them like floor */
+.cell.empty {
+  background: #f0dfc7;
+  border: 1px solid #dec9a7;
 }
 
 /* -------------------------
@@ -234,7 +240,8 @@ body.mountain #hud { border: 2px solid #8b8fa1; }
 #interiorToolbar {
   position: fixed;
   top: 120px;
-  left: 20px;
+  left: auto;
+  right: 24px;
   width: 220px;
   background: rgba(25,25,25,0.9);
   padding: 12px;

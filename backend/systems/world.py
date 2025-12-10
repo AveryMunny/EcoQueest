@@ -127,6 +127,16 @@ def get_or_create_biome_state(state: GameState, biome_name: str):
     return biome_state
 
 
+def _normalize_house_tiles(house_tiles):
+    if not house_tiles:
+        return house_tiles
+    for y in range(len(house_tiles)):
+        for x in range(len(house_tiles[y])):
+            if house_tiles[y][x] == "empty":
+                house_tiles[y][x] = "floor"
+    return house_tiles
+
+
 def switch_biome(state: GameState, biome_name: str):
     # Save current biome state
     current = state.current_biome
@@ -142,7 +152,7 @@ def switch_biome(state: GameState, biome_name: str):
     state.biome_states[current]["crop_growth"] = state.crop_growth
     state.biome_states[current]["last_house_x"] = state.last_house_x
     state.biome_states[current]["last_house_y"] = state.last_house_y
-    state.biome_states[current]["house_tiles"] = state.house_tiles
+    state.biome_states[current]["house_tiles"] = _normalize_house_tiles(state.house_tiles)
 
     # Check if we've been to this biome before in this session
     if biome_name in state.biome_states:
@@ -152,7 +162,7 @@ def switch_biome(state: GameState, biome_name: str):
         state.crop_growth = saved_state["crop_growth"]
         state.last_house_x = saved_state["last_house_x"]
         state.last_house_y = saved_state["last_house_y"]
-        state.house_tiles = saved_state["house_tiles"]
+        state.house_tiles = _normalize_house_tiles(saved_state["house_tiles"])
     else:
         # First time visiting this biome, generate fresh
         tiles = BIOME_GENERATORS[biome_name](state.width, state.height)

@@ -183,7 +183,12 @@ function render() {
     for (let y = 0; y < tiles.length; y++) {
         for (let x = 0; x < tiles[y].length; x++) {
             const div = document.createElement("div");
-            const tile = tiles[y][x];
+        let tile = tiles[y][x];
+
+        // If we're inside the house, normalize any legacy "empty" to "floor"
+        if (state.in_house && tile === "empty") {
+          tile = "floor";
+        }
 
             div.classList.add("cell", tile);
         div.dataset.x = x;

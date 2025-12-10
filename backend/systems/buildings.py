@@ -41,6 +41,12 @@ def create_default_house_layout(width: int, height: int):
 def ensure_house_tiles(state: GameState):
     if state.house_tiles is None:
         state.house_tiles = create_default_house_layout(state.house_width, state.house_height)
+    else:
+        # Normalize any legacy "empty" cells inside to floor so interiors get the light floor style
+        for y in range(len(state.house_tiles)):
+            for x in range(len(state.house_tiles[y])):
+                if state.house_tiles[y][x] == TILE_EMPTY:
+                    state.house_tiles[y][x] = TILE_FLOOR
 
 
 
