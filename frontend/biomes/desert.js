@@ -9,6 +9,9 @@ export function emojiForDesert(tile) {
     rock: "🪨",
     quartz: "🔶",
 
+    // NPCs
+    npc_desert_merchant: "🧑‍💼",
+
     // animals
     lizard: "🦎",
     snake: "🐍",

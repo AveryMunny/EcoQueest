@@ -5,7 +5,8 @@ from tile_types import (
     TILE_CACTUS,
     TILE_SANDSTONE,
     TILE_QUARTZ,
-    TILE_OASIS
+    TILE_OASIS,
+    TILE_NPC_DESERT_MERCHANT
 )
 
 BIOME_NAME = "desert"
@@ -33,5 +34,10 @@ def generate_desert(width, height):
                 row.append(TILE_QUARTZ)         # 2% quartz (rare)
 
         tiles.append(row)
+
+    # Place desert merchant near spawn
+    mid_x = width // 2 + 3
+    mid_y = height // 2 - 2
+    tiles[mid_y][mid_x] = TILE_NPC_DESERT_MERCHANT
 
     return tiles

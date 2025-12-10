@@ -47,6 +47,9 @@ class GameState:
     awaiting_path_choice: bool = False
     dialog_message: str = ""
     
+    # Quest system
+    active_quests: dict = None  # {"quest_name": {"status": "active/completed", "progress": {...}}}
+    
     # Path-based modifiers
     eco_bonuses: bool = False
     industry_bonuses: bool = False
@@ -90,5 +93,6 @@ class GameState:
             "biome_health": self.biome_health,
             "biome_states": self.biome_states,
             "pets": self.pets,
+            "active_quests": self.active_quests,
 
         }

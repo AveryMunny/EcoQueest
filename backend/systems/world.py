@@ -91,12 +91,16 @@ def create_initial_state(width: int = 30, height: int = 30) -> GameState:
             "ice_shard": 0,
             "crystal_shard": 0,
             "ore_chunk": 0,
+            "quartz": 0,
+            "sapling": 0,
 
             # tools
             "axe": 0,
             "pickaxe": 0,
             "shovel": 0,
         },
+        
+        active_quests={},
 
     )
     state.ecosystem_health = get_current_biome_health(state)

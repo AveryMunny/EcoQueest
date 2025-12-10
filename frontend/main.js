@@ -288,6 +288,7 @@ function render() {
     document.getElementById("peat").textContent = inv.peat ?? 0;
     document.getElementById("stone").textContent = inv.stone ?? 0;
     document.getElementById("ore_chunk").textContent = inv.ore_chunk ?? 0;
+    document.getElementById("quartz").textContent = inv.quartz ?? 0;
     document.getElementById("ice_shard").textContent = inv.ice_shard ?? 0;
     document.getElementById("crystal_shard").textContent = inv.crystal_shard ?? 0;
 
