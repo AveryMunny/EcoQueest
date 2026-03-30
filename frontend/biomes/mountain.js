@@ -1,27 +1,27 @@
 export function emojiForMountain(tile) {
   const map = {
-    // === TERRAIN ===
+    // terrain 
     rock: "🪨",
     stone: "⬛",
     snow_rock: "❄️🪨",
     cave: "🕳️",
 
-    // === RESOURCES ===
+    //resoures 
     ore: "⛏️",
     crystal: "💎",
 
-    // optional future crafting resources:
+    // possible additions, but idk how I can get this in 
     mineral: "💠",
     gold: "🥇",
     silver: "🥈",
     iron: "⛓️",
     mountain_grass: "🌿",
 
-    // === ANIMALS ===
+    // animals 
     goat: "🐐",
     hawk: "🦅",
 
-    // === OPTIONAL STRUCTURES ===
+    // structures
     mountain_hut: "🏕️",
     lookout_tower: "🗼",
 

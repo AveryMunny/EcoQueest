@@ -1,5 +1,5 @@
 .coastal .cell {
-    background-color: #87ceeb; /* light blue for coastal terrain */
+    background-color: #87ceeb; /* light blue for coast */
 
 }
 
@@ -12,7 +12,7 @@
 }
 
 .coastal .shell {
-    background-color: #fff5e1; /* light shell color */
+    background-color: #fff5e1; /* light shellish color */
 }
 
 .coastal .crab {
@@ -27,5 +27,5 @@
     background-color: #e0e0e0; /* light gray for beluga */
 }
 
-/* Coast — vibrant blues and sandy tones */
+
 
