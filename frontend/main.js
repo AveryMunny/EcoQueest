@@ -329,6 +329,7 @@ function setupInput() {
     else if (key === "5") sendAction("plant_wheat");
     else if (key === "6") sendAction("plant_carrot");
     else if (key === "x") sendAction("harvest");
+    else if (key === "q") sendAction("enter_house");
     else if (key === "e") sendAction("exit_house");
     else if (key === "h") toggleHelpMenu();
     else if (key.toLowerCase() === "f") sendAction("interact");

@@ -166,7 +166,13 @@ def build_house(state: GameState):
     state.last_house_y = y
 
     ensure_house_tiles(state)
-    
+
+    # Automatically enter the new house after building it
+    state.in_house = True
+    state.player_x = state.house_width // 2
+    state.player_y = state.house_height // 2
+    state.dialog_message = "You entered your new house! Press E to exit."
+
     # Industrialists consume ecosystem health
     if state.industry_bonuses:
         health = get_current_biome_health(state) - 3
