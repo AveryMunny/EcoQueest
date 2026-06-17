@@ -11,6 +11,7 @@ from tile_types import (
     TILE_FROSTED_BERRIES,
     TILE_IGLOO,
     TILE_SNOWMAN,
+    TILE_ICEBERG,
     TILE_EMPTY
 )
 
@@ -68,6 +69,15 @@ def generate_tundra(width, height):
             # -----------------------------
             elif r < 0.87:
                 row.append(TILE_IGLOO)
+
+            # -----------------------------
+            # ULTRA RARE ICEBERG (high elevation only)
+            # FIX: TILE_ICEBERG had a collection handler in collection.py
+            # but was never actually placed on the map anywhere. Give it a
+            # small chance to appear in the "deeper" half of the tundra.
+            # -----------------------------
+            elif r < 0.875 and elevation > 0.5:
+                row.append(TILE_ICEBERG)
 
             # -----------------------------
             # ULTRA RARE SNOWMAN
