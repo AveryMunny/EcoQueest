@@ -119,21 +119,22 @@ def attempt_tame(state):
                 remove_item(state, item_name, amount)
 
             chance = base_chances.get(tile, 0.2)
-            import random
             success = random.random() < chance
 
             # Remove animal from map on attempt (they either flee or come with you)
             tiles[ny][nx] = TILE_EMPTY
 
-            # Add a pet item to inventory if tamed
-            pet_key = f"pet_{tile}"
-            if state.inventory is None:
-                state.inventory = {}
+            # Add a pet item to inventory if tamed.
+            # FIX: this used to also write `pet_key = ... + 0` on failure,
+            # which adds a zero-value "pet_<animal>" entry to the inventory
+            # the first time you fail a taming attempt -- it then shows up
+            # as junk clutter in the Inventory menu forever. Only write the
+            # key when taming actually succeeds.
             if success:
+                pet_key = f"pet_{tile}"
+                if state.inventory is None:
+                    state.inventory = {}
                 state.inventory[pet_key] = state.inventory.get(pet_key, 0) + 1
-            else:
-                # ensure no pet added on failure
-                state.inventory[pet_key] = state.inventory.get(pet_key, 0) + 0
 
             # track pets in state.pets
             if success:
