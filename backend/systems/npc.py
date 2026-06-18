@@ -94,7 +94,11 @@ def interact_desert_merchant(state):
             # Complete quest - give reward
             remove_item(state, "fiber", 5)
             add_item(state, "quartz", 3)
-            add_item(state, "energy", 10)
+            # FIX: this used to call add_item(state, "energy", 10), which
+            # only created a dead "energy" inventory entry instead of
+            # actually restoring the player's energy stat the dialogue
+            # promises.
+            state.energy = min(100, state.energy + 10)
             state.active_quests[quest_name]["status"] = "completed"
             state.dialog_message = (
                 "🧑‍💼 Desert Merchant:\n"

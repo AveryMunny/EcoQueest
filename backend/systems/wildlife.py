@@ -18,8 +18,11 @@ def spawn_wildlife(state: GameState):
     if get_current_biome_health(state) < 70:
         return
 
-    # Eco-Guardians spawn more wildlife (3% -> 6%)
-    # Industrialists spawn less wildlife (3% -> 1.5%)
+    # FIX: comment previously said "3% -> 6%", which didn't match the
+    # actual numbers below (5% baseline, doubled to 10% for Eco-Guardians,
+    # halved to 2.5% for Industrialists). Comment now matches the code.
+    # Eco-Guardians spawn more wildlife (5% -> 10%)
+    # Industrialists spawn less wildlife (5% -> 2.5%)
     if state.eco_bonuses:
         spawn_chance = 0.1
     elif state.industry_bonuses:

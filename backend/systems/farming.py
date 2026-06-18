@@ -18,6 +18,10 @@ NIGHT_LENGTH = 5 * 60
 FULL_CYCLE_SECONDS = DAY_LENGTH + NIGHT_LENGTH
 
 def plant_wheat(state: GameState):
+    # FIX: missing in_house guard -- without it, planting while indoors
+    # read/wrote the outdoor tile grid at your indoor coordinates.
+    if state.in_house:
+        return
     x, y = state.player_x, state.player_y
     if state.tiles[y][x] != TILE_FARM:
         return
@@ -28,6 +32,9 @@ def plant_wheat(state: GameState):
 
 
 def plant_carrot(state: GameState):
+    # FIX: same missing in_house guard as plant_wheat.
+    if state.in_house:
+        return
     x, y = state.player_x, state.player_y
     if state.tiles[y][x] != TILE_FARM:
         return
@@ -75,6 +82,10 @@ def grow_crops(state: GameState):
 
 
 def harvest_crop(state: GameState):
+    # FIX: missing in_house guard, same reasoning as planting above.
+    if state.in_house:
+        return
+
     x, y = state.player_x, state.player_y
     tile = state.tiles[y][x]
 
