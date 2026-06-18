@@ -24,7 +24,13 @@ async function sendMove(direction) {
   });
 
   state = await res.json();
-  state.dialog_message = "";
+  // FIX: this used to unconditionally do `state.dialog_message = "";`
+  // here, which wiped out ANY message the server set during this move --
+  // including the "💀 You've collapsed from exhaustion!" warning from
+  // drain_energy(), so the player could lose health from exhaustion and
+  // never see why. The backend's /api/move route now clears stale dialog
+  // text itself before moving, so whatever comes back here is already
+  // correct and shouldn't be blindly erased on the client.
   render();
   positionHelpMenu();
 }
@@ -127,7 +133,7 @@ function positionHelpMenu() {
 }
 
 
-/* ---------------- EMOJI LOOKUP ---------------- */
+// EMOJI LOOKUP 
 function getBiomeEmoji(tile) {
   if (state.current_biome === "forest") return emojiForForest(tile);
   if (state.current_biome === "desert") return emojiForDesert(tile);
@@ -149,7 +155,7 @@ function getGlobalEmoji(tile) {
     bed: "🛏️",
     table: "┬─┬", // dining table look
     chest: "📦",
-    rug: "⬜", // scarf as rug visual
+    rug: "⬜", // scarf as rug placeholder
     farm: "🚜",
     rabbit: "🐇",
     deer: "🦌",
@@ -167,13 +173,13 @@ function getGlobalEmoji(tile) {
 function render() {
     if (!state) return;
 
-    /* ---------- BODY / THEME ---------- */
+    //  BODY / THEME
     const body = document.body;
     body.className = "";
     body.classList.add(state.current_biome);
     body.classList.add(state.time_of_day === "day" ? "daytime" : "nighttime");
 
-    /* ---------- GRID ---------- */
+    // GRID
     const grid = document.getElementById("grid");
     grid.innerHTML = "";
 
@@ -206,7 +212,7 @@ function render() {
         }
     }
 
-    /* ---------- DIALOG BOX ---------- */
+    //DIALOG BOX
     const dialogBox = document.getElementById("dialogBox");
     const dialogText = document.getElementById("dialogText");
     const dialogChoices = document.getElementById("dialogChoices");
@@ -303,15 +309,15 @@ function render() {
 }
 
 
-/* ---------------- INPUT ---------------- */
+//INPUT 
 function setupInput() {
   document.addEventListener("keydown", (e) => {
-    const key = e.key;
+    const key = e.key.toLowerCase();
 
-    if (["w", "ArrowUp"].includes(key)) sendMove("up");
-    else if (["s", "ArrowDown"].includes(key)) sendMove("down");
-    else if (["a", "ArrowLeft"].includes(key)) sendMove("left");
-    else if (["d", "ArrowRight"].includes(key)) sendMove("right");
+    if (["w", "arrowup"].includes(key)) sendMove("up");
+    else if (["s", "arrowdown"].includes(key)) sendMove("down");
+    else if (["a", "arrowleft"].includes(key)) sendMove("left");
+    else if (["d", "arrowright"].includes(key)) sendMove("right");
     else if (key === "p") sendAction("plant");
     else if (key === "1") {
       if (state.awaiting_path_choice) sendAction("choose_path_eco");
@@ -332,8 +338,8 @@ function setupInput() {
     else if (key === "q") sendAction("enter_house");
     else if (key === "e") sendAction("exit_house");
     else if (key === "h") toggleHelpMenu();
-    else if (key.toLowerCase() === "f") sendAction("interact");
-        
+    else if (key === "f") sendAction("interact");
+
     else if (key === " ") {
       e.preventDefault();
       sendAction("collect");

@@ -72,6 +72,7 @@ def api_state():
 
 @app.route("/api/move", methods=["POST"])
 def api_move():
+    GAME_STATE.dialog_message = ""
     direction = request.json.get("direction")
     move_player(GAME_STATE, direction)
     return jsonify(get_state_dict()) # return the updated game state after moving the player

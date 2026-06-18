@@ -19,13 +19,14 @@ class GameState:
     biome_health: dict = None   # {"forest": 100, ...}
 
     energy: int = 100
-    wood: int = 0
-    coal: int = 0
 
-    # swamp extras
-    mushroom: int = 0
-    fiber: int = 0
-    peat: int = 0
+    # FIX: this dataclass used to also define top-level `wood`, `coal`,
+    # `mushroom`, `fiber`, and `peat` fields. Nothing in the codebase ever
+    # read or wrote them -- every actual resource gain/spend goes through
+    # the `inventory` dict below (e.g. state.inventory["wood"]). They were
+    # dead duplicates that just got serialized to the frontend for no
+    # reason; removed rather than risk two different "sources of truth"
+    # for the same resource later.
 
     tiles: list = None
     crop_growth: dict = None
@@ -70,12 +71,7 @@ class GameState:
             "player_health": self.player_health,
             "ecosystem_health": self.ecosystem_health,
             "energy": self.energy,
-            
-            "wood": self.wood,
-            "coal": self.coal,
-            "mushroom": self.mushroom,
-            "fiber": self.fiber,
-            "peat": self.peat,
+
             "tiles": self.tiles,
             "in_house": self.in_house,
             "house_tiles": self.house_tiles,
