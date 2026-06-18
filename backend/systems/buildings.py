@@ -81,6 +81,13 @@ def plant_tree(state: GameState):
 # Build Farm (cost: 2 wood, 1 wood for Industrialists)
 # -------------------------------
 def build_farm(state: GameState):
+    # FIX: this was missing the same in_house guard that plant_tree() has.
+    # Without it, pressing the farm-build key while inside your house read
+    # and wrote the *outdoor* tile grid at your indoor coordinates instead
+    # of being blocked.
+    if state.in_house:
+        return
+
     x, y = state.player_x, state.player_y
 
     if state.tiles[y][x] != TILE_EMPTY:
@@ -92,7 +99,11 @@ def build_farm(state: GameState):
 
     remove_item(state, "wood", wood_cost)
     state.tiles[y][x] = TILE_FARM
-    
+
+    # FIX: README says building costs 1 energy; only plant_tree() actually
+    # charged it before this fix.
+    drain_energy(state, 1)
+
     # Industrialists consume ecosystem health
     if state.industry_bonuses:
         health = get_current_biome_health(state) - 2
@@ -104,6 +115,10 @@ def build_farm(state: GameState):
 # Build Solar Panel (cost: 2 wood, 1 wood for Industrialists)
 # -------------------------------
 def build_solar_panel(state: GameState):
+    # FIX: missing in_house guard (see build_farm for details).
+    if state.in_house:
+        return
+
     x, y = state.player_x, state.player_y
 
     if state.tiles[y][x] != TILE_EMPTY:
@@ -115,7 +130,10 @@ def build_solar_panel(state: GameState):
 
     remove_item(state, "wood", wood_cost)
     state.tiles[y][x] = TILE_SOLAR
-    
+
+    # FIX: building actions are supposed to cost 1 energy per the README.
+    drain_energy(state, 1)
+
     # Industrialists consume ecosystem health
     if state.industry_bonuses:
         health = get_current_biome_health(state) - 2
@@ -127,6 +145,10 @@ def build_solar_panel(state: GameState):
 # Build Wind Turbine (cost: 3 wood, 2 wood for Industrialists)
 # -------------------------------
 def build_wind_turbine(state: GameState):
+    # FIX: missing in_house guard (see build_farm for details).
+    if state.in_house:
+        return
+
     x, y = state.player_x, state.player_y
 
     if state.tiles[y][x] != TILE_EMPTY:
@@ -138,7 +160,10 @@ def build_wind_turbine(state: GameState):
 
     remove_item(state, "wood", wood_cost)
     state.tiles[y][x] = TILE_WIND
-    
+
+    # FIX: building actions are supposed to cost 1 energy per the README.
+    drain_energy(state, 1)
+
     # Industrialists consume ecosystem health
     if state.industry_bonuses:
         health = get_current_biome_health(state) - 2
@@ -150,6 +175,11 @@ def build_wind_turbine(state: GameState):
 # Build House (cost: 5 wood, 3 wood for Industrialists)
 # -------------------------------
 def build_house(state: GameState):
+    # FIX: missing in_house guard (see build_farm for details) -- without
+    # it you could "build a house" while already standing inside one.
+    if state.in_house:
+        return
+
     x, y = state.player_x, state.player_y
 
     if state.tiles[y][x] != TILE_EMPTY:
@@ -166,6 +196,9 @@ def build_house(state: GameState):
     state.last_house_y = y
 
     ensure_house_tiles(state)
+
+    # FIX: building actions are supposed to cost 1 energy per the README.
+    drain_energy(state, 1)
 
     # Automatically enter the new house after building it
     state.in_house = True
@@ -188,6 +221,13 @@ def try_enter_house(state: GameState):
     if state.tiles[y][x] == TILE_HOUSE:
         ensure_house_tiles(state)
         state.in_house = True
+        # FIX: last_house_x/y was only ever set inside build_house(), never
+        # here. If you built a second house in the same biome, walking into
+        # the FIRST house and exiting would always drop you next to the
+        # SECOND (most recently built) house instead. Recording the actual
+        # house tile you stepped on fixes that.
+        state.last_house_x = x
+        state.last_house_y = y
         state.player_x = state.house_width // 2
         state.player_y = state.house_height // 2
 
