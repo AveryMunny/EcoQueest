@@ -2,7 +2,6 @@ import random
 from tile_types import (
     TILE_SAND,
     TILE_OCEAN,
-    TILE_SEAL,
     TILE_CRAB,
     TILE_SHELL,
     TILE_EMPTY,
