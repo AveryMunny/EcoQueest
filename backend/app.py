@@ -79,6 +79,8 @@ def api_move():
 
 @app.route("/api/interact", methods=["POST"])
 def api_interact():
+    # Clear stale dialog before acting (matches every other action route).
+    GAME_STATE.dialog_message = ""
     # First try to interact with/tame nearby animals. If no animal nearby, fall back to NPC dialog.
     from systems.animals import attempt_tame
     result = attempt_tame(GAME_STATE)
