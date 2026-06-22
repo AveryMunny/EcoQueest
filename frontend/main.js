@@ -90,9 +90,6 @@ window.toggleHelpMenu = toggleHelpMenu;
 window.toggleInventory = toggleInventory;
 window.toggleCraftMenu = toggleCraftMenu;
 
-// expose for inline onclick handlers (module scope -> window)
-window.toggleHelpMenu = toggleHelpMenu;
-
 
 function positionHelpMenu() {
   const menu = document.getElementById("helpMenu");
@@ -299,6 +296,7 @@ function render() {
     document.getElementById("quartz").textContent = inv.quartz ?? 0;
     document.getElementById("ice_shard").textContent = inv.ice_shard ?? 0;
     document.getElementById("crystal_shard").textContent = inv.crystal_shard ?? 0;
+    document.getElementById("shell").textContent = inv.shell ?? 0;
 
     // Interior toolbar visibility
     const toolbar = document.getElementById("interiorToolbar");
