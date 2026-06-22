@@ -16,7 +16,8 @@ from biomes.biome_desert import generate_desert
 from biomes.biome_coastal import generate_coastal
 from biomes.biome_swamp import generate_swamp
 from biomes.biome_mountains import generate_mountain
-from systems.animals import move_animals
+# NOTE: move_animals import removed — it was imported here but never called;
+# movement.py imports it directly where it's actually used.
 
 
 START_TIME = time.time()
@@ -93,6 +94,7 @@ def create_initial_state(width: int = 30, height: int = 30) -> GameState:
             "ore_chunk": 0,
             "quartz": 0,
             "sapling": 0,
+            "shell": 0,   # coastal collectible; pre-init so HUD shows 0
 
             # tools
             "axe": 0,
