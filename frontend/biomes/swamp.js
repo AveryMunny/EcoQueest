@@ -10,6 +10,7 @@ export function emojiForSwamp(tile) {
     crocodile: "🐊",
     snake: "🐍",
     stork: "🕊️",
+    turtle: "🐢",
 
     // structures
     // (none specific to swamp for now)
