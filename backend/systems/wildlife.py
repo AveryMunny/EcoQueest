@@ -7,8 +7,9 @@ from tile_types import (
     TILE_RABBIT, TILE_DEER, TILE_BIRD,
     TILE_LIZARD, TILE_SNAKE, TILE_SCORPION,
     TILE_ARCTIC_FOX, TILE_POLAR_HARE, TILE_SEAL, TILE_WALRUS,
-    TILE_FROG, TILE_CROCODILE, TILE_STORK,
+    TILE_FROG, TILE_CROCODILE, TILE_STORK, TILE_TURTLE,
     TILE_GOAT, TILE_HAWK,
+    TILE_CRAB,
 )
 
 from systems.world import get_current_biome_health
@@ -48,9 +49,14 @@ def spawn_wildlife(state: GameState):
     elif biome == "tundra":
         animals = [TILE_ARCTIC_FOX, TILE_POLAR_HARE, TILE_SEAL, TILE_WALRUS]
     elif biome == "swamp":
-        animals = [TILE_FROG, TILE_CROCODILE, TILE_SNAKE, TILE_STORK]
+        animals = [TILE_FROG, TILE_CROCODILE, TILE_SNAKE, TILE_STORK, TILE_TURTLE]
     elif biome == "mountain":
         animals = [TILE_GOAT, TILE_HAWK]
+    elif biome == "coastal":
+        # Seals and crabs wander the shore dynamically.
+        # (Static crabs are also placed by the biome generator, but
+        # wildlife spawning adds living ones that move around.)
+        animals = [TILE_SEAL, TILE_CRAB]
     else:
         return
 
@@ -68,7 +74,8 @@ def despawn_wildlife(state: GameState):
                 TILE_RABBIT, TILE_DEER, TILE_BIRD,
                 TILE_LIZARD, TILE_SNAKE, TILE_SCORPION,
                 TILE_ARCTIC_FOX, TILE_POLAR_HARE, TILE_SEAL, TILE_WALRUS,
-                TILE_FROG, TILE_CROCODILE, TILE_STORK,
+                TILE_FROG, TILE_CROCODILE, TILE_TURTLE, TILE_STORK,
                 TILE_GOAT, TILE_HAWK,
+                TILE_CRAB,  # coastal
             ]:
                 state.tiles[y][x] = TILE_EMPTY
