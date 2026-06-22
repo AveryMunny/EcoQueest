@@ -18,6 +18,12 @@ def apply_passive_energy(state: GameState):
                 if tile == TILE_WIND:
                     state.energy += 2 + wind_bonus
 
+    # BUG FIX: solar/wind generation had no upper bound so energy could
+    # accumulate past 100 indefinitely (reached 34,579 in testing with
+    # a field full of solar panels). Clamp it here like every other
+    # energy source in the game.
+    state.energy = min(100, state.energy)
+
 
 def drain_energy(state: GameState, amount: int = 1):
     """Drain energy and damage health if energy is depleted."""
