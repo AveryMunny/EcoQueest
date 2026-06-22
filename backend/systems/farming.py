@@ -90,9 +90,8 @@ def harvest_crop(state: GameState):
     tile = state.tiles[y][x]
 
     if tile == TILE_WHEAT_3:
-        if state.inventory is None:
-            state.inventory = {}
-        state.inventory["wheat"] = state.inventory.get("wheat", 0) + 3
+        from systems.inventory import add_item
+        add_item(state, "wheat", 3)
         state.tiles[y][x] = TILE_FARM
         # remove crop growth entry for this tile (support string or tuple key)
         if state.crop_growth is not None:
@@ -100,9 +99,8 @@ def harvest_crop(state: GameState):
             state.crop_growth.pop((x, y), None)
 
     elif tile == TILE_CARROT_3:
-        if state.inventory is None:
-            state.inventory = {}
-        state.inventory["carrot"] = state.inventory.get("carrot", 0) + 2
+        from systems.inventory import add_item
+        add_item(state, "carrot", 2)
         state.tiles[y][x] = TILE_FARM
         if state.crop_growth is not None:
             state.crop_growth.pop(f"{x},{y}", None)
